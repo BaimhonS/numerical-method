@@ -1,5 +1,6 @@
 import { evaluate } from "mathjs";
 import React, { useState } from "react";
+import axios from "axios";  // Import Axios
 import Sidebar from '../../components/Sidebar';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
 
@@ -9,7 +10,19 @@ const Graphical = () => {
     const [results, setResults] = useState([]); 
     const [showResults, setShowResults] = useState(false);
     const [isCalculating, setIsCalculating] = useState(false);  
-    const [finalValue, setFinalValue] = useState(null); 
+    const [finalValue, setFinalValue] = useState(null);
+
+    const fetchExample = async () => {
+        try {
+            const response = await axios.get('http://localhost:8080/api/root-of-equations/graphical/1');
+            const { equation, scan } = response.data;
+
+            setEquation(equation);
+            setScan(scan);
+        } catch (error) {
+            console.error('Error fetching example data:', error);
+        }
+    };
 
     const calGraphical = async () => {  
         setIsCalculating(true); 
@@ -60,6 +73,13 @@ const Graphical = () => {
             <Sidebar />
             <div className='flex-1 p-10'>
                 <h2 className='text-3xl mb-5'>Graphical Method</h2>
+                <div className="flex justify-end px-10">
+                <button
+                    onClick={fetchExample}
+                    className="my-5 px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 transition duration-200">
+                    Get Example Input
+                </button>
+                </div>
                 <div className='flex space-x-6'>
                     <div>
                         <p className='text-gray-500'>Equation</p>
@@ -82,7 +102,7 @@ const Graphical = () => {
                         />
                     </div>
                 </div>
-                <div>
+                <div className="flex space-x-6">
                     <button 
                         className="my-5 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition duration-200"
                         onClick={calGraphical}
@@ -99,7 +119,7 @@ const Graphical = () => {
 
                 {showResults && !isCalculating && (
                     <div>
-                        <p className="mb-5">X : {finalValue.toFixed(6)}</p>
+                        <p className="mb-5">X : {finalValue ? finalValue.toFixed(6) : 'N/A'}</p>
                         <div className="flex justify-center mb-5">
                             <LineChart width={1000} height={400} data={results}>
                                 <CartesianGrid strokeDasharray="3 3" />

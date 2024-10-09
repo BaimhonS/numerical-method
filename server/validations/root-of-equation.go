@@ -32,13 +32,14 @@ type (
 
 	ReqNewtonRaphson struct {
 		Equation string  `json:"equation"`
-		X        float64 `json:"x"`
+		X0       float64 `json:"x0"`
+		E        float64 `json:"e"`
 	}
 
 	ReqSecant struct {
 		Equation string  `json:"equation"`
-		X0       float64 `json:"X0"`
-		X1       float64 `json:"X1"`
+		X0       float64 `json:"x0"`
+		X1       float64 `json:"x1"`
 		E        float64 `json:"e"`
 	}
 

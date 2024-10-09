@@ -17,6 +17,14 @@ type RootService interface {
 	CreateGraphical(c *fiber.Ctx) error
 	GetBisection(c *fiber.Ctx) error
 	CreateBisection(c *fiber.Ctx) error
+	GetFalsePosition(c *fiber.Ctx) error
+	CreateFalsePosition(c *fiber.Ctx) error
+	GetOnePoint(c *fiber.Ctx) error
+	CreateOnePoint(c *fiber.Ctx) error
+	GetNewtonRaphson(c *fiber.Ctx) error
+	CreateNewtonRaphson(c *fiber.Ctx) error
+	GetSecant(c *fiber.Ctx) error
+	CreateSecant(c *fiber.Ctx) error
 }
 
 func NewRootService(db *gorm.DB) RootService {
@@ -90,7 +98,7 @@ func (s *RootServiceImpl) GetBisection(c *fiber.Ctx) error {
 			})
 		}
 		return c.Status(fiber.StatusInternalServerError).JSON(utils.ErrorResponse{
-			Message: "Error fetching graphical data",
+			Message: "Error fetching bisection data",
 		})
 	}
 	return c.Status(fiber.StatusOK).JSON(bisection)
@@ -119,4 +127,197 @@ func (s *RootServiceImpl) CreateBisection(c *fiber.Ctx) error {
 	}
 
 	return c.Status(fiber.StatusCreated).JSON(bisection)
+}
+
+func (s *RootServiceImpl) GetFalsePosition(c *fiber.Ctx) error {
+	id := c.Params("id")
+
+	if id == "" {
+		return c.Status(fiber.StatusBadRequest).JSON(utils.ErrorResponse{
+			Message: "ID parameter is required",
+		})
+	}
+
+	var falsePosition models.FalsePosition
+
+	if err := s.DB.First(&falsePosition, "id = ?", id).Error; err != nil {
+		if err == gorm.ErrRecordNotFound {
+			return c.Status(fiber.StatusNotFound).JSON(utils.ErrorResponse{
+				Message: "FalsePosition data not found",
+			})
+		}
+		return c.Status(fiber.StatusInternalServerError).JSON(utils.ErrorResponse{
+			Message: "Error fetching false position data",
+		})
+	}
+	return c.Status(fiber.StatusOK).JSON(falsePosition)
+}
+
+func (s *RootServiceImpl) CreateFalsePosition(c *fiber.Ctx) error {
+	req, ok := c.Locals("req").(validations.ReqFalsePosition)
+
+	if !ok {
+		return c.Status(fiber.StatusBadRequest).JSON(utils.ErrorResponse{
+			Message: "local req not found",
+		})
+	}
+
+	falsePosition := models.FalsePosition{
+		Equation: req.Equation,
+		Xl:       req.Xl,
+		Xr:       req.Xr,
+		E:        req.E,
+	}
+
+	if err := s.DB.Create(&falsePosition).Error; err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(utils.ErrorResponse{
+			Message: "Failed to save data to the database",
+		})
+	}
+
+	return c.Status(fiber.StatusCreated).JSON(falsePosition)
+}
+
+func (s *RootServiceImpl) GetOnePoint(c *fiber.Ctx) error {
+	id := c.Params("id")
+
+	if id == "" {
+		return c.Status(fiber.StatusBadRequest).JSON(utils.ErrorResponse{
+			Message: "ID parameter is required",
+		})
+	}
+
+	var onePoint models.OnePoint
+
+	if err := s.DB.First(&onePoint, "id = ?", id).Error; err != nil {
+		if err == gorm.ErrRecordNotFound {
+			return c.Status(fiber.StatusNotFound).JSON(utils.ErrorResponse{
+				Message: "One point data not found",
+			})
+		}
+		return c.Status(fiber.StatusInternalServerError).JSON(utils.ErrorResponse{
+			Message: "Error fetching one point data",
+		})
+	}
+	return c.Status(fiber.StatusOK).JSON(onePoint)
+}
+
+func (s *RootServiceImpl) CreateOnePoint(c *fiber.Ctx) error {
+	req, ok := c.Locals("req").(validations.ReqOnePoint)
+
+	if !ok {
+		return c.Status(fiber.StatusBadRequest).JSON(utils.ErrorResponse{
+			Message: "local req not found",
+		})
+	}
+
+	onePoint := models.OnePoint{
+		Equation: req.Equation,
+		E:        req.E,
+	}
+
+	if err := s.DB.Create(&onePoint).Error; err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(utils.ErrorResponse{
+			Message: "Failed to save data to the database",
+		})
+	}
+
+	return c.Status(fiber.StatusCreated).JSON(onePoint)
+}
+
+func (s *RootServiceImpl) GetNewtonRaphson(c *fiber.Ctx) error {
+	id := c.Params("id")
+
+	if id == "" {
+		return c.Status(fiber.StatusBadRequest).JSON(utils.ErrorResponse{
+			Message: "ID parameter is required",
+		})
+	}
+
+	var newtonRaphson models.NewtonRaphson
+
+	if err := s.DB.First(&newtonRaphson, "id = ?", id).Error; err != nil {
+		if err == gorm.ErrRecordNotFound {
+			return c.Status(fiber.StatusNotFound).JSON(utils.ErrorResponse{
+				Message: "Newton Raphson data not found",
+			})
+		}
+		return c.Status(fiber.StatusInternalServerError).JSON(utils.ErrorResponse{
+			Message: "Error fetching newtonRapson data",
+		})
+	}
+	return c.Status(fiber.StatusOK).JSON(newtonRaphson)
+}
+
+func (s *RootServiceImpl) CreateNewtonRaphson(c *fiber.Ctx) error {
+	req, ok := c.Locals("req").(validations.ReqNewtonRaphson)
+
+	if !ok {
+		return c.Status(fiber.StatusBadRequest).JSON(utils.ErrorResponse{
+			Message: "local req not found",
+		})
+	}
+
+	newtonRaphson := models.NewtonRaphson{
+		Equation: req.Equation,
+		X0:       req.X0,
+		E:        req.E,
+	}
+
+	if err := s.DB.Create(&newtonRaphson).Error; err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(utils.ErrorResponse{
+			Message: "Failed to save data to the database",
+		})
+	}
+
+	return c.Status(fiber.StatusCreated).JSON(newtonRaphson)
+}
+
+func (s *RootServiceImpl) GetSecant(c *fiber.Ctx) error {
+	id := c.Params("id")
+
+	if id == "" {
+		return c.Status(fiber.StatusBadRequest).JSON(utils.ErrorResponse{
+			Message: "ID parameter is required",
+		})
+	}
+
+	var secant models.Secant
+
+	if err := s.DB.First(&secant, "id = ?", id).Error; err != nil {
+		if err == gorm.ErrRecordNotFound {
+			return c.Status(fiber.StatusNotFound).JSON(utils.ErrorResponse{
+				Message: "Secant data not found",
+			})
+		}
+		return c.Status(fiber.StatusInternalServerError).JSON(utils.ErrorResponse{
+			Message: "Error fetching secant data",
+		})
+	}
+	return c.Status(fiber.StatusOK).JSON(secant)
+}
+
+func (s *RootServiceImpl) CreateSecant(c *fiber.Ctx) error {
+	req, ok := c.Locals("req").(validations.ReqSecant)
+
+	if !ok {
+		return c.Status(fiber.StatusBadRequest).JSON(utils.ErrorResponse{
+			Message: "local req not found",
+		})
+	}
+
+	secant := models.Secant{
+		Equation: req.Equation,
+		X0:       req.X0,
+		X1:       req.X1,
+		E:        req.E,
+	}
+
+	if err := s.DB.Create(&secant).Error; err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(utils.ErrorResponse{
+			Message: "Failed to save data to the database",
+		})
+	}
+
+	return c.Status(fiber.StatusCreated).JSON(secant)
 }

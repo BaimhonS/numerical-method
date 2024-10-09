@@ -32,7 +32,8 @@ type (
 	NewtonRaphson struct {
 		ID       uint    `json:"id"`
 		Equation string  `json:"equation"`
-		X0       float64 `json:"X0"`
+		X0       float64 `json:"x0"`
+		E        float64 `json:"e"`
 	}
 
 	Secant struct {

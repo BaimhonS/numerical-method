@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import Sidebar from '../../components/Sidebar'; 
 import { evaluate } from 'mathjs';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
+import axios from 'axios';
 
 const OnePoint = () => {
     const [equation, setEquation] = useState(''); 
@@ -10,6 +11,15 @@ const OnePoint = () => {
     const [isCalculating, setIsCalculating] = useState(false);
     const [showResults, setShowResults] = useState(false);
     const [finalResult, setFinalResult] = useState(null); 
+
+    const fetchExampleInput = () => {
+        axios.get('http://localhost:8080/api/root-of-equations/one-point/1')
+        .then((response) => {
+            const data = response.data;
+            setEquation(data.equation);
+            setE(data.e);
+        })
+    }
 
     const error = (xold, xnew) => Math.abs((xnew - xold) / xnew) * 100;
 
@@ -24,7 +34,7 @@ const OnePoint = () => {
         let ea = Number.MAX_VALUE;
         const newIterations = [];
 
-        while (ea > e) {
+        while (ea > e && iter < 50) {
             xi = evaluate(equation, { x });
             ea = error(x, xi);
 
@@ -49,6 +59,14 @@ const OnePoint = () => {
             <Sidebar />
             <div className="flex-1 p-10">
                 <h2 className="text-3xl mb-5">One-Point Method</h2>
+                <div className="flex justify-end px-10">
+                    <button
+                        onClick={fetchExampleInput}    
+                        className='my-5 px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 transition duration-200'
+                    >
+                        Get Example Input
+                    </button>
+                </div>
                 <div className="flex space-x-6">
                     <div>
                         <p className="text-gray-500">Equation</p>

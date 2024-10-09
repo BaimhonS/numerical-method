@@ -16,4 +16,12 @@ func RootOfEquationController(router fiber.Router, configClients configs.ConfigC
 	rootController.Get("/graphical/:id", rootService.GetGraphical)
 	rootController.Post("/bisection", rootValidate.ValidateBisection, rootService.CreateBisection)
 	rootController.Get("/bisection/:id", rootService.GetBisection)
+	rootController.Post("/false-position", rootValidate.ValidateFalsePosition, rootService.CreateFalsePosition)
+	rootController.Get("/false-position/:id", rootService.GetFalsePosition)
+	rootController.Post("/one-point", rootValidate.ValidateOnePoint, rootService.CreateOnePoint)
+	rootController.Get("/one-point/:id", rootService.GetOnePoint)
+	rootController.Post("/newton-raphson", rootValidate.ValidateNewtonRaphson, rootService.CreateNewtonRaphson)
+	rootController.Get("/newton-raphson/:id", rootService.GetNewtonRaphson)
+	rootController.Post("/secant", rootValidate.ValidateSecant, rootService.CreateSecant)
+	rootController.Get("/secant/:id", rootService.GetSecant)
 }

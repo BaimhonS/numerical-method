@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { evaluate } from 'mathjs';
 import Sidebar from '../../components/Sidebar';
+import axios from 'axios'; 
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
 
 const Bisection = () => {
@@ -12,6 +13,20 @@ const Bisection = () => {
     const [showResults, setShowResults] = useState(false); 
 
     const error = (xold, xnew) => Math.abs((xnew - xold) / xnew) * 100;
+
+    const fetchExampleInput = () => {
+        axios.get('http://localhost:8080/api/root-of-equations/bisection/1')
+            .then((response) => {
+                const data = response.data;
+                setEquation(data.equation);
+                setXl(data.xl);
+                setXr(data.xr);
+                setE(data.e);
+            })
+            .catch((error) => {
+                console.error("There was an error fetching the example input!", error);
+            });
+    };
 
     const calBisection = () => {
         let Xl = parseFloat(xl);
@@ -50,7 +65,7 @@ const Bisection = () => {
                 });
                 Xl = xm;
             }
-        } while (ea > e);
+        } while (ea > e && iter < 50);
 
         setResults(data);
         setShowResults(true); 
@@ -61,6 +76,13 @@ const Bisection = () => {
             <Sidebar />
             <div className="flex-1 p-10">
                 <h2 className="text-3xl mb-5">Bisection Method</h2>
+                <div className="flex justify-end px-10">
+                <button
+                    onClick={fetchExampleInput}
+                    className="my-5 px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 transition duration-200">
+                    Get Example Input
+                </button>
+                </div>
                 <div className="flex space-x-6">
                     <div>
                         <label className="text-gray-500">Equation</label>
