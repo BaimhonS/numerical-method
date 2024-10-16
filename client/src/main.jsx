@@ -18,6 +18,10 @@ import MatrixInverse from './pages/linearAlgebras/MatrixInverse.jsx'
 import CholeskyDecomposition from './pages/linearAlgebras/CholeskyDecomposition.jsx'
 import JacobiIteration from './pages/linearAlgebras/JacobiIteration.jsx'
 import GaussSeidelIteration from './pages/linearAlgebras/GaussSeidelIteration.jsx'
+import ConjugateGradient from './pages/linearAlgebras/ConjugateGradient.jsx'
+import LinearNewton from './pages/Interpolation/LinearNewton.jsx'
+import QuadraticNewton from './pages/Interpolation/QuadraticNewton.jsx'
+import PolynomialNewton from './pages/Interpolation/PolynomialNewton.jsx'
 
 const router = createBrowserRouter ([
   {
@@ -79,6 +83,22 @@ const router = createBrowserRouter ([
   {
     path: "/gauss-seidel-iteration",
     element: <GaussSeidelIteration />
+  },
+  {
+    path: "/conjugate-gradient",
+    element: <ConjugateGradient />
+  },
+  {
+    path: "/linear-newton",
+    element: <LinearNewton />
+  },
+  {
+    path: "/quadratic-newton",
+    element: <QuadraticNewton />
+  },
+  {
+    path: "/polynomial-newton",
+    element: <PolynomialNewton />
   },
 ])
 

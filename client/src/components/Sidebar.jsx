@@ -56,7 +56,7 @@ const Sidebar = () => {
               <Link to="/gauss-seidel-iteration" className="block text-gray-600 hover:bg-gray-200 p-2 rounded">Gauss Seidel Iteration</Link>
             </li>
             <li className="mb-1">
-              <Link to="/test" className="block text-gray-600 hover:bg-gray-200 p-2 rounded">----</Link>
+              <Link to="/conjugate-gradient" className="block text-gray-600 hover:bg-gray-200 p-2 rounded">Conjugate Gradient</Link>
             </li>
           </ul>
         </li>
@@ -64,10 +64,13 @@ const Sidebar = () => {
           <span className="font-medium">Interpolation</span>
           <ul className="ml-6 mt-1">
             <li className="mb-1">
-              <Link to="/test" className="block text-gray-600 hover:bg-gray-200 p-2 rounded">----</Link>
+              <Link to="/linear-newton" className="block text-gray-600 hover:bg-gray-200 p-2 rounded">Linear Newton Divides-Difference</Link>
             </li>
             <li className="mb-1">
-              <Link to="/test" className="block text-gray-600 hover:bg-gray-200 p-2 rounded">----</Link>
+              <Link to="/quadratic-newton" className="block text-gray-600 hover:bg-gray-200 p-2 rounded">Quadratic Newton Divides-Difference</Link>
+            </li>
+            <li className="mb-1">
+              <Link to="/polynomial-newton" className="block text-gray-600 hover:bg-gray-200 p-2 rounded">Polynomial Newton Divides-Difference</Link>
             </li>
           </ul>
         </li>
