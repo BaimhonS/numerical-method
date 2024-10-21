@@ -22,6 +22,9 @@ import ConjugateGradient from './pages/linearAlgebras/ConjugateGradient.jsx'
 import LinearNewton from './pages/Interpolation/LinearNewton.jsx'
 import QuadraticNewton from './pages/Interpolation/QuadraticNewton.jsx'
 import PolynomialNewton from './pages/Interpolation/PolynomialNewton.jsx'
+import LinearLagrange from './pages/Interpolation/LinearLagrange.jsx'
+import QuadraticLagrange from './pages/Interpolation/QuadraticLargange.jsx'
+import PolynomialLagrange from './pages/Interpolation/PolynomialLagange.jsx'
 
 const router = createBrowserRouter ([
   {
@@ -99,6 +102,18 @@ const router = createBrowserRouter ([
   {
     path: "/polynomial-newton",
     element: <PolynomialNewton />
+  },
+  {
+    path: "/linear-largrage",
+    element: <LinearLagrange />
+  },
+  {
+    path: "/quagratic-largrage",
+    element: <QuadraticLagrange />
+  },
+  {
+    path: "/polynomial-largrage",
+    element: <PolynomialLagrange />
   },
 ])
 

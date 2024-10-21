@@ -72,6 +72,15 @@ const Sidebar = () => {
             <li className="mb-1">
               <Link to="/polynomial-newton" className="block text-gray-600 hover:bg-gray-200 p-2 rounded">Polynomial Newton Divides-Difference</Link>
             </li>
+            <li className="mb-1">
+              <Link to="/linear-largrage" className="block text-gray-600 hover:bg-gray-200 p-2 rounded">Linear Largrage Interpolation</Link>
+            </li>
+            <li className="mb-1">
+              <Link to="/quagratic-largrage" className="block text-gray-600 hover:bg-gray-200 p-2 rounded">Quadratic Largrage Interpolation</Link>
+            </li>
+            <li className="mb-1">
+              <Link to="/polynomial-largrage" className="block text-gray-600 hover:bg-gray-200 p-2 rounded">Polynomial Largrage Interpolation</Link>
+            </li>
           </ul>
         </li>
       </ul>

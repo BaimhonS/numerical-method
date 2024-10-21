@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
 import Sidebar from '../../components/Sidebar';
 
-const QuadraticNewton = () => {
-    const [points, setPoints] = useState([{ x: '', fx: '' }]); // Dynamic points input
-    const [point1, setPoint1] = useState(0); // Index for the first selected point
-    const [point2, setPoint2] = useState(1); // Index for the second selected point
-    const [point3, setPoint3] = useState(2); // Index for the third selected point
+const LinearLagrangeInterpolation = () => {
+    const [points, setPoints] = useState([{ x: '', fx: '' }]); // Two points for interpolation
+    const [point1, setPoint1] = useState(0); // Index for point 1
+    const [point2, setPoint2] = useState(1); // Index for point 2
     const [xValue, setXValue] = useState(0); // Input x value
     const [result, setResult] = useState(null); // Result of interpolation
 
@@ -16,7 +15,6 @@ const QuadraticNewton = () => {
         setPoints(newPoints);
     };
 
-    // Add new point
     const addPoint = () => {
         setPoints([...points, { x: '', fx: '' }]);
     };
@@ -26,65 +24,33 @@ const QuadraticNewton = () => {
         const newPoints = points.filter((_, i) => i !== index);
         setPoints(newPoints);
         // Adjust the selected points if they are removed
-        if (index === point1 || index === point2 || index === point3) {
-            if (point3 > 0) setPoint3(point3 - 1);
+        if (index === point1 || index === point2) {
             if (point2 > 0) setPoint2(point2 - 1);
             if (point1 > 0) setPoint1(point1 - 1);
         }
     };
-
-    // Calculate the divided differences
-    const calculateQuadraticDividedDifferences = (points) => {
-        const n = points.length;
-        const dividedDifferences = Array(n).fill(null).map(() => Array(n).fill(0));
-
-        // Set the function values f(x) for each point
-        for (let i = 0; i < n; i++) {
-            dividedDifferences[i][0] = parseFloat(points[i].fx);
-        }
-
-        // Calculate the divided differences
-        for (let j = 1; j < n; j++) {
-            for (let i = 0; i < n - j; i++) {
-                dividedDifferences[i][j] = (dividedDifferences[i + 1][j - 1] - dividedDifferences[i][j - 1]) /
-                                            (parseFloat(points[i + j].x) - parseFloat(points[i].x));
+    
+    const calculateLinearLagrangeInterpolation = () => {
+        const selectedPoints = [points[point1], points[point2]];
+        const interpolatedY = selectedPoints.reduce((sum, point, index) => {
+        let term = parseFloat(point.fx);
+        for (let j = 0; j < selectedPoints.length; j++) {
+            if (index !== j) {
+                term *= (xValue - parseFloat(selectedPoints[j].x)) / (parseFloat(point.x) - parseFloat(selectedPoints[j].x));
             }
         }
+        return sum + term;
+        }, 0);
 
-        return dividedDifferences;
+        setResult(interpolatedY);
     };
-
-    const calculateQuadraticInterpolation = () => {
-        if (points.length >= 3) {
-            const selectedIndices = [point1, point2, point3]; // Indices of the selected points
-            const selectedPoints = selectedIndices.map(idx => points[idx]); // Selected points based on indices
-
-            const dividedDifferences = calculateQuadraticDividedDifferences(selectedPoints);
-
-            const x = parseFloat(xValue);
-            let interpolatedY = dividedDifferences[0][0]; // Start with f(x0)
-
-            // Calculate the interpolated value using the divided differences
-            for (let i = 1; i < 3; i++) { // For quadratic interpolation
-                let term = dividedDifferences[0][i]; // Start with the first divided difference
-                for (let j = 0; j < i; j++) {
-                    term *= (x - parseFloat(selectedPoints[j].x)); // Multiply by (x - x_j)
-                }
-                interpolatedY += term; // Add the term to the result
-            }
-
-            setResult(interpolatedY);
-        } else {
-            alert("Please enter at least 3 points for calculation.");
-        }
-    };
-
+    
     return (
         <div className="flex">
             <Sidebar />
             <div className="flex-1 p-10">
-                <h2 className="text-3xl mb-5">Quadratic Interpolation</h2>
-
+                <h2 className="text-3xl mb-5">Linear Lagrange Interpolation</h2>
+                
                 {/* Dynamic points input */}
                 <div>
                     <h3 className="text-xl mb-3">Enter Points Data</h3>
@@ -123,7 +89,7 @@ const QuadraticNewton = () => {
                     Add Point
                 </button>
 
-                {/* Selection of point1, point2, and point3 */}
+                {/* Selection of point1 and point2 */}
                 <div className="flex space-x-6">
                     <div>
                         <label className="text-gray-500">Select Point 1</label>
@@ -131,8 +97,8 @@ const QuadraticNewton = () => {
                             type="number"
                             className="block w-full my-3 p-2 border rounded-md"
                             placeholder="Point 1 index"
-                            value={point1 + 1} // Display as 1-based index
-                            onChange={(e) => setPoint1(Math.max(0, parseInt(e.target.value) - 1))}
+                            value={point1 + 1}
+                            onChange={(e) => setPoint1(parseInt(e.target.value) - 1)}
                         />
                     </div>
                     <div>
@@ -141,18 +107,8 @@ const QuadraticNewton = () => {
                             type="number"
                             className="block w-full my-3 p-2 border rounded-md"
                             placeholder="Point 2 index"
-                            value={point2 + 1} // Display as 1-based index
-                            onChange={(e) => setPoint2(Math.max(0, parseInt(e.target.value) - 1))}
-                        />
-                    </div>
-                    <div>
-                        <label className="text-gray-500">Select Point 3</label>
-                        <input
-                            type="number"
-                            className="block w-full my-3 p-2 border rounded-md"
-                            placeholder="Point 3 index"
-                            value={point3 + 1} // Display as 1-based index
-                            onChange={(e) => setPoint3(Math.max(0, parseInt(e.target.value) - 1))}
+                            value={point2 + 1}
+                            onChange={(e) => setPoint2(parseInt(e.target.value) - 1)}
                         />
                     </div>
                 </div>
@@ -171,7 +127,7 @@ const QuadraticNewton = () => {
 
                 {/* Calculate button */}
                 <button
-                    onClick={calculateQuadraticInterpolation}
+                    onClick={calculateLinearLagrangeInterpolation}
                     className="my-5 px-4 py-2 bg-blue-500 text-white rounded-md">
                     Calculate
                 </button>
@@ -187,4 +143,4 @@ const QuadraticNewton = () => {
     );
 };
 
-export default QuadraticNewton;
+export default LinearLagrangeInterpolation;
