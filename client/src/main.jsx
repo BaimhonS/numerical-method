@@ -25,6 +25,8 @@ import PolynomialNewton from './pages/Interpolation/PolynomialNewton.jsx'
 import LinearLagrange from './pages/Interpolation/LinearLagrange.jsx'
 import QuadraticLagrange from './pages/Interpolation/QuadraticLargange.jsx'
 import PolynomialLagrange from './pages/Interpolation/PolynomialLagange.jsx'
+import LinearSpline from './pages/Interpolation/LinearSpline.jsx'
+import QuadraticSpline from './pages/Interpolation/QuadraticSpline.jsx'
 
 const router = createBrowserRouter ([
   {
@@ -114,6 +116,14 @@ const router = createBrowserRouter ([
   {
     path: "/polynomial-largrage",
     element: <PolynomialLagrange />
+  },
+  {
+    path: "/linear-spline",
+    element: <LinearSpline />
+  },
+  {
+    path: "/quadratic-spline",
+    element: <QuadraticSpline />
   },
 ])
 

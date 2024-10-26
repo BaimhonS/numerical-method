@@ -7,74 +7,80 @@ import (
 
 type (
 	ReqCramerRule struct {
-		MatrixSize   int         `json:"matrix_size"`
-		MatrixData   [][]float64 `json:"matrix_data"`
-		ConstantData []float64   `json:"constant_data"`
+		MatrixSize   int    `json:"matrix_size"`
+		MatrixData   string `json:"matrix_data"`
+		ConstantData string `json:"constant_data"`
 	}
 
 	ReqGaussEliminate struct {
-		MatrixSize   int         `json:"matrix_size"`
-		MatrixData   [][]float64 `json:"matrix_data"`
-		ConstantData []float64   `json:"constant_data"`
+		MatrixSize   int    `json:"matrix_size"`
+		MatrixData   string `json:"matrix_data"`
+		ConstantData string `json:"constant_data"`
 	}
 
 	ReqGaussJordan struct {
-		MatrixSize   int         `json:"matrix_size"`
-		MatrixData   [][]float64 `json:"matrix_data"`
-		ConstantData []float64   `json:"constant_data"`
+		MatrixSize   int    `json:"matrix_size"`
+		MatrixData   string `json:"matrix_data"`
+		ConstantData string `json:"constant_data"`
 	}
 
 	ReqMatrixInverse struct {
-		MatrixSize   int         `json:"matrix_size"`
-		MatrixData   [][]float64 `json:"matrix_data"`
-		ConstantData []float64   `json:"constant_data"`
+		MatrixSize   int    `json:"matrix_size"`
+		MatrixData   string `json:"matrix_data"`
+		ConstantData string `json:"constant_data"`
 	}
 
 	ReqLUDecomposition struct {
-		MatrixSize   int         `json:"matrix_size"`
-		MatrixData   [][]float64 `json:"matrix_data"`
-		ConstantData []float64   `json:"constant_data"`
+		MatrixSize   int    `json:"matrix_size"`
+		MatrixData   string `json:"matrix_data"`
+		ConstantData string `json:"constant_data"`
 	}
 
 	ReqCholeskyDecomposition struct {
-		MatrixSize   int         `json:"matrix_size"`
-		MatrixData   [][]float64 `json:"matrix_data"`
-		ConstantData []float64   `json:"constant_data"`
+		MatrixSize   int    `json:"matrix_size"`
+		MatrixData   string `json:"matrix_data"`
+		ConstantData string `json:"constant_data"`
 	}
 
 	ReqJacobiIteration struct {
-		MatrixSize   int         `json:"matrix_size"`
-		Error        float64     `json:"e"`
-		MatrixData   [][]float64 `json:"matrix_data"`
-		ConstantData []float64   `json:"constant_data"`
+		MatrixSize   int     `json:"matrix_size"`
+		Error        float64 `json:"e"`
+		MatrixData   string  `json:"matrix_data"`
+		ConstantData string  `json:"constant_data"`
 	}
 
 	ReqGaussSaidelIteration struct {
-		MatrixSize   int         `json:"matrix_size"`
-		Error        float64     `json:"e"`
-		MatrixData   [][]float64 `json:"matrix_data"`
-		ConstantData []float64   `json:"constant_data"`
+		MatrixSize   int     `json:"matrix_size"`
+		Error        float64 `json:"e"`
+		MatrixData   string  `json:"matrix_data"`
+		ConstantData string  `json:"constant_data"`
 	}
 
-	// ReqConjugate struct {
-	// }
+	ReqConjugate struct {
+		MatrixSize   int     `json:"matrix_size"`
+		Error        float64 `json:"e"`
+		MatrixData   string  `json:"matrix_data"`
+		ConstantData string  `json:"constant_data"`
+	}
 	LinearValidateImpl struct{}
 )
 
 type LinearValidate interface {
-	ValidateCramerRul(c *fiber.Ctx) error
+	ValidateCramerRule(c *fiber.Ctx) error
 	ValidateGaussEliminate(c *fiber.Ctx) error
 	ValidateGaussJordan(c *fiber.Ctx) error
+	ValidateMatrixInverse(c *fiber.Ctx) error
 	ValidateLUDecomposition(c *fiber.Ctx) error
 	ValidateCholeskyDecomposition(c *fiber.Ctx) error
 	ValidateJacobiIteration(c *fiber.Ctx) error
 	ValidateGaussSaidelIteration(c *fiber.Ctx) error
+	ValidateConjugate(c *fiber.Ctx) error
 }
 
 func NewLinearValidate() LinearValidate {
 	return &LinearValidateImpl{}
 }
-func (v *LinearValidateImpl) ValidateCramerRul(c *fiber.Ctx) error {
+func (v *LinearValidateImpl) ValidateCramerRule(c *fiber.Ctx) error {
 	var req ReqCramerRule
 	if err := c.BodyParser(&req); err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(utils.ErrorResponse{
@@ -100,6 +106,18 @@ func (v *LinearValidateImpl) ValidateGaussEliminate(c *fiber.Ctx) error {
 
 func (v *LinearValidateImpl) ValidateGaussJordan(c *fiber.Ctx) error {
 	var req ReqGaussJordan
+	if err := c.BodyParser(&req); err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(utils.ErrorResponse{
+			Message: "body parser error",
+			Error:   err,
+		})
+	}
+	c.Locals("req", req)
+	return c.Next()
+}
+
+func (v *LinearValidateImpl) ValidateMatrixInverse(c *fiber.Ctx) error {
+	var req ReqMatrixInverse
 	if err := c.BodyParser(&req); err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(utils.ErrorResponse{
 			Message: "body parser error",
@@ -158,14 +176,14 @@ func (v *LinearValidateImpl) ValidateGaussSaidelIteration(c *fiber.Ctx) error {
 	return c.Next()
 }
 
-// func (v *LinearValidateImpl) ValidateConjugate(c *fiber.Ctx) error {
-// 	var req ReqConjugate
-// 	if err := c.BodyParser(&req); err != nil {
-// 		return c.Status(fiber.StatusBadRequest).JSON(utils.ErrorResponse{
-// 			Message: "body parser error",
-// 			Error:   err,
-// 		})
-// 	}
-// 	c.Locals("req", req)
-// 	return c.Next()
-// }
+func (v *LinearValidateImpl) ValidateConjugate(c *fiber.Ctx) error {
+	var req ReqConjugate
+	if err := c.BodyParser(&req); err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(utils.ErrorResponse{
+			Message: "body parser error",
+			Error:   err,
+		})
+	}
+	c.Locals("req", req)
+	return c.Next()
+}

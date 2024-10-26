@@ -81,6 +81,12 @@ const Sidebar = () => {
             <li className="mb-1">
               <Link to="/polynomial-largrage" className="block text-gray-600 hover:bg-gray-200 p-2 rounded">Polynomial Largrage Interpolation</Link>
             </li>
+            <li className="mb-1">
+              <Link to="/linear-spline" className="block text-gray-600 hover:bg-gray-200 p-2 rounded">Linear Spline</Link>
+            </li>
+            <li className="mb-1">
+              <Link to="/quadratic-spline" className="block text-gray-600 hover:bg-gray-200 p-2 rounded">Quadratic Spline</Link>
+            </li>
           </ul>
         </li>
       </ul>

@@ -10,6 +10,46 @@ const ConjugateGradient = () => {
     const [showResults, setShowResults] = useState(false);
     const [results, setResults] = useState([]);
 
+    const fetchExampleInput = () => {
+        axios.get('http://localhost:8080/api/linear-algrebra/conjugate-gradient/1')
+            .then((response) => {
+                const data = response.data;
+    
+                // Extract the matrix and constant data from the response
+                const matrixSize = data.matrix_size;
+                const tolerance = data.error;
+                const matrixValues = data.matrix_data.split(',').map(Number);
+                const constantValues = data.constant_data.split(',').map(Number);
+    
+                // Set matrix
+                let newMatrix = {};
+                let index = 0;
+                for (let i = 1; i <= matrixSize; i++) {
+                    for (let j = 1; j <= matrixSize; j++) {
+                        newMatrix[`a${i}${j}`] = matrixValues[index];
+                        index++;
+                    }
+                }
+    
+                // Set constants
+                let newConstants = {};
+                for (let i = 1; i <= matrixSize; i++) {
+                    newConstants[`x${i}`] = constantValues[i - 1];
+                }
+    
+                // Update the state
+                setMatrixSize(matrixSize); // Update matrix size
+                setTolerance(tolerance);
+                setMatrix(newMatrix); // Set matrix values
+                setConstants(newConstants); // Set constant values
+                setShowResults(false); // Reset any previous results
+            })
+            .catch((error) => {
+                console.error("There was an error fetching the example input!", error);
+            });
+    };
+
+
     const initializeMatrix = (size) => {
         const newMatrix = {};
         const newConstants = {};
@@ -40,6 +80,11 @@ const ConjugateGradient = () => {
         initializeMatrix(size);
         setShowResults(false);
     };
+
+    const handleToleranceChange = (e) => {
+        setTolerance(parseFloat(e.target.value));
+    };
+
 
     const calConjugateGradient = () => {
         const size = matrixSize;
@@ -170,32 +215,39 @@ const ConjugateGradient = () => {
         <div className="flex">
             <Sidebar />
             <div className="flex-1 p-10">
-                <h2 className="text-3xl mb-5">Conjugate Gradient Method</h2>
+                <h2 className="text-3xl mb-5">Gauss-Seidel Iteration Method</h2>
+                <div className="flex justify-end px-10">
+                <button
+                    onClick={fetchExampleInput}
+                    className="my-5 px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 transition duration-200">
+                    Get Example Input
+                </button>
+                </div>
                 <div className="flex space-x-6">
-                <label className="block mb-4">
-                    Select Matrix Size
-                    <select
-                        className="block mt-2 p-2 border rounded-md"
-                        value={matrixSize}
-                        onChange={handleSizeChange}
-                    >
-                        <option value={2}>2 x 2</option>
-                        <option value={3}>3 x 3</option>
-                        <option value={4}>4 x 4</option>
-                    </select>
-                </label>
+                    <label className="block mb-4">
+                        Select Matrix Size
+                        <select
+                            className="block mt-2 p-2 border rounded-md"
+                            value={matrixSize}
+                            onChange={handleSizeChange}
+                        >
+                            <option value={2}>2 x 2</option>
+                            <option value={3}>3 x 3</option>
+                            <option value={4}>4 x 4</option>
+                        </select>
+                    </label>
 
-                <label className="block mb-3">
-                    Error
-                    <input
-                        type="number"
-                        className="block mt-2 p-2 border rounded-md"
-                        placeholder="Error"
-                        step="0.0001"
-                        value={tolerance}
-                        onChange={(e) => setTolerance(parseFloat(e.target.value))}
-                    />
-                </label>
+                    <label className="block mb-3">
+                        Error
+                        <input
+                            type="number"
+                            className="block mt-2 p-2 border rounded-md"
+                            placeholder="Error"
+                            step="0.0001"
+                            value={tolerance}
+                            onChange={handleToleranceChange}
+                        />
+                    </label>
                 </div>
                 <div className="flex justify-center mb-6">
                     <div>
@@ -227,9 +279,8 @@ const ConjugateGradient = () => {
                 </div>
 
                 <button
-                    className="my-5 px-4 py-2 bg-blue-500 text-white rounded-md"
                     onClick={calConjugateGradient}
-                >
+                    className="my-5 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition duration-200">
                     Calculate
                 </button>
 

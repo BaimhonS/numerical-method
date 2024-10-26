@@ -7,9 +7,45 @@ const GaussSeidelIteration = () => {
     const [matrixSize, setMatrixSize] = useState(3);
     const [constants, setConstants] = useState({});
     const [tolerance, setTolerance] = useState();
-    const [xVector, setXVector] = useState([]);
     const [results, setResults] = useState([]);
     const [showResults, setShowResults] = useState(false);
+    const fetchExampleInput = () => {
+        axios.get('http://localhost:8080/api/linear-algrebra/gauss-seidel/1')
+            .then((response) => {
+                const data = response.data;
+    
+                // Extract the matrix and constant data from the response
+                const matrixSize = data.matrix_size;
+                const tolerance = data.error;
+                const matrixValues = data.matrix_data.split(',').map(Number);
+                const constantValues = data.constant_data.split(',').map(Number);
+    
+                // Set matrix
+                let newMatrix = {};
+                let index = 0;
+                for (let i = 1; i <= matrixSize; i++) {
+                    for (let j = 1; j <= matrixSize; j++) {
+                        newMatrix[`a${i}${j}`] = matrixValues[index];
+                        index++;
+                    }
+                }
+    
+                // Set constants
+                let newConstants = {};
+                for (let i = 1; i <= matrixSize; i++) {
+                    newConstants[`x${i}`] = constantValues[i - 1];
+                }
+                
+                setMatrixSize(matrixSize); 
+                setTolerance(tolerance);
+                setMatrix(newMatrix); 
+                setConstants(newConstants); 
+                setShowResults(false); 
+            })
+            .catch((error) => {
+                console.error("There was an error fetching the example input!", error);
+            });
+    };
 
     const initializeMatrix = (size) => {
         const newMatrix = {};
@@ -118,6 +154,13 @@ const GaussSeidelIteration = () => {
             <Sidebar />
             <div className="flex-1 p-10">
                 <h2 className="text-3xl mb-5">Gauss-Seidel Iteration Method</h2>
+                <div className="flex justify-end px-10">
+                <button
+                    onClick={fetchExampleInput}
+                    className="my-5 px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 transition duration-200">
+                    Get Example Input
+                </button>
+                </div>
                 <div className="flex space-x-6">
                     <label className="block mb-4">
                         Select Matrix Size

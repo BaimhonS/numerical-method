@@ -33,6 +33,17 @@ func NewRootService(db *gorm.DB) RootService {
 	}
 }
 
+// @Summary Get Graphical Method Result
+// @Description Get the graphical method result by ID
+// @Tags Graphical
+// @Accept json
+// @Produce json
+// @Param id path string true "Graphical ID"
+// @Success 200 {object} models.Graphical
+// @Failure 400 {object} utils.ErrorResponse "Bad Request"
+// @Failure 404 {object} utils.ErrorResponse "Not Found"
+// @Router /graphical/{id} [get]
+
 func (s *RootServiceImpl) GetGraphical(c *fiber.Ctx) error {
 	id := c.Params("id")
 
@@ -56,6 +67,17 @@ func (s *RootServiceImpl) GetGraphical(c *fiber.Ctx) error {
 	}
 	return c.Status(fiber.StatusOK).JSON(graphical)
 }
+
+// @Summary Create Graphical Method Result
+// @Description Create a new result for graphical method
+// @Tags Graphical
+// @Accept json
+// @Produce json
+// @Param graphical body validations.ReqGraphical true "Graphical Data"
+// @Success 201 {object} models.Graphical
+// @Failure 400 {object} utils.ErrorResponse "Bad Request"
+// @Failure 500 {object} utils.ErrorResponse "Internal Server Error"
+// @Router /graphical [post]
 
 func (s *RootServiceImpl) CreateGraphical(c *fiber.Ctx) error {
 	req, ok := c.Locals("req").(validations.ReqGraphical)

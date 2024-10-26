@@ -10,6 +10,43 @@ const GaussJordan = () => {
     const [steps, setSteps] = useState([]);
     const [showResults, setShowResults] = useState(false);
 
+    const fetchExampleInput = () => {
+        axios.get('http://localhost:8080/api/linear-algrebra/gauss-jordan/1')
+            .then((response) => {
+                const data = response.data;
+    
+                // Extract the matrix and constant data from the response
+                const matrixSize = data.matrix_size;
+                const matrixValues = data.matrix_data.split(',').map(Number);
+                const constantValues = data.constant_data.split(',').map(Number);
+    
+                // Set matrix
+                let newMatrix = {};
+                let index = 0;
+                for (let i = 1; i <= matrixSize; i++) {
+                    for (let j = 1; j <= matrixSize; j++) {
+                        newMatrix[`a${i}${j}`] = matrixValues[index];
+                        index++;
+                    }
+                }
+    
+                // Set constants
+                let newConstants = {};
+                for (let i = 1; i <= matrixSize; i++) {
+                    newConstants[`x${i}`] = constantValues[i - 1];
+                }
+    
+                // Update the state
+                setMatrixSize(matrixSize); // Update matrix size
+                setMatrix(newMatrix); // Set matrix values
+                setConstants(newConstants); // Set constant values
+                setShowResults(false); // Reset any previous results
+            })
+            .catch((error) => {
+                console.error("There was an error fetching the example input!", error);
+            });
+    };
+
     const initializeMatrix = (size) => {
        const newMatrix = {};
        const newConstants = {};
@@ -140,7 +177,13 @@ const GaussJordan = () => {
             <Sidebar/>
             <div className="flex-1 p-10">
                 <h2 className="text-3xl mb-5">Gauss-Jordan Elimination</h2>
-
+                    <div className="flex justify-end px-10">
+                    <button
+                        onClick={fetchExampleInput}
+                        className="my-5 px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 transition duration-200">
+                        Get Example Input
+                    </button>
+                    </div>
                         <label className="block mb-4">
                             Select Matrix Size
                             <select
@@ -151,6 +194,7 @@ const GaussJordan = () => {
                                 <option value={2}>2 x 2</option>
                                 <option value={3}>3 x 3</option>
                                 <option value={4}>4 x 4</option>
+                                <option value={9}>9 x 9</option>
                             </select>
                         </label>
 

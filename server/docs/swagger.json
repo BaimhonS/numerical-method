@@ -1,0 +1,24 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "contact": {}
+    },
+    "paths": {
+        "/api": {
+            "get": {
+                "description": "Initializes the root of equations and linear algebra controllers",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Setup"
+                ],
+                "summary": "Set up API controllers",
+                "responses": {}
+            }
+        }
+    }
+}
