@@ -13,7 +13,7 @@ const OnePoint = () => {
     const [finalResult, setFinalResult] = useState(null); 
 
     const fetchExampleInput = () => {
-        axios.get('http://localhost:8080/api/root-of-equations/one-point/1')
+        axios.get('http://localhost:8080/numerical-method/root-of-equations/one-point/1')
         .then((response) => {
             const data = response.data;
             setEquation(data.equation);

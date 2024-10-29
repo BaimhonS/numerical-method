@@ -1,12 +1,15 @@
 {
     "swagger": "2.0",
     "info": {
-        "contact": {}
+        "description": "API Documentation for User Service",
+        "title": "API Documentation",
+        "contact": {},
+        "version": "0.2"
     },
     "paths": {
-        "/api": {
-            "get": {
-                "description": "Initializes the root of equations and linear algebra controllers",
+        "/numerical-method/root-of-equations/bisection": {
+            "post": {
+                "description": "Create the Bisection method",
                 "consumes": [
                     "application/json"
                 ],
@@ -14,10 +17,737 @@
                     "application/json"
                 ],
                 "tags": [
-                    "Setup"
+                    "Bisection"
                 ],
-                "summary": "Set up API controllers",
-                "responses": {}
+                "summary": "Create Bisection Method Result",
+                "parameters": [
+                    {
+                        "description": "Request Body",
+                        "name": "req",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/validations.ReqBisection"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Bisection"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/utils.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/utils.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/numerical-method/root-of-equations/bisection/{id}": {
+            "get": {
+                "description": "Get the Bisection method result by ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Bisection"
+                ],
+                "summary": "Get Bisection Method Result",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bisection ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Bisection"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/utils.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/utils.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/numerical-method/root-of-equations/false-position": {
+            "post": {
+                "description": "Create the FalsePosition method",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "FalsePosition"
+                ],
+                "summary": "Create FalsePosition Method Result",
+                "parameters": [
+                    {
+                        "description": "Request Body",
+                        "name": "req",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/validations.ReqFalsePosition"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.FalsePosition"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/utils.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/utils.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/numerical-method/root-of-equations/false-position/{id}": {
+            "get": {
+                "description": "Get the FalsePosition method result by ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "FalsePosition"
+                ],
+                "summary": "Get FalsePosition Method Result",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "FalsePosition ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.FalsePosition"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/utils.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/utils.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/numerical-method/root-of-equations/graphical": {
+            "post": {
+                "description": "Create the graphical method",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Graphical"
+                ],
+                "summary": "Create Graphical Method Result",
+                "parameters": [
+                    {
+                        "description": "Request Body",
+                        "name": "req",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/validations.ReqGraphical"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Graphical"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/utils.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/utils.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/numerical-method/root-of-equations/graphical/{id}": {
+            "get": {
+                "description": "Get the graphical method result by ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Graphical"
+                ],
+                "summary": "Get Graphical Method Result",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Graphical ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Graphical"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/utils.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/utils.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/numerical-method/root-of-equations/newton-raphson": {
+            "post": {
+                "description": "Create the NewtonRaphson method",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "NewtonRaphson"
+                ],
+                "summary": "Create NewtonRaphson Method Result",
+                "parameters": [
+                    {
+                        "description": "Request Body",
+                        "name": "req",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/validations.ReqNewtonRaphson"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.FalsePosition"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/utils.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/utils.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/numerical-method/root-of-equations/newton-raphson/{id}": {
+            "get": {
+                "description": "Get the NewtonRaphson method result by ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "NewtonRaphson"
+                ],
+                "summary": "Get NewtonRaphson Method Result",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "NewtonRaphson ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.NewtonRaphson"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/utils.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/utils.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/numerical-method/root-of-equations/one-point": {
+            "post": {
+                "description": "Create the OnePoint method",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "OnePoint"
+                ],
+                "summary": "Create OnePoint Method Result",
+                "parameters": [
+                    {
+                        "description": "Request Body",
+                        "name": "req",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/validations.ReqOnePoint"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.FalsePosition"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/utils.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/utils.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/numerical-method/root-of-equations/one-point/{id}": {
+            "get": {
+                "description": "Get the OnePoint method result by ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "OnePoint"
+                ],
+                "summary": "Get OnePoint Method Result",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "OnePoint ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.OnePoint"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/utils.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/utils.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/numerical-method/root-of-equations/secant": {
+            "post": {
+                "description": "Create the Secant method",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Secant"
+                ],
+                "summary": "Create Secantn Method Result",
+                "parameters": [
+                    {
+                        "description": "Request Body",
+                        "name": "req",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/validations.ReqSecant"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Secant"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/utils.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/utils.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/numerical-method/root-of-equations/secant/{id}": {
+            "get": {
+                "description": "Get the Secant method result by ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Secant"
+                ],
+                "summary": "Get Secant Method Result",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Secant ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Secant"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/utils.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/utils.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "models.Bisection": {
+            "type": "object",
+            "properties": {
+                "e": {
+                    "type": "number"
+                },
+                "equation": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "xl": {
+                    "type": "number"
+                },
+                "xr": {
+                    "type": "number"
+                }
+            }
+        },
+        "models.FalsePosition": {
+            "type": "object",
+            "properties": {
+                "e": {
+                    "type": "number"
+                },
+                "equation": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "xl": {
+                    "type": "number"
+                },
+                "xr": {
+                    "type": "number"
+                }
+            }
+        },
+        "models.Graphical": {
+            "type": "object",
+            "properties": {
+                "equation": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "scan": {
+                    "type": "number"
+                }
+            }
+        },
+        "models.NewtonRaphson": {
+            "type": "object",
+            "properties": {
+                "e": {
+                    "type": "number"
+                },
+                "equation": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "x0": {
+                    "type": "number"
+                }
+            }
+        },
+        "models.OnePoint": {
+            "type": "object",
+            "properties": {
+                "e": {
+                    "type": "number"
+                },
+                "equation": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                }
+            }
+        },
+        "models.Secant": {
+            "type": "object",
+            "properties": {
+                "X0": {
+                    "type": "number"
+                },
+                "X1": {
+                    "type": "number"
+                },
+                "e": {
+                    "type": "number"
+                },
+                "equation": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                }
+            }
+        },
+        "utils.ErrorResponse": {
+            "type": "object",
+            "properties": {
+                "error": {},
+                "message": {
+                    "type": "string"
+                }
+            }
+        },
+        "validations.ReqBisection": {
+            "type": "object",
+            "properties": {
+                "e": {
+                    "type": "number"
+                },
+                "equation": {
+                    "type": "string"
+                },
+                "xl": {
+                    "type": "number"
+                },
+                "xr": {
+                    "type": "number"
+                }
+            }
+        },
+        "validations.ReqFalsePosition": {
+            "type": "object",
+            "properties": {
+                "e": {
+                    "type": "number"
+                },
+                "equation": {
+                    "type": "string"
+                },
+                "xl": {
+                    "type": "number"
+                },
+                "xr": {
+                    "type": "number"
+                }
+            }
+        },
+        "validations.ReqGraphical": {
+            "type": "object",
+            "properties": {
+                "equation": {
+                    "type": "string"
+                },
+                "scan": {
+                    "type": "number"
+                }
+            }
+        },
+        "validations.ReqNewtonRaphson": {
+            "type": "object",
+            "properties": {
+                "e": {
+                    "type": "number"
+                },
+                "equation": {
+                    "type": "string"
+                },
+                "x0": {
+                    "type": "number"
+                }
+            }
+        },
+        "validations.ReqOnePoint": {
+            "type": "object",
+            "properties": {
+                "e": {
+                    "type": "number"
+                },
+                "equation": {
+                    "type": "string"
+                }
+            }
+        },
+        "validations.ReqSecant": {
+            "type": "object",
+            "properties": {
+                "e": {
+                    "type": "number"
+                },
+                "equation": {
+                    "type": "string"
+                },
+                "x0": {
+                    "type": "number"
+                },
+                "x1": {
+                    "type": "number"
+                }
             }
         }
     }

@@ -12,7 +12,7 @@ const NewtonRaphson = () => {
     const [showResults, setShowResults] = useState(false);
 
     const fetchExampleInput = () => {
-        axios.get('http://localhost:8080/api/root-of-equations/newton-raphson/1')
+        axios.get('http://localhost:8080/numerical-method/root-of-equations/newton-raphson/1')
         .then((response) => {
             const data = response.data;
             setEquation(data.equation);

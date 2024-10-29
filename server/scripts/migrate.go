@@ -17,15 +17,8 @@ func ScriptMigrate() {
 		&models.NewtonRaphson{},
 		&models.OnePoint{},
 		&models.Secant{},
-		&models.CramerRule{},
-		&models.GaussEliminate{},
-		&models.GaussJordan{},
-		&models.MatrixInverse{},
-		&models.LUDecomposition{},
-		&models.CholeskyDecomposition{},
-		&models.JacobiIteration{},
-		&models.GaussSaidelIteration{},
-		&models.ConjugateGradient{},
+		&models.Matrix{},
+		&models.MatrixIteration{},
 	); err != nil {
 		log.Fatalf("failed to migrate database: %v", err)
 	}

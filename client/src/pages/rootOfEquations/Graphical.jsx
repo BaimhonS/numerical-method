@@ -14,7 +14,7 @@ const Graphical = () => {
 
     const fetchExample = async () => {
         try {
-            const response = await axios.get('http://localhost:8080/api/root-of-equations/graphical/1');
+            const response = await axios.get('http://localhost:8080/numerical-method/root-of-equations/graphical/1');
             const { equation, scan } = response.data;
 
             setEquation(equation);

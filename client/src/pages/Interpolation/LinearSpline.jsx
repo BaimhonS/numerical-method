@@ -5,6 +5,8 @@ const LinearSpline = () => {
     const [points, setPoints] = useState([{ x: '', fx: '' }]); // Dynamic points input
     const [xValue, setXValue] = useState(0); // Input x value
     const [result, setResult] = useState(null); // Result of interpolation
+    const [point1, setPoint1] = useState(0); // Index for Point 1
+    const [point2, setPoint2] = useState(1); // Index for Point 2
 
     // Function to handle input changes
     const handlePointChange = (index, field, value) => {
@@ -71,7 +73,7 @@ const LinearSpline = () => {
 
                 {/* Dynamic points input */}
                 <div>
-                    <h3 className="text-xl mb-3">Enter Points Data (at least 2 points)</h3>
+                    <h3 className="text-xl mb-3">Enter Points Data </h3>
                     {points.map((point, index) => (
                         <div key={index} className="mb-3">
                             <label>Point {index + 1}:</label>
@@ -106,6 +108,30 @@ const LinearSpline = () => {
                     className="my-3 px-4 py-2 bg-gray-500 text-white rounded-md">
                     Add Point
                 </button>
+
+                {/* Select Point 1 and Point 2 for quadratic interpolation */}
+                <div className="flex space-x-6 my-5">
+                    <div>
+                        <label className="text-gray-500">Select Point 1</label>
+                        <input
+                            type="number"
+                            className="block w-full my-3 p-2 border rounded-md"
+                            placeholder="Point 1 index"
+                            value={point1 + 1} // Display as 1-based index
+                            onChange={(e) => setPoint1(Math.max(0, parseInt(e.target.value) - 1))}
+                        />
+                    </div>
+                    <div>
+                        <label className="text-gray-500">Select Point 2</label>
+                        <input
+                            type="number"
+                            className="block w-full my-3 p-2 border rounded-md"
+                            placeholder="Point 2 index"
+                            value={point2 + 1} // Display as 1-based index
+                            onChange={(e) => setPoint2(Math.max(0, parseInt(e.target.value) - 1))}
+                        />
+                    </div>
+                </div>
 
                 {/* Input x value */}
                 <div>

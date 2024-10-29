@@ -13,7 +13,6 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/joho/godotenv"
-	fiberSwagger "github.com/swaggo/fiber-swagger" // Import Swagger
 )
 
 func init() {
@@ -22,6 +21,9 @@ func init() {
 	}
 }
 
+// @Title API Documentation
+// @Version 0.2
+// @Description API Documentation for User Service
 func main() {
 	handleMigrations()
 
@@ -32,8 +34,6 @@ func main() {
 	app.Use(cors.New())
 
 	controllers.SetUpController(app, configsClients)
-
-	app.Get("/swagger/*", fiberSwagger.WrapHandler)
 
 	port := os.Getenv("SERVER_PORT")
 	if err := app.Listen(fmt.Sprintf(":%s", port)); err != nil {

@@ -15,7 +15,7 @@ const Bisection = () => {
     const error = (xold, xnew) => Math.abs((xnew - xold) / xnew) * 100;
 
     const fetchExampleInput = () => {
-        axios.get('http://localhost:8080/api/root-of-equations/bisection/1')
+        axios.get('http://localhost:8080/numerical-method/root-of-equations/bisection/1')
             .then((response) => {
                 const data = response.data;
                 setEquation(data.equation);

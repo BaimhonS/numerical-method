@@ -87,6 +87,34 @@ const Sidebar = () => {
             <li className="mb-1">
               <Link to="/quadratic-spline" className="block text-gray-600 hover:bg-gray-200 p-2 rounded">Quadratic Spline</Link>
             </li>
+            <li className="mb-1">
+              <Link to="/cubic-spline" className="block text-gray-600 hover:bg-gray-200 p-2 rounded">Cubic Spline -XXX-</Link>
+            </li>
+          </ul>
+        </li>
+        <li className="mb-2">
+          <span className="font-medium">Least-Squares Regression</span>
+          <ul className="ml-6 mt-1">
+            <li className="mb-1">
+              <Link to="/linear-regression" className="block text-gray-600 hover:bg-gray-200 p-2 rounded">Linear Regression</Link>
+            </li>
+            <li className="mb-1">
+              <Link to="/polynomial-regression" className="block text-gray-600 hover:bg-gray-200 p-2 rounded">Polynomial Regression</Link>
+            </li>
+            <li className="mb-1">
+              <Link to="/multiply-linear-regression" className="block text-gray-600 hover:bg-gray-200 p-2 rounded">Multiple Linear Regression -XXX-</Link>
+            </li>
+          </ul>
+        </li>
+        <li className="mb-2">
+          <span className="font-medium">Integration</span>
+          <ul className="ml-6 mt-1">
+            <li className="mb-1">
+              <Link to="/trapezoidal-rule" className="block text-gray-600 hover:bg-gray-200 p-2 rounded">Trapezoidal Rule</Link>
+            </li>
+            <li className="mb-1">
+              <Link to="/simpson-rule" className="block text-gray-600 hover:bg-gray-200 p-2 rounded">Simson Rule</Link>
+            </li>
           </ul>
         </li>
       </ul>

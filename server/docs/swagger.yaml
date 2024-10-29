@@ -1,15 +1,492 @@
+definitions:
+  models.Bisection:
+    properties:
+      e:
+        type: number
+      equation:
+        type: string
+      id:
+        type: integer
+      xl:
+        type: number
+      xr:
+        type: number
+    type: object
+  models.FalsePosition:
+    properties:
+      e:
+        type: number
+      equation:
+        type: string
+      id:
+        type: integer
+      xl:
+        type: number
+      xr:
+        type: number
+    type: object
+  models.Graphical:
+    properties:
+      equation:
+        type: string
+      id:
+        type: integer
+      scan:
+        type: number
+    type: object
+  models.NewtonRaphson:
+    properties:
+      e:
+        type: number
+      equation:
+        type: string
+      id:
+        type: integer
+      x0:
+        type: number
+    type: object
+  models.OnePoint:
+    properties:
+      e:
+        type: number
+      equation:
+        type: string
+      id:
+        type: integer
+    type: object
+  models.Secant:
+    properties:
+      X0:
+        type: number
+      X1:
+        type: number
+      e:
+        type: number
+      equation:
+        type: string
+      id:
+        type: integer
+    type: object
+  utils.ErrorResponse:
+    properties:
+      error: {}
+      message:
+        type: string
+    type: object
+  validations.ReqBisection:
+    properties:
+      e:
+        type: number
+      equation:
+        type: string
+      xl:
+        type: number
+      xr:
+        type: number
+    type: object
+  validations.ReqFalsePosition:
+    properties:
+      e:
+        type: number
+      equation:
+        type: string
+      xl:
+        type: number
+      xr:
+        type: number
+    type: object
+  validations.ReqGraphical:
+    properties:
+      equation:
+        type: string
+      scan:
+        type: number
+    type: object
+  validations.ReqNewtonRaphson:
+    properties:
+      e:
+        type: number
+      equation:
+        type: string
+      x0:
+        type: number
+    type: object
+  validations.ReqOnePoint:
+    properties:
+      e:
+        type: number
+      equation:
+        type: string
+    type: object
+  validations.ReqSecant:
+    properties:
+      e:
+        type: number
+      equation:
+        type: string
+      x0:
+        type: number
+      x1:
+        type: number
+    type: object
 info:
   contact: {}
+  description: API Documentation for User Service
+  title: API Documentation
+  version: "0.2"
 paths:
-  /api:
+  /numerical-method/root-of-equations/bisection:
+    post:
+      consumes:
+      - application/json
+      description: Create the Bisection method
+      parameters:
+      - description: Request Body
+        in: body
+        name: req
+        required: true
+        schema:
+          $ref: '#/definitions/validations.ReqBisection'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Bisection'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/utils.ErrorResponse'
+      summary: Create Bisection Method Result
+      tags:
+      - Bisection
+  /numerical-method/root-of-equations/bisection/{id}:
     get:
       consumes:
       - application/json
-      description: Initializes the root of equations and linear algebra controllers
+      description: Get the Bisection method result by ID
+      parameters:
+      - description: Bisection ID
+        in: path
+        name: id
+        required: true
+        type: string
       produces:
       - application/json
-      responses: {}
-      summary: Set up API controllers
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Bisection'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/utils.ErrorResponse'
+      summary: Get Bisection Method Result
       tags:
-      - Setup
+      - Bisection
+  /numerical-method/root-of-equations/false-position:
+    post:
+      consumes:
+      - application/json
+      description: Create the FalsePosition method
+      parameters:
+      - description: Request Body
+        in: body
+        name: req
+        required: true
+        schema:
+          $ref: '#/definitions/validations.ReqFalsePosition'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.FalsePosition'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/utils.ErrorResponse'
+      summary: Create FalsePosition Method Result
+      tags:
+      - FalsePosition
+  /numerical-method/root-of-equations/false-position/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Get the FalsePosition method result by ID
+      parameters:
+      - description: FalsePosition ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.FalsePosition'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/utils.ErrorResponse'
+      summary: Get FalsePosition Method Result
+      tags:
+      - FalsePosition
+  /numerical-method/root-of-equations/graphical:
+    post:
+      consumes:
+      - application/json
+      description: Create the graphical method
+      parameters:
+      - description: Request Body
+        in: body
+        name: req
+        required: true
+        schema:
+          $ref: '#/definitions/validations.ReqGraphical'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Graphical'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/utils.ErrorResponse'
+      summary: Create Graphical Method Result
+      tags:
+      - Graphical
+  /numerical-method/root-of-equations/graphical/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Get the graphical method result by ID
+      parameters:
+      - description: Graphical ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Graphical'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/utils.ErrorResponse'
+      summary: Get Graphical Method Result
+      tags:
+      - Graphical
+  /numerical-method/root-of-equations/newton-raphson:
+    post:
+      consumes:
+      - application/json
+      description: Create the NewtonRaphson method
+      parameters:
+      - description: Request Body
+        in: body
+        name: req
+        required: true
+        schema:
+          $ref: '#/definitions/validations.ReqNewtonRaphson'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.FalsePosition'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/utils.ErrorResponse'
+      summary: Create NewtonRaphson Method Result
+      tags:
+      - NewtonRaphson
+  /numerical-method/root-of-equations/newton-raphson/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Get the NewtonRaphson method result by ID
+      parameters:
+      - description: NewtonRaphson ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.NewtonRaphson'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/utils.ErrorResponse'
+      summary: Get NewtonRaphson Method Result
+      tags:
+      - NewtonRaphson
+  /numerical-method/root-of-equations/one-point:
+    post:
+      consumes:
+      - application/json
+      description: Create the OnePoint method
+      parameters:
+      - description: Request Body
+        in: body
+        name: req
+        required: true
+        schema:
+          $ref: '#/definitions/validations.ReqOnePoint'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.FalsePosition'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/utils.ErrorResponse'
+      summary: Create OnePoint Method Result
+      tags:
+      - OnePoint
+  /numerical-method/root-of-equations/one-point/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Get the OnePoint method result by ID
+      parameters:
+      - description: OnePoint ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.OnePoint'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/utils.ErrorResponse'
+      summary: Get OnePoint Method Result
+      tags:
+      - OnePoint
+  /numerical-method/root-of-equations/secant:
+    post:
+      consumes:
+      - application/json
+      description: Create the Secant method
+      parameters:
+      - description: Request Body
+        in: body
+        name: req
+        required: true
+        schema:
+          $ref: '#/definitions/validations.ReqSecant'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Secant'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/utils.ErrorResponse'
+      summary: Create Secantn Method Result
+      tags:
+      - Secant
+  /numerical-method/root-of-equations/secant/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Get the Secant method result by ID
+      parameters:
+      - description: Secant ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Secant'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/utils.ErrorResponse'
+      summary: Get Secant Method Result
+      tags:
+      - Secant
 swagger: "2.0"

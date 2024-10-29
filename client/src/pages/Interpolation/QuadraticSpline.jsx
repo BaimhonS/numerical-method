@@ -1,102 +1,156 @@
 import React, { useState } from 'react';
 import Sidebar from '../../components/Sidebar';
+import { toast } from "sonner";
+import { det } from 'mathjs';
 
 const QuadraticSpline = () => {
-    const [points, setPoints] = useState([{ x: '', fx: '' }]); // Dynamic points input
-    const [xValues, setXValues] = useState(['', '', '']); // Input 3 specific x values for quadratic spline
-    const [result, setResult] = useState([null, null, null]); // Results for each x value
-    const [matrix, setMatrix] = useState([]); // Store the generated matrix
-    const [rhs, setRHS] = useState([]); // Store the right-hand side
-    const [solutions, setSolutions] = useState({}); // Store Cramer's solutions
+    const [points, setPoints] = useState([{ x: '', fx: '' }]);
+    const [xValues, setXValues] = useState(['', '', '']);
+    const [point1, setPoint1] = useState(0);
+    const [point2, setPoint2] = useState(1);
+    const [point3, setPoint3] = useState(2);
+    const [result, setResult] = useState([null, null, null]);
+    const [matrix, setMatrix] = useState([]);
+    const [rhs, setRHS] = useState([]);
+    const [solutions, setSolutions] = useState({});
 
-    // Function to handle input changes for points
     const handlePointChange = (index, field, value) => {
         const newPoints = [...points];
         newPoints[index][field] = value;
         setPoints(newPoints);
     };
 
-    // Add new point
     const addPoint = () => {
         setPoints([...points, { x: '', fx: '' }]);
     };
 
-    // Remove a point
     const removePoint = (index) => {
         const newPoints = points.filter((_, i) => i !== index);
         setPoints(newPoints);
+        if (index === point1 || index === point2 || index === point3) {
+            if (point3 > 0) setPoint3(point3 - 1);
+            if (point2 > 0) setPoint2(point2 - 1);
+            if (point1 > 0) setPoint1(point1 - 1);
+        }
     };
 
-    // Handle changes for the 3 x values
     const handleXValueChange = (index, value) => {
         const newXValues = [...xValues];
         newXValues[index] = value;
         setXValues(newXValues);
     };
 
-    // Function to create the matrix for quadratic spline interpolation
-    const calculateQuadraticSpline = () => {
-        // Ensure there are at least three points
+    const validateInputs = () => {
+        // Check if we have enough points
         if (points.length < 3) {
-            alert("Please enter at least three points.");
-            return;
+            toast.error("Please enter at least 3 points");
+            return false;
         }
 
-        // Parse input points to numeric values
-        const parsedPoints = points.map(p => ({ x: parseFloat(p.x), fx: parseFloat(p.fx) }));
-        const n = parsedPoints.length - 1;
-        const matrixSize = 3 * n; // Matrix will have 3 rows per interval for quadratic spline
-        const matrix = Array(matrixSize).fill(null).map(() => Array(matrixSize).fill(0));
-        const rhs = Array(matrixSize).fill(0); // Right-hand side (fx values)
-
-        // Fill the matrix with conditions for each segment
-        let row = 0;
-
-        // 1. Conditions for f(x) values at each x in each segment
-        for (let i = 0; i < n; i++) {
-            const x1 = parsedPoints[i].x;
-            const x2 = parsedPoints[i + 1].x;
-            const fx1 = parsedPoints[i].fx;
-            const fx2 = parsedPoints[i + 1].fx;
-
-            matrix[row][3 * i] = x1 ** 2;
-            matrix[row][3 * i + 1] = x1;
-            matrix[row][3 * i + 2] = 1;
-            rhs[row] = fx1;
-            row++;
-
-            matrix[row][3 * i] = x2 ** 2;
-            matrix[row][3 * i + 1] = x2;
-            matrix[row][3 * i + 2] = 1;
-            rhs[row] = fx2;
-            row++;
+        // Check if all points have valid x and fx values
+        const hasInvalidPoints = points.some(point => 
+            point.x === '' || point.fx === '' || 
+            isNaN(parseFloat(point.x)) || isNaN(parseFloat(point.fx))
+        );
+        if (hasInvalidPoints) {
+            toast.error("All points must have valid x and f(x) values");
+            return false;
         }
 
-        // 2. Slope continuity at each internal point
-        for (let i = 1; i < n; i++) {
-            const x = parsedPoints[i].x;
-
-            matrix[row][3 * (i - 1)] = 2 * x;
-            matrix[row][3 * (i - 1) + 1] = 1;
-            matrix[row][3 * i] = -2 * x;
-            matrix[row][3 * i + 1] = -1;
-            rhs[row] = 0;
-            row++;
+        // Check if x values are valid
+        const hasInvalidXValues = xValues.some(x => x === '' || isNaN(parseFloat(x)));
+        if (hasInvalidXValues) {
+            toast.error("Please enter valid x values for calculation");
+            return false;
         }
 
-        // 3. Set the first a coefficient to 0 (natural spline condition)
-        matrix[row][0] = 1;
-        rhs[row] = 0;
+        // Check if selected point indices are valid
+        if (point1 >= points.length || point2 >= points.length || point3 >= points.length) {
+            toast.error("Selected point indices are invalid");
+            return false;
+        }
 
-        setMatrix(matrix); // Set the matrix state
-        setRHS(rhs); // Set the RHS state
-        setResult([null, null, null]); // Reset result
-        calculateCramersRule(matrix, rhs); // Call Cramer's Rule after setting matrix
+        return true;
+    };
+
+    const calculateQuadraticSpline = () => {
+        if (!validateInputs()) return;
+
+        try {
+            const selectedPoints = [point1, point2, point3].sort((a, b) => a - b); // Sort points
+            const parsedXValues = xValues.map(parseFloat);
+
+            const matrixSize = 3 * parseFloat(points.length - 1);
+            const newMatrix = Array(matrixSize).fill(null).map(() => Array(matrixSize).fill(0));
+            const newRHS = Array(matrixSize).fill(0);
+
+            let row = 0;
+
+            console.log("msize = ", matrixSize)
+
+            // Fill matrix with f(x) conditions for each segment
+            selectedPoints.forEach((pointIndex, i) => {
+                if (pointIndex >= points.length || !points[pointIndex]) {
+                    throw new Error("Invalid point index");
+                }
+
+                const xi = parseFloat(points[pointIndex].x);
+                const fx = parseFloat(points[pointIndex].fx);
+                const nextXi = parseFloat(points[pointIndex+1].x);
+                const nextFx = parseFloat(points[pointIndex+1].fx);
+
+                if (isNaN(xi) || isNaN(fx)) {
+                    throw new Error("Invalid point values");
+                }
+
+                newMatrix[row][3 * i] = xi ** 2;
+                newMatrix[row][3 * i + 1] = xi;
+                newMatrix[row][3 * i + 2] = 1;
+                newRHS[row] = fx;
+                row++;
+
+                newMatrix[row][3 * i] = nextXi ** 2;
+                newMatrix[row][3 * i + 1] = nextXi;
+                newMatrix[row][3 * i + 2] = 1;
+                newRHS[row] = nextFx;
+                row++;
+            });
+
+
+            // Add slope continuity
+            console.log("len = ", parsedXValues.length)
+
+            for (let i = 1; i < parsedXValues.length; i++) {
+                const xValue = parseFloat(points[i].x);
+                newMatrix[row][3 * (i - 1)] = 2 * xValue;
+                newMatrix[row][3 * (i - 1) + 1] = 1;
+                newMatrix[row][3 * i] = -2 * xValue;
+                newMatrix[row][3 * i + 1] = -1;
+                newRHS[row] = 0;
+                row++;
+
+            }
+
+            // Natural spline condition
+            newMatrix[row][0] = 1;
+            newRHS[row] = 0;
+
+            console.log(newMatrix)
+            console.log
+
+            setMatrix(newMatrix);
+            setRHS(newRHS);
+            calculateCramersRule(newMatrix, newRHS);
+            
+        } catch (error) {
+            toast.error(error.message || "An error occurred during calculation");
+            console.error("Calculation error:", error);
+        }
     };
 
     // Function to calculate the Cramer’s Rule
     const calculateCramersRule = (matrix, rhs) => {
-        const detA = determinant(matrix);
+        const detA = det(matrix);
         if (detA === 0) {
             alert("The matrix is singular, no unique solution.");
             return;
@@ -108,7 +162,7 @@ const QuadraticSpline = () => {
             for (let j = 0; j < matrix.length; j++) {
                 Ai[j][i] = rhs[j]; // Replace the i-th column with rhs
             }
-            const detAi = determinant(Ai);
+            const detAi = det(Ai);
             solutions[`a${Math.floor(i / 3) + 1}${i % 3 + 1}`] = (detAi / detA).toFixed(6); // Format to a1, b1, c1, ...
         }
         setSolutions(solutions);
@@ -125,21 +179,7 @@ const QuadraticSpline = () => {
         });
         setResult(calculatedResults); // Set calculated results
     };
-
-    // Function to calculate the determinant of a matrix
-    const determinant = (matrix) => {
-        const n = matrix.length;
-        if (n === 1) return matrix[0][0];
-        if (n === 2) return matrix[0][0] * matrix[1][1] - matrix[0][1] * matrix[1][0];
-
-        let det = 0;
-        for (let i = 0; i < n; i++) {
-            const subMatrix = matrix.slice(1).map(row => row.filter((_, j) => j !== i));
-            det += (i % 2 === 0 ? 1 : -1) * matrix[0][i] * determinant(subMatrix);
-        }
-        return det;
-    };
-
+    
     return (
         <div className="flex">
             <Sidebar />
@@ -184,6 +224,40 @@ const QuadraticSpline = () => {
                     Add Point
                 </button>
 
+                {/* Selection of point1, point2, and point3 */}
+                <div className="flex space-x-6">
+                    <div>
+                        <label className="text-gray-500">Select Point 1</label>
+                        <input
+                            type="number"
+                            className="block w-full my-3 p-2 border rounded-md"
+                            placeholder="Point 1 index"
+                            value={point1 + 1} // Display as 1-based index
+                            onChange={(e) => setPoint1(parseInt(e.target.value) - 1)}
+                        />
+                    </div>
+                    <div>
+                        <label className="text-gray-500">Select Point 2</label>
+                        <input
+                            type="number"
+                            className="block w-full my-3 p-2 border rounded-md"
+                            placeholder="Point 2 index"
+                            value={point2 + 1} // Display as 1-based index
+                            onChange={(e) => setPoint2(parseInt(e.target.value) - 1)}
+                        />
+                    </div>
+                    <div>
+                        <label className="text-gray-500">Select Point 3</label>
+                        <input
+                            type="number"
+                            className="block w-full my-3 p-2 border rounded-md"
+                            placeholder="Point 3 index"
+                            value={point3 + 1} // Display as 1-based index
+                            onChange={(e) => setPoint3(parseInt(e.target.value) - 1)}
+                        />
+                    </div>
+                </div>
+
                 {/* Input for 3 x values */}
                 <div>
                     <h3 className="text-xl mb-3">Enter 3 X Values</h3>
@@ -206,24 +280,49 @@ const QuadraticSpline = () => {
                     className="my-3 px-4 py-2 bg-blue-500 text-white rounded-md">
                     Calculate
                 </button>
-
-                {/* Show matrix */}
-                {matrix.length > 0 && (
-                    <div className="mt-5">
-                        <h3 className="text-xl mb-3">Matrix</h3>
-                        <table className="border-collapse border border-white w-full">
-                            <tbody>
-                                {matrix.map((row, rowIndex) => (
-                                    <tr key={rowIndex}>
-                                        {row.map((value, colIndex) => (
-                                            <td key={colIndex} className="border border-white p-2 text-center">{value}</td>
-                                        ))}
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
-                    </div>
-                )}
+                <div>
+                    {/* Show matrix */}
+                    {matrix.length > 0 && (
+                        <div className="mt-5">
+                            <h3 className="text-xl mb-3">Matrix</h3>
+                            <div className="overflow-x-auto">
+                                <div className="flex justify-center items-start">
+                                    <div className="border-1">
+                                        <table className="border-separate border-spacing-3">
+                                            <tbody>
+                                                {matrix.map((row, rowIndex) => (
+                                                    <tr key={rowIndex}>
+                                                        {row.map((value, colIndex) => (
+                                                            <td
+                                                                key={colIndex}
+                                                                className="p-2 text-center min-w-[60px]"
+                                                            >
+                                                                {value}
+                                                            </td>
+                                                        ))}
+                                                    </tr>
+                                                ))}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div className="flex items-center">
+                                        <table className="border-separate border-spacing-3">
+                                            <tbody>
+                                                {rhs.map((value, index) => (
+                                                    <tr key={index}>
+                                                        <td className="p-2 text-center min-w-[60px]">
+                                                            = {value}
+                                                        </td>
+                                                    </tr>
+                                                ))}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+                </div>
 
                 {/* Display results */}
                 {Object.keys(solutions).length > 0 && (
@@ -260,8 +359,8 @@ const QuadraticSpline = () => {
                 {/* Display calculated results */}
                 {result.some(res => res !== null) && (
                     <div className="mt-5">
-                        <h3 className="text-xl mb-3">Calculated Results</h3>
-                        <ul>
+                        <h3 className="text-xl mb-3">Results</h3>
+                        <ul className='flex space-x-5'>
                             {result.map((val, index) => (
                                 <li key={index}>
                                     f{index + 1}(x) = {val !== null ? val.toFixed(6) : 'N/A'}

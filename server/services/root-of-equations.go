@@ -33,17 +33,16 @@ func NewRootService(db *gorm.DB) RootService {
 	}
 }
 
+// @Tags Graphical
 // @Summary Get Graphical Method Result
 // @Description Get the graphical method result by ID
-// @Tags Graphical
 // @Accept json
 // @Produce json
 // @Param id path string true "Graphical ID"
 // @Success 200 {object} models.Graphical
 // @Failure 400 {object} utils.ErrorResponse "Bad Request"
 // @Failure 404 {object} utils.ErrorResponse "Not Found"
-// @Router /graphical/{id} [get]
-
+// @Router /numerical-method/root-of-equations/graphical/{id} [get]
 func (s *RootServiceImpl) GetGraphical(c *fiber.Ctx) error {
 	id := c.Params("id")
 
@@ -68,20 +67,18 @@ func (s *RootServiceImpl) GetGraphical(c *fiber.Ctx) error {
 	return c.Status(fiber.StatusOK).JSON(graphical)
 }
 
-// @Summary Create Graphical Method Result
-// @Description Create a new result for graphical method
 // @Tags Graphical
+// @Summary Create Graphical Method Result
+// @Description Create the graphical method
 // @Accept json
 // @Produce json
-// @Param graphical body validations.ReqGraphical true "Graphical Data"
-// @Success 201 {object} models.Graphical
+// @Param req body validations.ReqGraphical true "Request Body"
+// @Success 200 {object} models.Graphical
 // @Failure 400 {object} utils.ErrorResponse "Bad Request"
-// @Failure 500 {object} utils.ErrorResponse "Internal Server Error"
-// @Router /graphical [post]
-
+// @Failure 404 {object} utils.ErrorResponse "Not Found"
+// @Router /numerical-method/root-of-equations/graphical [post]
 func (s *RootServiceImpl) CreateGraphical(c *fiber.Ctx) error {
 	req, ok := c.Locals("req").(validations.ReqGraphical)
-
 	if !ok {
 		return c.Status(fiber.StatusBadRequest).JSON(utils.ErrorResponse{
 			Message: "local req not found",
@@ -102,6 +99,16 @@ func (s *RootServiceImpl) CreateGraphical(c *fiber.Ctx) error {
 	return c.Status(fiber.StatusCreated).JSON(graphical)
 }
 
+// @Tags Bisection
+// @Summary Get Bisection Method Result
+// @Description Get the Bisection method result by ID
+// @Accept json
+// @Produce json
+// @Param id path string true "Bisection ID"
+// @Success 200 {object} models.Bisection
+// @Failure 400 {object} utils.ErrorResponse "Bad Request"
+// @Failure 404 {object} utils.ErrorResponse "Not Found"
+// @Router /numerical-method/root-of-equations/bisection/{id} [get]
 func (s *RootServiceImpl) GetBisection(c *fiber.Ctx) error {
 	id := c.Params("id")
 
@@ -126,6 +133,16 @@ func (s *RootServiceImpl) GetBisection(c *fiber.Ctx) error {
 	return c.Status(fiber.StatusOK).JSON(bisection)
 }
 
+// @Tags Bisection
+// @Summary Create Bisection Method Result
+// @Description Create the Bisection method
+// @Accept json
+// @Produce json
+// @Param req body validations.ReqBisection true "Request Body"
+// @Success 200 {object} models.Bisection
+// @Failure 400 {object} utils.ErrorResponse "Bad Request"
+// @Failure 404 {object} utils.ErrorResponse "Not Found"
+// @Router /numerical-method/root-of-equations/bisection [post]
 func (s *RootServiceImpl) CreateBisection(c *fiber.Ctx) error {
 	req, ok := c.Locals("req").(validations.ReqBisection)
 
@@ -151,6 +168,16 @@ func (s *RootServiceImpl) CreateBisection(c *fiber.Ctx) error {
 	return c.Status(fiber.StatusCreated).JSON(bisection)
 }
 
+// @Tags FalsePosition
+// @Summary Get FalsePosition Method Result
+// @Description Get the FalsePosition method result by ID
+// @Accept json
+// @Produce json
+// @Param id path string true "FalsePosition ID"
+// @Success 200 {object} models.FalsePosition
+// @Failure 400 {object} utils.ErrorResponse "Bad Request"
+// @Failure 404 {object} utils.ErrorResponse "Not Found"
+// @Router /numerical-method/root-of-equations/false-position/{id} [get]
 func (s *RootServiceImpl) GetFalsePosition(c *fiber.Ctx) error {
 	id := c.Params("id")
 
@@ -175,6 +202,16 @@ func (s *RootServiceImpl) GetFalsePosition(c *fiber.Ctx) error {
 	return c.Status(fiber.StatusOK).JSON(falsePosition)
 }
 
+// @Tags FalsePosition
+// @Summary Create FalsePosition Method Result
+// @Description Create the FalsePosition method
+// @Accept json
+// @Produce json
+// @Param req body validations.ReqFalsePosition true "Request Body"
+// @Success 200 {object} models.FalsePosition
+// @Failure 400 {object} utils.ErrorResponse "Bad Request"
+// @Failure 404 {object} utils.ErrorResponse "Not Found"
+// @Router /numerical-method/root-of-equations/false-position [post]
 func (s *RootServiceImpl) CreateFalsePosition(c *fiber.Ctx) error {
 	req, ok := c.Locals("req").(validations.ReqFalsePosition)
 
@@ -200,6 +237,16 @@ func (s *RootServiceImpl) CreateFalsePosition(c *fiber.Ctx) error {
 	return c.Status(fiber.StatusCreated).JSON(falsePosition)
 }
 
+// @Tags OnePoint
+// @Summary Get OnePoint Method Result
+// @Description Get the OnePoint method result by ID
+// @Accept json
+// @Produce json
+// @Param id path string true "OnePoint ID"
+// @Success 200 {object} models.OnePoint
+// @Failure 400 {object} utils.ErrorResponse "Bad Request"
+// @Failure 404 {object} utils.ErrorResponse "Not Found"
+// @Router /numerical-method/root-of-equations/one-point/{id} [get]
 func (s *RootServiceImpl) GetOnePoint(c *fiber.Ctx) error {
 	id := c.Params("id")
 
@@ -224,6 +271,16 @@ func (s *RootServiceImpl) GetOnePoint(c *fiber.Ctx) error {
 	return c.Status(fiber.StatusOK).JSON(onePoint)
 }
 
+// @Tags OnePoint
+// @Summary Create OnePoint Method Result
+// @Description Create the OnePoint method
+// @Accept json
+// @Produce json
+// @Param req body validations.ReqOnePoint true "Request Body"
+// @Success 200 {object} models.FalsePosition
+// @Failure 400 {object} utils.ErrorResponse "Bad Request"
+// @Failure 404 {object} utils.ErrorResponse "Not Found"
+// @Router /numerical-method/root-of-equations/one-point [post]
 func (s *RootServiceImpl) CreateOnePoint(c *fiber.Ctx) error {
 	req, ok := c.Locals("req").(validations.ReqOnePoint)
 
@@ -247,6 +304,16 @@ func (s *RootServiceImpl) CreateOnePoint(c *fiber.Ctx) error {
 	return c.Status(fiber.StatusCreated).JSON(onePoint)
 }
 
+// @Tags NewtonRaphson
+// @Summary Get NewtonRaphson Method Result
+// @Description Get the NewtonRaphson method result by ID
+// @Accept json
+// @Produce json
+// @Param id path string true "NewtonRaphson ID"
+// @Success 200 {object} models.NewtonRaphson
+// @Failure 400 {object} utils.ErrorResponse "Bad Request"
+// @Failure 404 {object} utils.ErrorResponse "Not Found"
+// @Router /numerical-method/root-of-equations/newton-raphson/{id} [get]
 func (s *RootServiceImpl) GetNewtonRaphson(c *fiber.Ctx) error {
 	id := c.Params("id")
 
@@ -271,6 +338,16 @@ func (s *RootServiceImpl) GetNewtonRaphson(c *fiber.Ctx) error {
 	return c.Status(fiber.StatusOK).JSON(newtonRaphson)
 }
 
+// @Tags NewtonRaphson
+// @Summary Create NewtonRaphson Method Result
+// @Description Create the NewtonRaphson method
+// @Accept json
+// @Produce json
+// @Param req body validations.ReqNewtonRaphson true "Request Body"
+// @Success 200 {object} models.FalsePosition
+// @Failure 400 {object} utils.ErrorResponse "Bad Request"
+// @Failure 404 {object} utils.ErrorResponse "Not Found"
+// @Router /numerical-method/root-of-equations/newton-raphson [post]
 func (s *RootServiceImpl) CreateNewtonRaphson(c *fiber.Ctx) error {
 	req, ok := c.Locals("req").(validations.ReqNewtonRaphson)
 
@@ -295,6 +372,16 @@ func (s *RootServiceImpl) CreateNewtonRaphson(c *fiber.Ctx) error {
 	return c.Status(fiber.StatusCreated).JSON(newtonRaphson)
 }
 
+// @Tags Secant
+// @Summary Get Secant Method Result
+// @Description Get the Secant method result by ID
+// @Accept json
+// @Produce json
+// @Param id path string true "Secant ID"
+// @Success 200 {object} models.Secant
+// @Failure 400 {object} utils.ErrorResponse "Bad Request"
+// @Failure 404 {object} utils.ErrorResponse "Not Found"
+// @Router /numerical-method/root-of-equations/secant/{id} [get]
 func (s *RootServiceImpl) GetSecant(c *fiber.Ctx) error {
 	id := c.Params("id")
 
@@ -319,6 +406,16 @@ func (s *RootServiceImpl) GetSecant(c *fiber.Ctx) error {
 	return c.Status(fiber.StatusOK).JSON(secant)
 }
 
+// @Tags Secant
+// @Summary Create Secantn Method Result
+// @Description Create the Secant method
+// @Accept json
+// @Produce json
+// @Param req body validations.ReqSecant true "Request Body"
+// @Success 200 {object} models.Secant
+// @Failure 400 {object} utils.ErrorResponse "Bad Request"
+// @Failure 404 {object} utils.ErrorResponse "Not Found"
+// @Router /numerical-method/root-of-equations/secant [post]
 func (s *RootServiceImpl) CreateSecant(c *fiber.Ctx) error {
 	req, ok := c.Locals("req").(validations.ReqSecant)
 

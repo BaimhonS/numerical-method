@@ -27,6 +27,12 @@ import QuadraticLagrange from './pages/Interpolation/QuadraticLargange.jsx'
 import PolynomialLagrange from './pages/Interpolation/PolynomialLagange.jsx'
 import LinearSpline from './pages/Interpolation/LinearSpline.jsx'
 import QuadraticSpline from './pages/Interpolation/QuadraticSpline.jsx'
+import CubicSpline from './pages/Interpolation/CubicSpline.jsx'
+import LinearRegression from './pages/least-squares-regression/LinearRegression.jsx'
+import PolynomialRegression from './pages/least-squares-regression/PolynomialRegression.jsx'
+import MultipleLinearRegression from './pages/least-squares-regression/MultipleLinearRegression.jsx'
+import TrapezoidalRule from './pages/Integrate/TrapezoidalResult.jsx'
+import SimpsonRule from './pages/Integrate/SimpsonRule.jsx'
 
 const router = createBrowserRouter ([
   {
@@ -124,6 +130,30 @@ const router = createBrowserRouter ([
   {
     path: "/quadratic-spline",
     element: <QuadraticSpline />
+  },
+  {
+    path: "/cubic-spline",
+    element: <CubicSpline />
+  },
+  {
+    path: "/linear-regression",
+    element: <LinearRegression />
+  },
+  {
+    path: "/polynomial-regression",
+    element: <PolynomialRegression />
+  },
+  {
+    path: "/multiply-linear-regression",
+    element: <MultipleLinearRegression />
+  },
+  {
+    path: "/trapezoidal-rule",
+    element: <TrapezoidalRule />
+  },
+  {
+    path: "/simpson-rule",
+    element: <SimpsonRule />
   },
 ])
 

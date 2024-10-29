@@ -12,7 +12,7 @@ const CramerRule = () => {
     const [showResults, setShowResults] = useState(false);
 
     const fetchExampleInput = () => {
-        axios.get('http://localhost:8080/api/linear-algrebra/cramer-rule/1')
+        axios.get('http://localhost:8080/numerical-method/linear-algrebra/cramer-rule/1')
             .then((response) => {
                 const data = response.data;
     
