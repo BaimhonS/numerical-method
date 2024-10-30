@@ -1,16 +1,32 @@
 import React, { useState } from "react";
 import Sidebar from "../../components/Sidebar";
 import { abs } from "mathjs";
+import axios from 'axios';
 
 const GaussSeidelIteration = () => {
-    const [matrix, setMatrix] = useState({});
+    const [matrix, setMatrix] = useState(() => {
+        const initial = {};
+        for (let i = 1; i <= 3; i++) {
+            for (let j = 1; j <= 3; j++) {
+                initial[`a${i}${j}`] = '';
+            }
+        }
+        return initial;
+    });
     const [matrixSize, setMatrixSize] = useState(3);
-    const [constants, setConstants] = useState({});
-    const [tolerance, setTolerance] = useState();
+    const [constants, setConstants] = useState(() => {
+        const initial = {};
+        for (let i = 1; i <= 3; i++) {
+            initial[`x${i}`] = '';
+        }
+        return initial;
+    });
+    const [tolerance, setTolerance] = useState('');
     const [results, setResults] = useState([]);
     const [showResults, setShowResults] = useState(false);
+    const [xVector, setXVector] = useState([]);
     const fetchExampleInput = () => {
-        axios.get('http://localhost:8080/numerical-method/linear-algrebra/gauss-seidel/1')
+        axios.get('http://localhost:8080/numerical-method/linear-algrebra/matrix-iteration/1')
             .then((response) => {
                 const data = response.data;
     
@@ -25,7 +41,8 @@ const GaussSeidelIteration = () => {
                 let index = 0;
                 for (let i = 1; i <= matrixSize; i++) {
                     for (let j = 1; j <= matrixSize; j++) {
-                        newMatrix[`a${i}${j}`] = matrixValues[index];
+                        const value = matrixValues[index];
+                        newMatrix[`a${i}${j}`] = value === 0 ? '' : value;
                         index++;
                     }
                 }
@@ -33,7 +50,8 @@ const GaussSeidelIteration = () => {
                 // Set constants
                 let newConstants = {};
                 for (let i = 1; i <= matrixSize; i++) {
-                    newConstants[`x${i}`] = constantValues[i - 1];
+                    const value = constantValues[i - 1];
+                    newConstants[`x${i}`] = value === 0 ? '' : value;
                 }
                 
                 setMatrixSize(matrixSize); 

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Sidebar from "../../components/Sidebar";
 import { abs } from "mathjs";
+import axios from 'axios';
 
 const JacobiIteration = () => {
     const [matrix, setMatrix] = useState({});
@@ -12,7 +13,7 @@ const JacobiIteration = () => {
     const [showResults, setShowResults] = useState(false);
 
     const fetchExampleInput = () => {
-        axios.get('http://localhost:8080/numerical-method/linear-algrebra/jacobi-iteration/1')
+        axios.get('http://localhost:8080/numerical-method/linear-algrebra/matrix-iteration/1')
             .then((response) => {
                 const data = response.data;
     

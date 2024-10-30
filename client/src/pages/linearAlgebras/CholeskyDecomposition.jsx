@@ -14,7 +14,7 @@ const CholeskyDecomposition = () => {
     const [showResults, setShowResults] = useState(false);
 
     const fetchExampleInput = () => {
-        axios.get('http://localhost:8080/numerical-method/linear-algrebra/cholesky-decomposition/1')
+        axios.get('http://localhost:8080/numerical-method/linear-algrebra/matrix/1')
             .then((response) => {
                 const data = response.data;
     

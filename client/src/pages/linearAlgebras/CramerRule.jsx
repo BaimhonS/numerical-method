@@ -12,7 +12,7 @@ const CramerRule = () => {
     const [showResults, setShowResults] = useState(false);
 
     const fetchExampleInput = () => {
-        axios.get('http://localhost:8080/numerical-method/linear-algrebra/cramer-rule/1')
+        axios.get('http://localhost:8080/numerical-method/linear-algrebra/matrix/1')
             .then((response) => {
                 const data = response.data;
     
@@ -260,7 +260,7 @@ const CramerRule = () => {
                                             )}
                                         </div>
                                         <div className="text-2xl">=</div>
-                                        <div className="text-xl">{solution[key]}</div>
+                                        <div className="text-xl" data-testid="solution-value">{solution[key]}</div>
                                     </div>
                                 ))}
                             </div>

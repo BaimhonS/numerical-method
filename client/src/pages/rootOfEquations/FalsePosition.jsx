@@ -6,9 +6,9 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'r
 
 const FalsePosition = () => {
     const [equation, setEquation] = useState('');
-    const [xl, setXl] = useState();
-    const [xr, setXr] = useState();
-    const [E, setE] = useState();
+    const [xl, setXl] = useState('');
+    const [xr, setXr] = useState('');
+    const [E, setE] = useState('');
     const [results, setResults] = useState([]);
     const [showResults, setShowResults] = useState(false); 
 

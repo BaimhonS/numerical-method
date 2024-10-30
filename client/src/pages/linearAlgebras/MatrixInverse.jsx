@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Sidebar from "../../components/Sidebar";
 import { det, fraction } from "mathjs";
+import axios from 'axios';
 
 const MatrixInverse = () => {
     const [matrix, setMatrix] = useState({});
@@ -11,7 +12,7 @@ const MatrixInverse = () => {
     const [showResults, setShowResults] = useState(false);
 
     const fetchExampleInput = () => {
-        axios.get('http://localhost:8080/numerical-method/linear-algrebra/matrix-inverse/1')
+        axios.get('http://localhost:8080/numerical-method/linear-algrebra/matrix/1')
             .then((response) => {
                 const data = response.data;
     
@@ -153,20 +154,30 @@ const MatrixInverse = () => {
     };
 
     const renderFraction = (value) => {
+        // Handle NaN, undefined, or null
+        if (!value && value !== 0) return 'N/A';
+        
+        // Handle integer values
         if (Number.isInteger(value)) return value;
-        const frac = fraction(value);
-        const sign = frac.s < 0 ? '-' : ''; 
-    
-        return (
-            <div className="flex items-center">
-                {sign && <div className="mr-1">{sign}</div>}
-                <div className="flex flex-col items-center">
-                    <div>{Math.abs(frac.n)}</div>
-                    <div className="border-t border-black w-full"></div>
-                    <div>{Math.abs(frac.d)}</div> 
+        
+        try {
+            const frac = fraction(value);
+            const sign = frac.s < 0 ? '-' : ''; 
+        
+            return (
+                <div className="flex items-center">
+                    {sign && <div className="mr-1">{sign}</div>}
+                    <div className="flex flex-col items-center">
+                        <div>{Math.abs(frac.n)}</div>
+                        <div className="border-t border-black w-full"></div>
+                        <div>{Math.abs(frac.d)}</div> 
+                    </div>
                 </div>
-            </div>
-        );
+            );
+        } catch (error) {
+            // If fraction conversion fails, return the number with fixed decimal places
+            return Number(value).toFixed(6);
+        }
     };
 
     const renderMatrix = (matrix) => (

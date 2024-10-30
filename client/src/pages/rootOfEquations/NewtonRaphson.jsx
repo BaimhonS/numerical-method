@@ -6,8 +6,8 @@ import axios from 'axios';
 
 const NewtonRaphson = () => {
     const [equation, setEquation] = useState(''); 
-    const [X0, setX0] = useState();
-    const [E, setError] = useState();
+    const [X0, setX0] = useState('');
+    const [E, setError] = useState('');
     const [results, setResults] = useState([]);
     const [showResults, setShowResults] = useState(false);
 

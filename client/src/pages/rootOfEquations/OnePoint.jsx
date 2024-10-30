@@ -5,8 +5,8 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'r
 import axios from 'axios';
 
 const OnePoint = () => {
-    const [equation, setEquation] = useState(''); 
-    const [e, setE] = useState(); 
+    const [equation, setEquation] = useState('');
+    const [e, setE] = useState('');
     const [iterations, setIterations] = useState([]);
     const [isCalculating, setIsCalculating] = useState(false);
     const [showResults, setShowResults] = useState(false);
@@ -19,6 +19,9 @@ const OnePoint = () => {
             setEquation(data.equation);
             setE(data.e);
         })
+        .catch((error) => {
+            console.error("There was an error fetching the example input!", error);
+        });
     }
 
     const error = (xold, xnew) => Math.abs((xnew - xold) / xnew) * 100;
@@ -72,6 +75,7 @@ const OnePoint = () => {
                         <p className="text-gray-500">Equation</p>
                         <input
                             type="text"
+                            role="textbox"
                             className="block w-full my-3 p-2 border rounded-md"
                             placeholder="Equation"
                             value={equation}
@@ -82,6 +86,7 @@ const OnePoint = () => {
                         <p className="text-gray-500">Error</p>
                         <input
                             type="number"
+                            role="spinbutton"
                             className="block w-full my-3 p-2 border rounded-md"
                             placeholder="Error"
                             value={e}

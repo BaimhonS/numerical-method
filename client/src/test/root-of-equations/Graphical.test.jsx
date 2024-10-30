@@ -1,42 +1,102 @@
 import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import axios from 'axios';
-import Bisection from './Bisection';
-import '@testing-library/jest-dom/extend-expect';
+import Graphical from '../../pages/rootOfEquations/Graphical';
+import '@testing-library/jest-dom';
 
-jest.mock('axios');
+// Mock recharts to avoid rendering issues
+jest.mock('recharts', () => ({
+  LineChart: () => null,
+  Line: () => null,
+  XAxis: () => null,
+  YAxis: () => null,
+  CartesianGrid: () => null,
+  Tooltip: () => null,
+  Legend: () => null,
+}));
 
-describe('Bisection Component', () => {
-    test('fetches example input and sets state correctly', async () => {
-        const mockData = { data: { equation: 'x^2 - 4', xl: 1, xr: 3, e: 0.001 } };
-        axios.get.mockResolvedValue(mockData);
+// Mock Sidebar component
+jest.mock('../../components/Sidebar', () => {
+  return function DummySidebar() {
+    return <div data-testid="sidebar">Sidebar</div>;
+  };
+});
 
-        render(<Bisection />);
+// Mock axios
+jest.mock('axios', () => ({
+  get: jest.fn()
+}));
 
-        fireEvent.click(screen.getByText(/Get Example Input/i));
+const axios = require('axios');
 
-        await waitFor(() => {
-            expect(screen.getByPlaceholderText(/Equation/i).value).toBe('x^2 - 4');
-            expect(screen.getByPlaceholderText(/Xl/i).value).toBe('1');
-            expect(screen.getByPlaceholderText(/Xr/i).value).toBe('3');
-            expect(screen.getByPlaceholderText(/Error/i).value).toBe('0.001');
-        });
+describe('Graphical Component', () => {
+  beforeEach(() => {
+    // Clear all mocks before each test
+    jest.clearAllMocks();
+    render(<Graphical />);
+  });
+
+  test('renders component and its elements', () => {
+    expect(screen.getByText('Graphical Method')).toBeInTheDocument();
+    expect(screen.getByPlaceholderText('Equation')).toBeInTheDocument();
+    expect(screen.getByPlaceholderText('Scan')).toBeInTheDocument();
+    expect(screen.getByText('Calculate')).toBeInTheDocument();
+    expect(screen.getByText('Get Example Input')).toBeInTheDocument();
+  });
+
+  test('fetches and displays example data on button click', async () => {
+    const mockData = {
+      equation: 'x^2 - 4',
+      scan: 0.1
+    };
+
+    // Setup mock response
+    axios.get.mockResolvedValueOnce({ data: mockData });
+
+    // Click the example button
+    const exampleButton = screen.getByText('Get Example Input');
+    fireEvent.click(exampleButton);
+
+    // Wait for and verify the updates
+    await waitFor(() => {
+      const equationInput = screen.getByPlaceholderText('Equation');
+      const scanInput = screen.getByPlaceholderText('Scan');
+      expect(equationInput).toHaveValue('x^2 - 4');
+      expect(scanInput).toHaveValue(0.1);
     });
+  });
 
-    test('calculates bisection method and displays results', async () => {
-        render(<Bisection />);
+  test('calculates and displays results when Calculate is clicked', async () => {
+    // Set input values
+    const equationInput = screen.getByPlaceholderText('Equation');
+    const scanInput = screen.getByPlaceholderText('Scan');
 
-        fireEvent.change(screen.getByPlaceholderText(/Equation/i), { target: { value: 'x^3 - x - 2' } });
-        fireEvent.change(screen.getByPlaceholderText(/Xl/i), { target: { value: 1 } });
-        fireEvent.change(screen.getByPlaceholderText(/Xr/i), { target: { value: 2 } });
-        fireEvent.change(screen.getByPlaceholderText(/Error/i), { target: { value: 0.01 } });
+    fireEvent.change(equationInput, { target: { value: 'x^2 - 4' } });
+    fireEvent.change(scanInput, { target: { value: '0.1' } });
 
-        fireEvent.click(screen.getByText(/Calculate/i));
+    // Click calculate button
+    const calculateButton = screen.getByText('Calculate');
+    fireEvent.click(calculateButton);
 
-        await waitFor(() => {
-            expect(screen.getByText(/X : /i)).toBeInTheDocument();
-            expect(screen.getByRole('table')).toBeInTheDocument();
-            expect(screen.getAllByRole('row').length).toBeGreaterThan(1); // Check if there are rows in the table
-        });
-    });
+    // Check for loading state
+    expect(screen.getByText('Wait calculating...')).toBeInTheDocument();
+
+    // Wait for results
+    await waitFor(() => {
+      expect(screen.queryByText('Wait calculating...')).not.toBeInTheDocument();
+      expect(screen.getByText(/X :/)).toBeInTheDocument();
+    }, { timeout: 3000 });
+  });
+
+  test('handles input changes correctly', () => {
+    const equationInput = screen.getByPlaceholderText('Equation');
+    const scanInput = screen.getByPlaceholderText('Scan');
+
+    // Test equation input
+    fireEvent.change(equationInput, { target: { value: 'x^3 - 2x + 1' } });
+    expect(equationInput.value).toBe('x^3 - 2x + 1');
+
+    // Test scan input
+    fireEvent.change(scanInput, { target: { value: '0.2' } });
+    expect(scanInput.value).toBe('0.2');
+  });
 });

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Sidebar from "../../components/Sidebar";
 import { fraction, format } from "mathjs";
+import axios from 'axios';
 
 const GaussJordan = () => {
     const [matrixSize, setMatrixSize] = useState(3);
@@ -11,7 +12,7 @@ const GaussJordan = () => {
     const [showResults, setShowResults] = useState(false);
 
     const fetchExampleInput = () => {
-        axios.get('http://localhost:8080/numerical-method/linear-algrebra/gauss-jordan/1')
+        axios.get('http://localhost:8080/numerical-method/linear-algrebra/matrix/1')
             .then((response) => {
                 const data = response.data;
     

@@ -33,6 +33,7 @@ import PolynomialRegression from './pages/least-squares-regression/PolynomialReg
 import MultipleLinearRegression from './pages/least-squares-regression/MultipleLinearRegression.jsx'
 import TrapezoidalRule from './pages/Integrate/TrapezoidalResult.jsx'
 import SimpsonRule from './pages/Integrate/SimpsonRule.jsx'
+import ForwardDividedDifference from './pages/NumericalDifferentiation/Forward.jsx'
 
 const router = createBrowserRouter ([
   {
@@ -154,6 +155,10 @@ const router = createBrowserRouter ([
   {
     path: "/simpson-rule",
     element: <SimpsonRule />
+  },
+  {
+    path: "/forward-divided-diff",
+    element: <ForwardDividedDifference />
   },
 ])
 

@@ -117,6 +117,17 @@ const Sidebar = () => {
             </li>
           </ul>
         </li>
+        <li className="mb-2">
+          <span className="font-medium">Numerical Differentiation</span>
+          <ul className="ml-6 mt-1">
+            <li className="mb-1">
+              <Link to="/forward-divided-diff" className="block text-gray-600 hover:bg-gray-200 p-2 rounded">Forward</Link>
+            </li>
+            <li className="mb-1">
+              <Link to="/simpson-rule" className="block text-gray-600 hover:bg-gray-200 p-2 rounded">-------</Link>
+            </li>
+          </ul>
+        </li>
       </ul>
     </div>
   );

@@ -6,9 +6,9 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'r
 
 const Secant = () => {
     const [equation, setEquation] = useState('');
-    const [x0, setX0] = useState(); 
-    const [x1, setX1] = useState(); 
-    const [E, setError] = useState();
+    const [x0, setX0] = useState('');
+    const [x1, setX1] = useState('');
+    const [E, setError] = useState('');
     const [results, setResults] = useState([]);
     const [showResults, setShowResults] = useState(false);
 
