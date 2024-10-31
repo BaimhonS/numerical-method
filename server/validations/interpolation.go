@@ -7,24 +7,24 @@ import (
 
 type (
 	ReqLinearNewton struct {
-		Points [][]float64 `json:"points"`
-		Point  []float64   `json:"point"`
-		Xvalue float64     `json:"xvalue"`
+		Points string  `json:"points"`
+		Point  string  `json:"point"`
+		Xvalue float64 `json:"xvalue"`
 	}
 	ReqQuadraticNewton struct {
-		Points [][]float64 `json:"points"`
-		Point  []float64   `json:"point"`
-		Xvalue float64     `json:"xvalue"`
+		Points string  `json:"points"`
+		Point  string  `json:"point"`
+		Xvalue float64 `json:"xvalue"`
 	}
 	ReqPolynomialNewton struct {
-		Points [][]float64 `json:"points"`
-		Point  []float64   `json:"point"`
-		Xvalue float64     `json:"xvalue"`
+		Points string  `json:"points"`
+		Point  string  `json:"point"`
+		Xvalue float64 `json:"xvalue"`
 	}
 	ReqQuadraticLagrange struct {
-		Points [][]float64 `json:"points"`
-		Point  []float64   `json:"point"`
-		Xvalue []float64   `json:"xvalue"`
+		Points string `json:"points"`
+		Point  string `json:"point"`
+		Xvalue string `json:"xvalue"`
 	}
 
 	InterpolationValidateImpl struct{}

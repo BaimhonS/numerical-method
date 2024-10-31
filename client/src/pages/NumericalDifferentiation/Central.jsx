@@ -34,6 +34,14 @@ const CentralDividedDifference = () => {
 
   const calculateCentralDividedDifference = () => {
     try {
+      if (!fx || !x || !h || !order) {
+        throw new Error('Please enter all values');
+      }
+
+      if (h === 0) {
+        throw new Error('Step size (h) cannot be zero');
+      }
+
       const expression = fx
         .replace(/e\^x/gi, 'exp(x)')
         .replace(/\(e\^x\)/gi, '(exp(x))')

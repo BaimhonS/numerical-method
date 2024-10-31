@@ -63,7 +63,11 @@ const LinearInterpolation = () => {
     const calculateLinearInterpolation = () => {
         try {
             // Validation checks
-            if (!point1 || !point2) {
+            if (!points.some(p => p.x && p.fx)) {
+                throw new Error("Please fill in all required fields");
+            }
+
+            if (!point1 && point1 !== 0 || !point2 && point2 !== 0) {
                 throw new Error("Please select two points");
             }
 
@@ -74,7 +78,7 @@ const LinearInterpolation = () => {
             const selectedPoints = [points[point1], points[point2]];
             
             if (selectedPoints.some(point => !point?.x || !point?.fx)) {
-                throw new Error("Please fill in all point values");
+                throw new Error("Please fill in all required fields");
             }
 
             const dividedDifferences = calculateLinearDividedDifferences(selectedPoints);
@@ -111,14 +115,16 @@ const LinearInterpolation = () => {
                                 type="number"
                                 className="mx-2 p-2 border rounded-md"
                                 placeholder="x"
-                                value={point.x || ''}
+                                data-testid={`x-input-${index}`}
+                                value={point.x}
                                 onChange={(e) => handlePointChange(index, 'x', e.target.value)}
                             />
                             <input
                                 type="number"
                                 className="mx-2 p-2 border rounded-md"
                                 placeholder="f(x)"
-                                value={point.fx || ''}
+                                data-testid={`fx-input-${index}`}
+                                value={point.fx}
                                 onChange={(e) => handlePointChange(index, 'fx', e.target.value)}
                             />
                             {points.length > 1 && (
@@ -186,6 +192,7 @@ const LinearInterpolation = () => {
                         type="number"
                         className="block w-full my-3 p-2 border rounded-md"
                         placeholder="x value"
+                        data-testid="x-value-input"
                         value={xValue}
                         onChange={(e) => setXValue(parseFloat(e.target.value))}
                     />
@@ -200,7 +207,7 @@ const LinearInterpolation = () => {
 
                 {/* Display result */}
                 {result !== null && (
-                    <div className="mt-5">
+                    <div className="mt-5" data-testid="interpolation-result">
                         <p>Interpolated y value: {Number(result).toFixed(6)}</p>
                     </div>
                 )}

@@ -7,17 +7,17 @@ import (
 
 type (
 	ReqLinearRegression struct {
-		Points [][]float64 `json:"points"`
-		Xvalue float64     `json:"xvalue"`
+		Points string  `json:"points"`
+		Xvalue float64 `json:"xvalue"`
 	}
 	ReqPolynomialRegression struct {
-		Points [][]float64 `json:"points"`
-		Order  int         `json:"order"`
-		Xvalue float64     `json:"xvalue"`
+		Points string  `json:"points"`
+		Order  int     `json:"order"`
+		Xvalue float64 `json:"xvalue"`
 	}
 	ReqMultipleRegression struct {
-		Points [][]float64 `json:"points"`
-		Xvalue []float64   `json:"xvalue"`
+		Points string `json:"points"`
+		Xvalue string `json:"xvalue"`
 	}
 
 	LeastSquaresRegressionValidateImpl struct{}
