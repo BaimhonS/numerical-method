@@ -34,6 +34,8 @@ import MultipleLinearRegression from './pages/least-squares-regression/MultipleL
 import TrapezoidalRule from './pages/Integrate/TrapezoidalResult.jsx'
 import SimpsonRule from './pages/Integrate/SimpsonRule.jsx'
 import ForwardDividedDifference from './pages/NumericalDifferentiation/Forward.jsx'
+import BackwardDividedDifference from './pages/NumericalDifferentiation/Backward.jsx'
+import CentralDividedDifference from './pages/NumericalDifferentiation/Central.jsx'
 
 const router = createBrowserRouter ([
   {
@@ -160,6 +162,14 @@ const router = createBrowserRouter ([
     path: "/forward-divided-diff",
     element: <ForwardDividedDifference />
   },
+  {
+    path: "/backward-divided-diff",
+    element: <BackwardDividedDifference />
+  },
+  {
+    path: "/central-divided-diff",
+    element: <CentralDividedDifference />
+  }
 ])
 
 createRoot(document.getElementById('root')).render(

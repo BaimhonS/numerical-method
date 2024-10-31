@@ -3,7 +3,7 @@ import Sidebar from '../../components/Sidebar';
 
 const PolynomialRegression = () => {
     const [points, setPoints] = useState([{ x: '', fx: '' }]); // Dynamic points input
-    const [degree, setDegree] = useState(2); // Polynomial degree
+    const [degree, setDegree] = useState(''); // Polynomial degree
     const [coefficients, setCoefficients] = useState([]); // Coefficients for polynomial
     const [xInput, setXInput] = useState(''); // Input x value for estimation
     const [fxResult, setFxResult] = useState(null); // Result of f(x)

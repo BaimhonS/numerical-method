@@ -3,8 +3,8 @@ import Sidebar from '../../components/Sidebar';
 
 const PolynomialNewton = () => {
     const [points, setPoints] = useState([{ x: '', fx: '' }]); // Dynamic points input
-    const [pointIndices, setPointIndices] = useState([0, 1, 2, 3, 4]); // Array for selected point indices
-    const [xValue, setXValue] = useState(0); // Input x value
+    const [pointIndices, setPointIndices] = useState([]); // Array for selected point indices
+    const [xValue, setXValue] = useState(''); // Input x value
     const [result, setResult] = useState(null); // Result of interpolation
 
     // Function to handle input changes
@@ -12,24 +12,52 @@ const PolynomialNewton = () => {
         const newPoints = [...points];
         newPoints[index][field] = value;
         setPoints(newPoints);
+        setResult(null); // Reset result when points change
     };
 
     // Add new point
     const addPoint = () => {
         setPoints([...points, { x: '', fx: '' }]);
+        setPointIndices([...pointIndices]); // Maintain selected points
     };
 
     // Remove a point
     const removePoint = (index) => {
+        if (points.length <= 1) return; // ป้องกันการลบจุดสุดท้าย
+        
         const newPoints = points.filter((_, i) => i !== index);
         setPoints(newPoints);
-        setPointIndices(pointIndices.filter(point => point !== index));
+        
+        // ปรับ pointIndices หลังจากลบจุด
+        const newPointIndices = pointIndices
+            .map(pointIndex => 
+                pointIndex > index ? pointIndex - 1 : 
+                pointIndex === index ? null : 
+                pointIndex
+            )
+            .filter(index => index !== null);
+        
+        setPointIndices(newPointIndices);
     };
 
     // Update selected point indices
     const handleIndexChange = (index, value) => {
-        const newPointIndices = [...pointIndices];
-        newPointIndices[index] = value - 1; // Adjusting for zero-based index
+        if (!value || value < 1 || value > points.length) return;
+        
+        const adjustedIndex = value - 1;
+        let newPointIndices = [...pointIndices];
+        
+        // ถ้า index มีอยู่แล้ว ให้อัพเดทค่า
+        const existingIndex = newPointIndices.indexOf(index);
+        if (existingIndex !== -1) {
+            newPointIndices[existingIndex] = adjustedIndex;
+        } else {
+            // ถ้ายังไม่มี ให้เพิ่มเข้าไป
+            newPointIndices.push(adjustedIndex);
+        }
+        
+        // Remove duplicates and sort
+        newPointIndices = [...new Set(newPointIndices)].sort((a, b) => a - b);
         setPointIndices(newPointIndices);
     };
 
@@ -55,25 +83,77 @@ const PolynomialNewton = () => {
 
     // Calculate Newton's polynomial interpolation
     const calculatePolynomialInterpolation = () => {
-        const selected = pointIndices.map(i => points[i]); // Get selected points
-        if (selected.length < 2) {
-            alert("Please select at least two points.");
-            return;
-        }
-
-        const dividedDifferences = calculateDividedDifferences(selected);
-        const n = selected.length;
-        let interpolatedValue = 0;
-
-        for (let i = 0; i < n; i++) {
-            let term = dividedDifferences[0][i];
-            for (let j = 0; j < i; j++) {
-                term *= (xValue - parseFloat(selected[j].x));
+        try {
+            // Check points selection first
+            if (pointIndices.length < 2) {
+                throw new Error("Please select at least two points.");
             }
-            interpolatedValue += term;
-        }
 
-        setResult(interpolatedValue);
+            // Then validate x value
+            if (!xValue) {
+                throw new Error("Please enter x value");
+            }
+
+            // Get selected points
+            const selectedPoints = pointIndices.map(i => points[i]);
+            
+            // Validate point values
+            if (selectedPoints.some(point => !point?.x || !point?.fx)) {
+                throw new Error("Please fill in all point values");
+            }
+
+            // Convert and validate numeric values
+            const pointsData = selectedPoints.map(point => ({
+                x: parseFloat(point.x),
+                fx: parseFloat(point.fx)
+            }));
+
+            if (pointsData.some(point => isNaN(point.x) || isNaN(point.fx))) {
+                throw new Error("All inputs must be valid numbers");
+            }
+
+            // Check for duplicate x values
+            const xValues = pointsData.map(p => p.x);
+            if (new Set(xValues).size !== xValues.length) {
+                throw new Error("All x values must be different");
+            }
+
+            // Calculate divided differences
+            const n = pointsData.length;
+            const dividedDiff = Array(n).fill().map(() => Array(n).fill(0));
+
+            // Fill in the first column with f(x) values
+            for (let i = 0; i < n; i++) {
+                dividedDiff[i][0] = pointsData[i].fx;
+            }
+
+            // Calculate the divided differences
+            for (let j = 1; j < n; j++) {
+                for (let i = 0; i < n - j; i++) {
+                    dividedDiff[i][j] = (dividedDiff[i + 1][j - 1] - dividedDiff[i][j - 1]) / 
+                                      (pointsData[i + j].x - pointsData[i].x);
+                }
+            }
+
+            // Calculate interpolation value
+            let x = parseFloat(xValue);
+            let result = dividedDiff[0][0];
+            let term = 1;
+
+            for (let i = 1; i < n; i++) {
+                term *= (x - pointsData[i - 1].x);
+                result += (dividedDiff[0][i] * term);
+            }
+
+            if (isNaN(result) || !isFinite(result)) {
+                throw new Error("Calculation resulted in an invalid value");
+            }
+
+            setResult(result);
+        } catch (error) {
+            alert(error.message);
+            setResult(null);
+        }
     };
 
     return (
@@ -121,15 +201,17 @@ const PolynomialNewton = () => {
                 </button>
 
                 {/* Selection of points */}
-                <div className="flex space-x-6">
-                    {Array.from({ length: 5 }, (_, index) => (
+                <div className="flex flex-wrap gap-4">
+                    {points.map((_, index) => (
                         <div key={index}>
                             <label className="text-gray-500">Select Point {index + 1}</label>
                             <input
                                 type="number"
                                 className="block w-full my-3 p-2 border rounded-md"
                                 placeholder={`Point ${index + 1} index`}
-                                value={pointIndices[index] + 1} // Adjusted to be 1-based
+                                min={1}
+                                max={points.length}
+                                value={pointIndices.includes(index) ? index + 1 : ''}
                                 onChange={(e) => handleIndexChange(index, parseInt(e.target.value))}
                             />
                         </div>
@@ -150,6 +232,7 @@ const PolynomialNewton = () => {
 
                 {/* Calculate button */}
                 <button
+                    data-testid="calculate-button"
                     onClick={calculatePolynomialInterpolation}
                     className="my-5 px-4 py-2 bg-blue-500 text-white rounded-md">
                     Calculate

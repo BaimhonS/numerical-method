@@ -8,7 +8,11 @@
     "build": "vite build",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
-    "test": "jest --config jest.config.cjs"
+    "test": "node --max_old_space_size=4096 node_modules/jest/bin/jest.js --config jest.config.cjs",
+    "test:linear": "node --max_old_space_size=4096 node_modules/jest/bin/jest.js --config jest.config.cjs linear",
+    "test:interpolation": "jest --config jest.config.cjs interpolation",
+    "test:root": "jest --config jest.config.cjs root-of-equations",
+    "test:watch": "node --max_old_space_size=4096 node_modules/jest/bin/jest.js --config jest.config.cjs --watch"
   },
   "dependencies": {
     "@tanstack/react-query": "^5.59.0",
@@ -21,6 +25,7 @@
     "react-chartjs-2": "^5.2.0",
     "react-dom": "^18.3.1",
     "react-router-dom": "^6.26.2",
+    "react-toastify": "^10.0.6",
     "recharts": "^2.12.7",
     "sonner": "^1.5.0"
   },

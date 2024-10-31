@@ -7,7 +7,7 @@ const LinearInterpolation = () => {
     ]); // Dynamic points input
     const [point1, setPoint1] = useState(0); // Index for Point 1 (Default is first point)
     const [point2, setPoint2] = useState(1); // Index for Point 2 (Default is second point)
-    const [xValue, setXValue] = useState(0); // Input x value
+    const [xValue, setXValue] = useState(''); // Input x value
     const [result, setResult] = useState(null); // Result of interpolation
 
     // Function to handle input changes
@@ -15,6 +15,9 @@ const LinearInterpolation = () => {
         const newPoints = [...points];
         newPoints[index][field] = value;
         setPoints(newPoints);
+
+        // Reset result when points change
+        setResult(null);
     };
 
     // Add new point
@@ -24,8 +27,17 @@ const LinearInterpolation = () => {
 
     // Remove a point
     const removePoint = (index) => {
+        if (points.length <= 1) return; // Don't remove last point
+        
         const newPoints = points.filter((_, i) => i !== index);
         setPoints(newPoints);
+        
+        // Adjust point1 and point2 if needed
+        if (point1 >= newPoints.length) setPoint1(newPoints.length - 1);
+        if (point2 >= newPoints.length) setPoint2(newPoints.length - 1);
+        
+        // Reset result
+        setResult(null);
     };
 
     // Calculate the divided differences for linear interpolation
@@ -49,20 +61,38 @@ const LinearInterpolation = () => {
 
     // Calculate Newton's linear interpolation
     const calculateLinearInterpolation = () => {
-        const selected = [points[point1], points[point2]]; // Get selected points
-        if (selected.length !== 2) {
-            alert("Please select exactly two points for linear interpolation.");
-            return;
+        try {
+            // Validation checks
+            if (!point1 || !point2) {
+                throw new Error("Please select two points");
+            }
+
+            if (!xValue && xValue !== 0) {
+                throw new Error("Please enter x value");
+            }
+
+            const selectedPoints = [points[point1], points[point2]];
+            
+            if (selectedPoints.some(point => !point?.x || !point?.fx)) {
+                throw new Error("Please fill in all point values");
+            }
+
+            const dividedDifferences = calculateLinearDividedDifferences(selectedPoints);
+            const x = parseFloat(xValue);
+            
+            // Validate calculation inputs
+            if (isNaN(x) || selectedPoints.some(p => isNaN(parseFloat(p.x)) || isNaN(parseFloat(p.fx)))) {
+                throw new Error("Invalid numeric inputs");
+            }
+
+            const interpolatedValue = dividedDifferences[0][0] + 
+                                    dividedDifferences[0][1] * (x - parseFloat(selectedPoints[0].x));
+            
+            setResult(interpolatedValue);
+        } catch (error) {
+            alert(error.message);
+            setResult(null);
         }
-
-        const dividedDifferences = calculateLinearDividedDifferences(selected);
-        const x = parseFloat(xValue); // Value where we want to estimate f(x)
-        
-        // Linear interpolation formula: f(x) = f(x0) + f[x0, x1](x - x0)
-        const interpolatedValue = dividedDifferences[0][0] + 
-                                  dividedDifferences[0][1] * (x - parseFloat(selected[0].x));
-
-        setResult(interpolatedValue);
     };
 
     return (
@@ -75,26 +105,28 @@ const LinearInterpolation = () => {
                 <div>
                     <h3 className="text-xl mb-3">Enter Points Data</h3>
                     {points.map((point, index) => (
-                        <div key={index} className="mb-3">
-                            <label>Point {index + 1}:</label>
+                        <div key={index} className="mb-4">
+                            <span>Point {index + 1}:</span>
                             <input
                                 type="number"
                                 className="mx-2 p-2 border rounded-md"
                                 placeholder="x"
-                                value={point.x}
+                                value={point.x || ''}
                                 onChange={(e) => handlePointChange(index, 'x', e.target.value)}
                             />
                             <input
                                 type="number"
                                 className="mx-2 p-2 border rounded-md"
                                 placeholder="f(x)"
-                                value={point.fx}
+                                value={point.fx || ''}
                                 onChange={(e) => handlePointChange(index, 'fx', e.target.value)}
                             />
                             {points.length > 1 && (
                                 <button
                                     onClick={() => removePoint(index)}
-                                    className="mx-2 px-2 py-1 bg-red-500 text-white rounded-md">
+                                    className="mx-2 px-2 py-1 bg-red-500 text-white rounded-md"
+                                    data-testid={`remove-point-${index}`}
+                                >
                                     Remove
                                 </button>
                             )}
@@ -118,7 +150,14 @@ const LinearInterpolation = () => {
                             className="block w-full my-3 p-2 border rounded-md"
                             placeholder="Point 1 index"
                             value={point1 + 1}
-                            onChange={(e) => setPoint1(parseInt(e.target.value) - 1)}
+                            min={1}
+                            max={points.length}
+                            onChange={(e) => {
+                                const val = parseInt(e.target.value);
+                                if (!isNaN(val) && val >= 1 && val <= points.length) {
+                                    setPoint1(val - 1);
+                                }
+                            }}
                         />
                     </div>
                     <div>
@@ -128,7 +167,14 @@ const LinearInterpolation = () => {
                             className="block w-full my-3 p-2 border rounded-md"
                             placeholder="Point 2 index"
                             value={point2 + 1}
-                            onChange={(e) => setPoint2(parseInt(e.target.value) - 1)}
+                            min={1}
+                            max={points.length}
+                            onChange={(e) => {
+                                const val = parseInt(e.target.value);
+                                if (!isNaN(val) && val >= 1 && val <= points.length) {
+                                    setPoint2(val - 1);
+                                }
+                            }}
                         />
                     </div>
                 </div>
@@ -155,7 +201,7 @@ const LinearInterpolation = () => {
                 {/* Display result */}
                 {result !== null && (
                     <div className="mt-5">
-                        <p>Interpolated y value: {result.toFixed(6)}</p>
+                        <p>Interpolated y value: {Number(result).toFixed(6)}</p>
                     </div>
                 )}
             </div>

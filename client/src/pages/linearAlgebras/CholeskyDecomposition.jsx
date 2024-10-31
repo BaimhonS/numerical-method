@@ -91,39 +91,33 @@ const CholeskyDecomposition = () => {
             Array.from({ length: size }, (_, j) => matrix[`a${i + 1}${j + 1}`])
         );
         const inputConstants = Array.from({ length: size }, (_, i) => constants[`x${i + 1}`]);
-        
-        const L = choleskyDecomposition(inputMatrix);
-        if (!L) {
-            alert("Matrix is not positive-definite");
-            return;
-        }
-        const LT = transpose(L);
-        const Y = forwardSubstitution(L, inputConstants);
-        const X = backwardSubstitution(LT, Y);
 
-        setLMatrix(L);
-        setLTranspose(LT);
-        setYVector(Y);
-        setXVector(X);
-        setShowResults(true);
-    };
-
-    const choleskyDecomposition = (matrix) => {
-        const n = matrix.length;
-        const L = Array.from({ length: n }, () => Array(n).fill(0));
-
-        for (let i = 0; i < n; i++) {
-            for (let j = 0; j <= i; j++) {
-                let sum = 0;
-                for (let k = 0; k < j; k++) {
-                    sum += L[i][k] * L[j][k];
-                }
-                if (i === j) {
-                    L[i][j] = Math.sqrt(matrix[i][i] - sum);
-                } else {
-                    L[i][j] = (matrix[i][j] - sum) / L[j][j];
-                }
+        try {
+            const L = choleskyDecomposition(inputMatrix);
+            
+            // Check if L matrix contains any NaN or invalid values
+            if (!L || L.some(row => row.some(val => isNaN(val) || val === null))) {
+                alert('Cannot calculate Cholesky decomposition for this matrix');
+                return;
             }
+
+            const LT = transpose(L);
+            const Y = forwardSubstitution(L, inputConstants);
+            const X = backwardSubstitution(LT, Y);
+
+            // Check if any results contain NaN
+            if (Y.some(val => isNaN(val)) || X.some(val => isNaN(val))) {
+                alert('Cannot calculate Cholesky decomposition for this matrix');
+                return;
+            }
+
+            setLMatrix(L);
+            setLTranspose(LT);
+            setYVector(Y);
+            setXVector(X);
+            setShowResults(true);
+        } catch (error) {
+            alert('Cannot calculate Cholesky decomposition for this matrix');
         }
         return L;
     };

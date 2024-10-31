@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Sidebar from "../../components/Sidebar";
 import { fraction, transpose, norm } from "mathjs";
+import axios from 'axios';
 
 const ConjugateGradient = () => {
     const [matrix, setMatrix] = useState({});
@@ -21,28 +22,42 @@ const ConjugateGradient = () => {
                 const matrixValues = data.matrix_data.split(',').map(Number);
                 const constantValues = data.constant_data.split(',').map(Number);
     
-                // Set matrix
+                // Initialize matrix with zeros
                 let newMatrix = {};
+                for (let i = 1; i <= matrixSize; i++) {
+                    for (let j = 1; j <= matrixSize; j++) {
+                        newMatrix[`a${i}${j}`] = 0;  // Initialize all values to 0
+                    }
+                }
+    
+                // Set matrix values from response
                 let index = 0;
                 for (let i = 1; i <= matrixSize; i++) {
                     for (let j = 1; j <= matrixSize; j++) {
-                        newMatrix[`a${i}${j}`] = matrixValues[index];
+                        const value = matrixValues[index];
+                        newMatrix[`a${i}${j}`] = value !== undefined ? value : 0;
                         index++;
                     }
                 }
     
-                // Set constants
+                // Initialize constants with zeros
                 let newConstants = {};
                 for (let i = 1; i <= matrixSize; i++) {
-                    newConstants[`x${i}`] = constantValues[i - 1];
+                    newConstants[`x${i}`] = 0;  // Initialize all values to 0
+                }
+    
+                // Set constants from response
+                for (let i = 0; i < constantValues.length; i++) {
+                    const value = constantValues[i];
+                    newConstants[`x${i + 1}`] = value !== undefined ? value : 0;
                 }
     
                 // Update the state
-                setMatrixSize(matrixSize); // Update matrix size
+                setMatrixSize(matrixSize);
                 setTolerance(tolerance);
-                setMatrix(newMatrix); // Set matrix values
-                setConstants(newConstants); // Set constant values
-                setShowResults(false); // Reset any previous results
+                setMatrix(newMatrix);
+                setConstants(newConstants);
+                setShowResults(false);
             })
             .catch((error) => {
                 console.error("There was an error fetching the example input!", error);
@@ -62,6 +77,7 @@ const ConjugateGradient = () => {
         }
         setMatrix(newMatrix);
         setConstants(newConstants);
+        setResults([]); // Reset results when matrix size changes
     };
 
     const handleMatrixChange = (e) => {
@@ -215,7 +231,7 @@ const ConjugateGradient = () => {
         <div className="flex">
             <Sidebar />
             <div className="flex-1 p-10">
-                <h2 className="text-3xl mb-5">Gauss-Seidel Iteration Method</h2>
+                <h2 className="text-3xl mb-5">Conjugate Gradient Method</h2>
                 <div className="flex justify-end px-10">
                 <button
                     onClick={fetchExampleInput}
@@ -223,32 +239,19 @@ const ConjugateGradient = () => {
                     Get Example Input
                 </button>
                 </div>
-                <div className="flex space-x-6">
-                    <label className="block mb-4">
-                        Select Matrix Size
-                        <select
-                            className="block mt-2 p-2 border rounded-md"
-                            value={matrixSize}
-                            onChange={handleSizeChange}
-                        >
-                            <option value={2}>2 x 2</option>
-                            <option value={3}>3 x 3</option>
-                            <option value={4}>4 x 4</option>
-                        </select>
-                    </label>
+                <label className="block mb-4">
+                    Select Matrix Size
+                    <select
+                        className="block mt-2 p-2 border rounded-md"
+                        value={matrixSize}
+                        onChange={handleSizeChange}
+                    >
+                        <option value={2}>2 x 2</option>
+                        <option value={3}>3 x 3</option>
+                        <option value={4}>4 x 4</option>
+                    </select>
+                </label>
 
-                    <label className="block mb-3">
-                        Error
-                        <input
-                            type="number"
-                            className="block mt-2 p-2 border rounded-md"
-                            placeholder="Error"
-                            step="0.0001"
-                            value={tolerance}
-                            onChange={handleToleranceChange}
-                        />
-                    </label>
-                </div>
                 <div className="flex justify-center mb-6">
                     <div>
                         {Array.from({ length: matrixSize }, (_, i) => (
@@ -277,6 +280,18 @@ const ConjugateGradient = () => {
                         ))}
                     </div>
                 </div>
+
+                <label className="block mb-3">
+                    Error
+                    <input
+                        type="number"
+                        className="block mt-2 p-2 border rounded-md"
+                        placeholder="Error"
+                        step="0.0001"
+                        value={tolerance}
+                        onChange={handleToleranceChange}
+                    />
+                </label>
 
                 <button
                     onClick={calConjugateGradient}

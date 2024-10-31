@@ -19,6 +19,16 @@ func ScriptMigrate() {
 		&models.Secant{},
 		&models.Matrix{},
 		&models.MatrixIteration{},
+		&models.LinearRegression{},
+		&models.PolynomialRegression{},
+		&models.MultipleRegression{},
+		&models.LinearNewton{},
+		&models.QuadraticNewton{},
+		&models.PolynomialNewton{},
+		&models.QuadraticLagrange{},
+		&models.NumericalDiff{},
+		&models.Trapezoid{},
+		&models.Simpson{},
 	); err != nil {
 		log.Fatalf("failed to migrate database: %v", err)
 	}

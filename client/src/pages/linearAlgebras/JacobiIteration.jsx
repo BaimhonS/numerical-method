@@ -95,13 +95,35 @@ const JacobiIteration = () => {
         // Initialize X with zeros
         let X = Array(size).fill(0);
         let Xnew = Array(size).fill(0);
-        let iterationResults = []; // Store results for each iteration
+        let iterationResults = []; 
         let iterationsCompleted = 0;
         let converged = false;
+        const MAX_ITERATIONS = 300; // เพิ่มการจำกัดจำนวนรอบ
 
-        while (!converged) {
+        // ตรวจสอบว่า input ถูกต้องหรือไม่
+        if (!tolerance || isNaN(tolerance) || tolerance <= 0) {
+            alert("Please enter a valid error tolerance");
+            return;
+        }
+
+        // ตรวจสอบว่า matrix มีค่าครบหรือไม่
+        for (let i = 0; i < size; i++) {
+            for (let j = 0; j < size; j++) {
+                if (!A[i][j] && A[i][j] !== 0) {
+                    alert("Please fill all matrix values");
+                    return;
+                }
+            }
+            if (!B[i] && B[i] !== 0) {
+                alert("Please fill all constant values");
+                return;
+            }
+        }
+
+        while (!converged && iterationsCompleted < MAX_ITERATIONS) {
             let currentResult = { iteration: iterationsCompleted + 1 }; 
             converged = true; 
+            let maxError = 0; // เพิ่มการเก็บค่า error สูงสุด
 
             for (let i = 0; i < size; i++) {
                 let sum = 0;
@@ -110,19 +132,28 @@ const JacobiIteration = () => {
                         sum += A[i][j] * X[j];
                     }
                 }
+                
+                // ตรวจสอบการหารด้วย 0
+                if (A[i][i] === 0) {
+                    alert("Division by zero detected. Matrix may not be diagonally dominant.");
+                    return;
+                }
+
                 Xnew[i] = (B[i] - sum) / A[i][i];
                 currentResult[`X${i + 1}`] = Xnew[i];
 
                 const error = abs((Xnew[i] - X[i]) / Xnew[i]);
-                if (error > tolerance) {
-                    converged = false; 
-                }
+                maxError = Math.max(maxError, error);
             }
 
+            converged = maxError <= tolerance;
             iterationResults.push(currentResult);
-
             X = [...Xnew];
             iterationsCompleted++;
+        }
+
+        if (iterationsCompleted >= MAX_ITERATIONS) {
+            alert(`Method did not converge after ${MAX_ITERATIONS} iterations. The matrix might not be diagonally dominant.`);
         }
 
         setXVector(Xnew);
@@ -157,7 +188,7 @@ const JacobiIteration = () => {
         <div className="flex">
             <Sidebar />
             <div className="flex-1 p-10">
-                <h2 className="text-3xl mb-5">Gauss-Seidel Iteration Method</h2>
+                <h2 className="text-3xl mb-5">Jacobi Iteration Method</h2>
                 <div className="flex justify-end px-10">
                 <button
                     onClick={fetchExampleInput}

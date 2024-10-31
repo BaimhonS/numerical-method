@@ -154,7 +154,7 @@ const LinearSpline = () => {
 
                 {/* Display result */}
                 {result !== null && (
-                    <div className="mt-5">
+                    <div className="mt-5" data-testid="result-value">
                         <p>Interpolated y value: {result.toFixed(6)}</p>
                     </div>
                 )}

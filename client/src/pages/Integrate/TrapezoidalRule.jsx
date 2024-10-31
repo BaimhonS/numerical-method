@@ -11,29 +11,57 @@ const TrapezoidalRule = () => {
 
     // Function to calculate integration using Trapezoidal Rule
     const calculateTrapezoidal = () => {
-        const parsedA = parseFloat(a);
-        const parsedB = parseFloat(b);
-        const parsedN = parseInt(n);
+        try {
+            const parsedA = parseFloat(a);
+            const parsedB = parseFloat(b);
+            const parsedN = parseInt(n);
 
-        if (isNaN(parsedA) || isNaN(parsedB) || isNaN(parsedN) || parsedN <= 0) {
-            alert("Please enter valid values for a, b, and n.");
-            return;
+            if (isNaN(parsedA) || isNaN(parsedB) || isNaN(parsedN) || parsedN <= 0) {
+                alert("Please enter valid values for a, b, and n.");
+                return;
+            }
+
+            const h = (parsedB - parsedA) / parsedN;
+            let sum = 0;
+            
+            const f = (x) => {
+                try {
+                    const result = math.evaluate(expression, { x });
+                    if (isNaN(result)) {
+                        throw new Error('Invalid result');
+                    }
+                    return result;
+                } catch (error) {
+                    throw new Error('Invalid function expression');
+                }
+            };
+
+            try {
+                // Function evaluation at the start and end points
+                const fa = f(parsedA);
+                const fb = f(parsedB);
+                sum += fa / 2 + fb / 2;
+
+                // Calculate function values at interior points
+                for (let i = 1; i < parsedN; i++) {
+                    const value = f(parsedA + i * h);
+                    sum += value;
+                }
+
+                const trapezoidalResult = h * sum;
+                
+                if (isNaN(trapezoidalResult)) {
+                    throw new Error('Invalid result');
+                }
+                
+                setResult(trapezoidalResult);
+            } catch (error) {
+                throw error; // Re-throw to be caught by outer try-catch
+            }
+        } catch (error) {
+            alert(`Calculation error: ${error.message}`);
+            setResult(null);
         }
-
-        const h = (parsedB - parsedA) / parsedN; // Width of each subinterval
-        let sum = 0;
-        
-        // Function evaluation at the start and end points
-        const f = (x) => math.evaluate(expression, { x });
-        sum += f(parsedA) / 2 + f(parsedB) / 2;
-
-        // Calculate function values at interior points
-        for (let i = 1; i < parsedN; i++) {
-            sum += f(parsedA + i * h);
-        }
-
-        const trapezoidalResult = h * sum;
-        setResult(trapezoidalResult);
     };
 
     return (

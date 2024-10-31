@@ -55,27 +55,51 @@ const QuadraticNewton = () => {
     };
 
     const calculateQuadraticInterpolation = () => {
-        if (points.length >= 3) {
-            const selectedIndices = [point1, point2, point3]; // Indices of the selected points
-            const selectedPoints = selectedIndices.map(idx => points[idx]); // Selected points based on indices
+        try {
+            if (points.length < 3) {
+                throw new Error("Please enter at least 3 points for calculation.");
+            }
+
+            // Validate selected points
+            const selectedIndices = [point1, point2, point3];
+            const selectedPoints = selectedIndices.map(idx => points[idx]);
+
+            // Validate point values
+            if (selectedPoints.some(point => !point?.x || !point?.fx)) {
+                throw new Error("Please fill in all point values");
+            }
+
+            // Validate numeric values
+            if (selectedPoints.some(point => 
+                isNaN(parseFloat(point.x)) || 
+                isNaN(parseFloat(point.fx)))) {
+                throw new Error("All inputs must be valid numbers");
+            }
 
             const dividedDifferences = calculateQuadraticDividedDifferences(selectedPoints);
-
             const x = parseFloat(xValue);
-            let interpolatedY = dividedDifferences[0][0]; // Start with f(x0)
+            
+            if (isNaN(x)) {
+                throw new Error("Please enter a valid x value");
+            }
 
-            // Calculate the interpolated value using the divided differences
-            for (let i = 1; i < 3; i++) { // For quadratic interpolation
-                let term = dividedDifferences[0][i]; // Start with the first divided difference
+            let interpolatedY = dividedDifferences[0][0];
+            for (let i = 1; i < 3; i++) {
+                let term = dividedDifferences[0][i];
                 for (let j = 0; j < i; j++) {
-                    term *= (x - parseFloat(selectedPoints[j].x)); // Multiply by (x - x_j)
+                    term *= (x - parseFloat(selectedPoints[j].x));
                 }
-                interpolatedY += term; // Add the term to the result
+                interpolatedY += term;
+            }
+
+            if (isNaN(interpolatedY) || !isFinite(interpolatedY)) {
+                throw new Error("Calculation resulted in an invalid value");
             }
 
             setResult(interpolatedY);
-        } else {
-            alert("Please enter at least 3 points for calculation.");
+        } catch (error) {
+            alert(error.message);
+            setResult(null);
         }
     };
 

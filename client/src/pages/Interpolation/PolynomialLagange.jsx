@@ -33,34 +33,65 @@ const PolynomialLagrange = () => {
         setPointIndices(newPointIndices);
     };
 
-    // Calculate Lagrange interpolation
-    const calculateLagrangeInterpolation = () => {
-        const selected = pointIndices.map(i => points[i]); // Get selected points
-        if (selected.length < 2) {
-            alert("Please select at least two points.");
-            return;
+    // Validate inputs before calculation
+    const validateInputs = () => {
+        // Check if we have enough points
+        if (points.length < 3) {
+            alert("Please enter at least 3 points for calculation.");
+            return false;
         }
 
-        const x = parseFloat(xValue);
-        let interpolatedY = 0;
+        // Check if all points have valid values
+        const hasInvalidPoints = points.some(point => 
+            point.x === '' || point.fx === '' || 
+            isNaN(point.x) || isNaN(point.fx)
+        );
 
-        // Calculate the Lagrange interpolation
-        for (let i = 0; i < selected.length; i++) {
-            const xi = parseFloat(selected[i].x);
-            const fx = parseFloat(selected[i].fx);
-            let term = fx;
+        if (hasInvalidPoints) {
+            alert("Please fill in all points with valid numeric values.");
+            return false;
+        }
 
-            for (let j = 0; j < selected.length; j++) {
-                if (i !== j) {
-                    const xj = parseFloat(selected[j].x);
-                    term *= (x - xj) / (xi - xj);
-                }
+        return true;
+    };
+
+    // Calculate Lagrange interpolation
+    const calculateQuadraticLagrange = () => {
+        if (!validateInputs()) return;
+
+        try {
+            const x = parseFloat(xValue);
+            let interpolatedY = 0;
+
+            // Get selected points
+            const selected = [points[point1], points[point2], points[point3]];
+            
+            // Validate selected points exist
+            if (selected.some(point => !point)) {
+                alert("Please select valid point indices");
+                return;
             }
 
-            interpolatedY += term;
-        }
+            // Calculate the Lagrange interpolation
+            for (let i = 0; i < selected.length; i++) {
+                const xi = parseFloat(selected[i].x);
+                const fx = parseFloat(selected[i].fx);
+                let term = fx;
 
-        setResult(interpolatedY);
+                for (let j = 0; j < selected.length; j++) {
+                    if (i !== j) {
+                        const xj = parseFloat(selected[j].x);
+                        term *= (x - xj) / (xi - xj);
+                    }
+                }
+
+                interpolatedY += term;
+            }
+
+            setResult(interpolatedY);
+        } catch (error) {
+            alert("Error in calculation. Please check your inputs.");
+        }
     };
 
     return (
@@ -137,14 +168,15 @@ const PolynomialLagrange = () => {
 
                 {/* Calculate button */}
                 <button
-                    onClick={calculateLagrangeInterpolation}
+                    data-testid="calculate-button"
+                    onClick={calculateQuadraticLagrange}
                     className="my-5 px-4 py-2 bg-blue-500 text-white rounded-md">
                     Calculate
                 </button>
 
                 {/* Display result */}
                 {result !== null && (
-                    <div className="mt-5">
+                    <div className="mt-5" data-testid="result-value">
                         <p>Interpolated y value: {result.toFixed(6)}</p>
                     </div>
                 )}

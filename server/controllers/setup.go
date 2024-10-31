@@ -12,4 +12,8 @@ func SetUpController(app *fiber.App, configClients configs.ConfigClients) {
 
 	RootOfEquationController(controller, configClients)
 	LinearAlgrebraController(controller, configClients)
+	LeastSquaresRegressionController(controller, configClients)
+	IntegrationController(controller, configClients)
+	InterpolationController(controller, configClients)
+	NumericalDiffController(controller, configClients)
 }

@@ -25,6 +25,16 @@ func NewLinearService(db *gorm.DB) LinearService {
 	}
 }
 
+// @Tags Matrix
+// @Summary Get Matrix Result
+// @Description Get the matrix result by ID
+// @Accept json
+// @Produce json
+// @Param id path string true "Matrix ID"
+// @Success 200 {object} models.Graphical
+// @Failure 400 {object} utils.ErrorResponse "Bad Request"
+// @Failure 404 {object} utils.ErrorResponse "Not Found"
+// @Router /numerical-method/linear-algrebra/matrix/{id} [get]
 func (l LinearServiceImpl) GetMatrix(c *fiber.Ctx) error {
 	id := c.Params("id")
 
@@ -48,6 +58,15 @@ func (l LinearServiceImpl) GetMatrix(c *fiber.Ctx) error {
 	}
 	return c.Status(fiber.StatusOK).JSON(matrix)
 }
+
+// @Tags Matrix
+// @Summary Create Matrix Result
+// @Description Create the matrix result
+// @Accept json
+// @Produce json
+// @Success 201 {object} models.Matrix
+// @Failure 400 {object} utils.ErrorResponse "Bad Request"
+// @Router /numerical-method/linear-algrebra/matrix [post]
 func (l *LinearServiceImpl) CreateMatrix(c *fiber.Ctx) error {
 	req, ok := c.Locals("req").(validations.ReqMatrix)
 	if !ok {
@@ -69,6 +88,17 @@ func (l *LinearServiceImpl) CreateMatrix(c *fiber.Ctx) error {
 	}
 	return c.Status(fiber.StatusCreated).JSON(matrix)
 }
+
+// @Tags Matrix Iteration
+// @Summary Get Matrix Iteration Result
+// @Description Get the matrix iteration result by ID
+// @Accept json
+// @Produce json
+// @Param id path string true "Matrix Iteration ID"
+// @Success 200 {object} models.Graphical
+// @Failure 400 {object} utils.ErrorResponse "Bad Request"
+// @Failure 404 {object} utils.ErrorResponse "Not Found"
+// @Router /numerical-method/linear-algrebra/matrix-iteration/{id} [get]
 func (l LinearServiceImpl) GetMatrixIteration(c *fiber.Ctx) error {
 	id := c.Params("id")
 
@@ -92,6 +122,15 @@ func (l LinearServiceImpl) GetMatrixIteration(c *fiber.Ctx) error {
 	}
 	return c.Status(fiber.StatusOK).JSON(matrixIteration)
 }
+
+// @Tags Matrix Iteration
+// @Summary Create Matrix Iteration Result
+// @Description Create the matrix iteration result
+// @Accept json
+// @Produce json
+// @Success 201 {object} models.MatrixIteration
+// @Failure 400 {object} utils.ErrorResponse "Bad Request"
+// @Router /numerical-method/linear-algrebra/matrix-iteration [post]
 func (l *LinearServiceImpl) CreateMatrixIteration(c *fiber.Ctx) error {
 	req, ok := c.Locals("req").(validations.ReqMatrixIteration)
 	if !ok {

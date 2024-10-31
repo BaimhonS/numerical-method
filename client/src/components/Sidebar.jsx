@@ -88,7 +88,7 @@ const Sidebar = () => {
               <Link to="/quadratic-spline" className="block text-gray-600 hover:bg-gray-200 p-2 rounded">Quadratic Spline</Link>
             </li>
             <li className="mb-1">
-              <Link to="/cubic-spline" className="block text-gray-600 hover:bg-gray-200 p-2 rounded">Cubic Spline -XXX-</Link>
+              <Link to="/cubic-spline" className="block text-gray-600 hover:bg-gray-200 p-2 rounded">Cubic Spline</Link>
             </li>
           </ul>
         </li>
@@ -102,7 +102,7 @@ const Sidebar = () => {
               <Link to="/polynomial-regression" className="block text-gray-600 hover:bg-gray-200 p-2 rounded">Polynomial Regression</Link>
             </li>
             <li className="mb-1">
-              <Link to="/multiply-linear-regression" className="block text-gray-600 hover:bg-gray-200 p-2 rounded">Multiple Linear Regression -XXX-</Link>
+              <Link to="/multiply-linear-regression" className="block text-gray-600 hover:bg-gray-200 p-2 rounded">Multiple Linear Regression</Link>
             </li>
           </ul>
         </li>
@@ -124,7 +124,10 @@ const Sidebar = () => {
               <Link to="/forward-divided-diff" className="block text-gray-600 hover:bg-gray-200 p-2 rounded">Forward</Link>
             </li>
             <li className="mb-1">
-              <Link to="/simpson-rule" className="block text-gray-600 hover:bg-gray-200 p-2 rounded">-------</Link>
+              <Link to="/backward-divided-diff" className="block text-gray-600 hover:bg-gray-200 p-2 rounded">Backward</Link>
+            </li>
+            <li className="mb-1">
+              <Link to="/central-divided-diff" className="block text-gray-600 hover:bg-gray-200 p-2 rounded">Central</Link>
             </li>
           </ul>
         </li>

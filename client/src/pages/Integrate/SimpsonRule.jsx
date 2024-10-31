@@ -11,28 +11,52 @@ const SimpsonRule = () => {
 
     // Function to calculate integration using Simpson's Rule
     const calculateSimpson = () => {
-        const parsedA = parseFloat(a);
-        const parsedB = parseFloat(b);
-        let parsedN = parseInt(n);
+        try {
+            const parsedA = parseFloat(a);
+            const parsedB = parseFloat(b);
+            let parsedN = parseInt(n);
 
-        if (isNaN(parsedA) || isNaN(parsedB) || isNaN(parsedN) || parsedN <= 0 || parsedN % 2 !== 0) {
-            alert("Please enter valid values for a, b, and an even n.");
-            return;
+            if (isNaN(parsedA) || isNaN(parsedB) || isNaN(parsedN) || parsedN <= 0 || parsedN % 2 !== 0) {
+                alert("Please enter valid values for a, b, and an even n.");
+                return;
+            }
+
+            const h = (parsedB - parsedA) / parsedN; // Width of each subinterval
+            const f = (x) => {
+                try {
+                    const result = math.evaluate(expression, { x });
+                    if (isNaN(result)) {
+                        throw new Error('Invalid result');
+                    }
+                    return result;
+                } catch (error) {
+                    throw new Error('Invalid function expression');
+                }
+            };
+            
+            // Apply Simpson's Rule formula
+            let sum = f(parsedA) + f(parsedB);
+
+            for (let i = 1; i < parsedN; i++) {
+                const coefficient = i % 2 === 0 ? 2 : 4;
+                const value = f(parsedA + i * h);
+                if (isNaN(value)) {
+                    throw new Error('Invalid result');
+                }
+                sum += coefficient * value;
+            }
+
+            const simpsonResult = (h / 3) * sum;
+            
+            if (isNaN(simpsonResult)) {
+                throw new Error('Invalid result');
+            }
+            
+            setResult(simpsonResult);
+        } catch (error) {
+            alert(`Calculation error: ${error.message}`);
+            setResult(null);
         }
-
-        const h = (parsedB - parsedA) / parsedN; // Width of each subinterval
-        const f = (x) => math.evaluate(expression, { x });
-        
-        // Apply Simpson's Rule formula
-        let sum = f(parsedA) + f(parsedB);
-
-        for (let i = 1; i < parsedN; i++) {
-            const coefficient = i % 2 === 0 ? 2 : 4;
-            sum += coefficient * f(parsedA + i * h);
-        }
-
-        const simpsonResult = (h / 3) * sum;
-        setResult(simpsonResult);
     };
 
     return (

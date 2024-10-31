@@ -31,18 +31,56 @@ const LinearLagrangeInterpolation = () => {
     };
     
     const calculateLinearLagrangeInterpolation = () => {
-        const selectedPoints = [points[point1], points[point2]];
-        const interpolatedY = selectedPoints.reduce((sum, point, index) => {
-        let term = parseFloat(point.fx);
-        for (let j = 0; j < selectedPoints.length; j++) {
-            if (index !== j) {
-                term *= (xValue - parseFloat(selectedPoints[j].x)) / (parseFloat(point.x) - parseFloat(selectedPoints[j].x));
+        try {
+            // Validate selected points first
+            if (!point1 || !point2) {
+                throw new Error('Please fill in all required fields');
             }
-        }
-        return sum + term;
-        }, 0);
 
-        setResult(interpolatedY);
+            const selectedPoints = [points[point1], points[point2]];
+
+            // Then validate point values
+            if (selectedPoints.some(point => !point?.x || !point?.fx)) {
+                throw new Error('Please fill in all required fields');
+            }
+
+            // Then validate numeric values
+            const numericPoints = selectedPoints.map(point => ({
+                x: parseFloat(point.x),
+                fx: parseFloat(point.fx)
+            }));
+
+            if (numericPoints.some(point => isNaN(point.x) || isNaN(point.fx))) {
+                throw new Error('Please enter valid numeric values');
+            }
+
+            // Check for duplicate x values
+            const xValues = numericPoints.map(p => p.x);
+            if (new Set(xValues).size !== xValues.length) {
+                throw new Error('Points must have different x values');
+            }
+
+            // Calculate interpolation using validated numeric values
+            const interpolatedY = numericPoints.reduce((sum, point, index) => {
+                let term = point.fx;
+                for (let j = 0; j < numericPoints.length; j++) {
+                    if (index !== j) {
+                        term *= (xValue - numericPoints[j].x) / 
+                               (point.x - numericPoints[j].x);
+                    }
+                }
+                return sum + term;
+            }, 0);
+
+            if (isNaN(interpolatedY) || !isFinite(interpolatedY)) {
+                throw new Error('Invalid calculation result');
+            }
+
+            setResult(interpolatedY);
+        } catch (error) {
+            alert(error.message);
+            setResult(null);
+        }
     };
     
     return (
@@ -127,6 +165,7 @@ const LinearLagrangeInterpolation = () => {
 
                 {/* Calculate button */}
                 <button
+                    data-testid="calculate-button"
                     onClick={calculateLinearLagrangeInterpolation}
                     className="my-5 px-4 py-2 bg-blue-500 text-white rounded-md">
                     Calculate
@@ -134,7 +173,7 @@ const LinearLagrangeInterpolation = () => {
 
                 {/* Display result */}
                 {result !== null && (
-                    <div className="mt-5">
+                    <div className="mt-5" data-testid="result-value">
                         <p>Interpolated y value: {result.toFixed(6)}</p>
                     </div>
                 )}

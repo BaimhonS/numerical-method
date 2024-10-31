@@ -2,12 +2,7 @@ import React, { useState } from "react";
 import Sidebar from "../../components/Sidebar";
 import { evaluate } from "mathjs";
 
-const ForwardDividedDifference = () => {
-  const factorial = (n) => {
-    if (n === 0 || n === 1) return 1;
-    return n * factorial(n - 1);
-  };
-
+const CentralDividedDifference = () => {
   const [fx, setFx] = useState("");
   const [x, setX] = useState('');
   const [h, setH] = useState('');
@@ -16,62 +11,50 @@ const ForwardDividedDifference = () => {
   const [showSteps, setShowSteps] = useState(false);
   const [steps, setSteps] = useState([]);
 
-  const handleXChange = (e) => {
-    const value = e.target.value;
-    if (value === '' || isNaN(value)) {
-      setX('');
-    } else {
-      setX(parseFloat(value));
-    }
-  };
-
-  const handleHChange = (e) => {
-    const value = e.target.value;
-    if (value === '' || isNaN(value)) {
-      setH('');
-    } else {
-      setH(parseFloat(value));
-    }
-  };
-
-  const handleOrderChange = (e) => {
-    const value = e.target.value;
-    if (value === '' || isNaN(value)) {
-      setOrder('');
-    } else {
-      setOrder(parseInt(value));
-    }
-  };
-
   const handleFxChange = (e) => {
     setFx(e.target.value);
   };
 
-  const calculateForwardDividedDifference = () => {
+  const handleXChange = (e) => {
+    setX(parseFloat(e.target.value));
+  };
+
+  const handleHChange = (e) => {
+    setH(parseFloat(e.target.value));
+  };
+
+  const handleOrderChange = (e) => {
+    setOrder(parseInt(e.target.value));
+  };
+
+  const factorial = (n) => {
+    if (n === 0 || n === 1) return 1;
+    return n * factorial(n - 1);
+  };
+
+  const calculateCentralDividedDifference = () => {
     try {
       const expression = fx
         .replace(/e\^x/gi, 'exp(x)')
         .replace(/\(e\^x\)/gi, '(exp(x))')
         .replace(/e\^/gi, 'exp');
-      
+
       if (order === 1) {
-        // Simple forward difference for first order
-        const fx_value = evaluate(expression, { x: x });
-        const fxh_value = evaluate(expression, { x: x + h });
-        
-        // Forward difference formula: [f(x + h) - f(x)] / h
-        const approx = (fxh_value - fx_value) / h;
-        
+        // First order central difference: [f(x + h) - f(x - h)] / (2h)
+        const fxPlusH = evaluate(expression, { x: x + h });
+        const fxMinusH = evaluate(expression, { x: x - h });
+        const approx = (fxPlusH - fxMinusH) / (2 * h);
+
         const currentSteps = [
           {
-            xValue: x,
-            fxValue: fx_value,
-            description: "f(x)"
+            xValue: x + h,
+            fxValue: fxPlusH,
+            description: "f(x + h)"
           },
           {
-            xValue: x + h,
-            fxValue: fxh_value,
-            description: "f(x + h)"
+            xValue: x - h,
+            fxValue: fxMinusH,
+            description: "f(x - h)"
           }
         ];
 
@@ -79,30 +62,34 @@ const ForwardDividedDifference = () => {
         setSteps(currentSteps);
         setShowSteps(true);
       } else {
-        // Higher order calculations
+        // Higher order central differences
         let coefficients = [];
-        for (let i = 0; i <= order; i++) {
-          coefficients[i] = Math.pow(-1, order - i) * factorial(order) / 
-            (factorial(i) * factorial(order - i));
+        const n = Math.floor((order + 1) / 2);
+        
+        // Generate coefficients for central difference
+        for (let i = -n; i <= n; i++) {
+          if (order % 2 === 0 && i === 0) continue;
+          const coef = Math.pow(-1, i) * factorial(order) /
+            (factorial(n + i) * factorial(n - i));
+          coefficients.push({ i, coef });
         }
 
         let terms = [];
         let currentSteps = [];
-        
-        for (let i = 0; i <= order; i++) {
+
+        coefficients.forEach(({ i, coef }) => {
           const xValue = x + i * h;
           const fxValue = evaluate(expression, { x: xValue });
-          const coefficient = coefficients[i];
-          const term = coefficient * fxValue / Math.pow(h, order);
+          const term = coef * fxValue / Math.pow(2 * h, order);
           terms.push(term);
 
           currentSteps.push({
             xValue: xValue,
             fxValue: fxValue,
-            coefficient: coefficient,
+            coefficient: coef,
             term: term
           });
-        }
+        });
 
         const approx = terms.reduce((sum, term) => sum + term, 0);
         setResult(approx);
@@ -110,7 +97,7 @@ const ForwardDividedDifference = () => {
         setShowSteps(true);
       }
     } catch (error) {
-      alert("Error in calculation. Please use 'exp(x)' for exponential function.");
+      alert("Error in calculation. Please check your input and try again.");
       console.error(error);
     }
   };
@@ -119,7 +106,7 @@ const ForwardDividedDifference = () => {
     <div className="flex">
       <Sidebar />
       <div className="flex-1 p-10">
-        <h2 className="text-3xl mb-5">Forward Divided Difference</h2>
+        <h2 className="text-3xl mb-5">Central Divided Difference</h2>
         
         <div className="flex space-x-6">
           <div>
@@ -168,7 +155,7 @@ const ForwardDividedDifference = () => {
         </div>
 
         <button
-          onClick={calculateForwardDividedDifference}
+          onClick={calculateCentralDividedDifference}
           className="my-5 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition duration-200"
         >
           Calculate
@@ -194,8 +181,8 @@ const ForwardDividedDifference = () => {
                     <td className="border px-4 py-2">{index + 1}</td>
                     <td className="border px-4 py-2">{step.xValue.toFixed(4)}</td>
                     <td className="border px-4 py-2">{step.fxValue.toFixed(6)}</td>
-                    {order > 1 && <td className="border px-4 py-2">{step.coefficient.toFixed(6)}</td>}
-                    {order > 1 && <td className="border px-4 py-2">{step.term.toFixed(6)}</td>}
+                    {order > 1 && step.coefficient && <td className="border px-4 py-2">{step.coefficient.toFixed(6)}</td>}
+                    {order > 1 && step.term && <td className="border px-4 py-2">{step.term.toFixed(6)}</td>}
                   </tr>
                 ))}
               </tbody>
@@ -207,4 +194,4 @@ const ForwardDividedDifference = () => {
   );
 };
 
-export default ForwardDividedDifference;
+export default CentralDividedDifference; 
