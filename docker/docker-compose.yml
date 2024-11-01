@@ -2,32 +2,43 @@ version: '3.9'
 
 services:
   db-numer:
-    image: mysql:9
+    image: mysql:8
     container_name: numer-db
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: numerical-method
-      MYSQL_USER: guess
-      MYSQL_PASSWORD: guess
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
     ports:
       - "3306:3306"
-  # db-numer-client:
-  #   image: phpmyadmin
-  #   container_name: numer-db-client
-  #   restart: always
-  #   depends_on:
-  #     - db-numer
-  #   ports:
-  #     - "8081:80"
-  #   environment:
-  #     - PMA_ARBITRARY=1
-  # server:
-  #   build:
-  #     context: ../...
-  #     dockerfile: ../backend/.
-  #   ports:
-  #     - "8080:8080"
-  #   depends_on:
-  #     - db-numer
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+  backend:
+    image: ${DOCKERHUB_USERNAME}/backend:latest
+    container_name: numer-backend
+    restart: always
+    environment:
+      - DB_HOST=db-numer
+      - DB_PORT=3306
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_NAME=${DB_NAME}
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db-numer
+
+  frontend:
+    image: ${DOCKERHUB_USERNAME}/frontend:latest
+    container_name: numer-frontend
+    restart: always
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+
+volumes:
+  mysql_data:
     

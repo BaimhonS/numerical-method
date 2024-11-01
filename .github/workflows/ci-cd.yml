@@ -1,0 +1,134 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test-backend:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./server
+
+    services:
+      mysql:
+        image: mysql:8
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: numerical-method
+          MYSQL_USER: guess
+          MYSQL_PASSWORD: guess
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Set up Go
+      uses: actions/setup-go@v4
+      with:
+        go-version: '1.22'
+        cache: true
+
+    - name: Run tests
+      run: go test -v ./...
+      env:
+        DB_HOST: localhost
+        DB_PORT: 3306
+        DB_USER: guess
+        DB_PASSWORD: guess
+        DB_NAME: numerical-method
+
+  test-frontend:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./client
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+        cache: 'npm'
+        cache-dependency-path: './client/package-lock.json'
+
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Run tests
+      run: npm test
+
+  build-and-push:
+    needs: [test-backend, test-frontend]
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v2
+
+    - name: Login to Docker Hub
+      uses: docker/login-action@v2
+      with:
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+    - name: Build and push backend
+      uses: docker/build-push-action@v4
+      with:
+        context: ./server
+        file: ./server/Dockerfile
+        push: true
+        tags: ${{ secrets.DOCKERHUB_USERNAME }}/backend:latest
+
+    - name: Build and push frontend
+      uses: docker/build-push-action@v4
+      with:
+        context: ./client
+        file: ./client/Dockerfile
+        push: true
+        tags: ${{ secrets.DOCKERHUB_USERNAME }}/frontend:latest
+
+  deploy:
+    needs: build-and-push
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Copy docker-compose and env files
+      uses: appleboy/scp-action@master
+      with:
+        host: ${{ secrets.SERVER_HOST }}
+        username: ${{ secrets.SERVER_USERNAME }}
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        source: "docker/docker-compose.yml,.env"
+        target: "/home/${{ secrets.SERVER_USERNAME }}/app"
+
+    - name: Deploy to production
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.SERVER_HOST }}
+        username: ${{ secrets.SERVER_USERNAME }}
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        script: |
+          cd /home/${{ secrets.SERVER_USERNAME }}/app
+          docker pull ${{ secrets.DOCKERHUB_USERNAME }}/backend:latest
+          docker pull ${{ secrets.DOCKERHUB_USERNAME }}/frontend:latest
+          docker volume create mysql_data || true
+          docker-compose -f docker/docker-compose.yml down
+          docker-compose -f docker/docker-compose.yml up -d
