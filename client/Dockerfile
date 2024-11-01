@@ -4,7 +4,7 @@ FROM node:18-alpine AS build
 WORKDIR /app
 COPY package*.json ./
 
-# Install dependencies with clean npm cache
+# Install dependencies
 RUN npm ci --only=production && \
     npm cache clean --force
 
@@ -25,4 +25,4 @@ HEALTHCHECK --interval=30s --timeout=3s \
   CMD wget --quiet --tries=1 --spider http://localhost:80 || exit 1
 
 EXPOSE 80
-CMD ["nginx", "-g", "daemon off;"]
+CMD ["nginx", "-g", "daemon off;"] 
