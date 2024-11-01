@@ -15,16 +15,20 @@ const Bisection = () => {
     const error = (xold, xnew) => Math.abs((xnew - xold) / xnew) * 100;
 
     const fetchExampleInput = () => {
-        axios.get('http://localhost:8080/numerical-method/root-of-equations/bisection/1')
+        axios.get('/numerical-method/root-of-equations/bisection/1')
             .then((response) => {
                 const data = response.data;
-                setEquation(data.equation);
-                setXl(data.xl);
-                setXr(data.xr);
-                setE(data.e);
+                setEquation(data.equation || '');
+                setXl(String(data.xl) || '');
+                setXr(String(data.xr) || '');
+                setE(String(data.e) || '');
             })
             .catch((error) => {
                 console.error("There was an error fetching the example input!", error);
+                setEquation('');
+                setXl('');
+                setXr('');
+                setE('');
             });
     };
 
@@ -90,7 +94,7 @@ const Bisection = () => {
                             type="text"
                             className="block w-full my-3 p-2 border rounded-md"
                             placeholder="Equation"
-                            value={equation}
+                            value={equation || ''}
                             onChange={(e) => setEquation(e.target.value)}
                         />
                     </div>
@@ -100,7 +104,7 @@ const Bisection = () => {
                             type="number"
                             className="block w-full my-3 p-2 border rounded-md"
                             placeholder="Xl"
-                            value={xl}
+                            value={xl || ''}
                             onChange={(e) => setXl(e.target.value)}
                         />
                     </div>
@@ -110,7 +114,7 @@ const Bisection = () => {
                             type="number"
                             className="block w-full my-3 p-2 border rounded-md"
                             placeholder="Xr"
-                            value={xr}
+                            value={xr || ''}
                             onChange={(e) => setXr(e.target.value)}
                         />
                     </div>
@@ -120,7 +124,7 @@ const Bisection = () => {
                             type="number"
                             className="block w-full my-3 p-2 border rounded-md"
                             placeholder="Error"
-                            value={E}
+                            value={E || ''}
                             onChange={(e) => setE(e.target.value)}
                         />
                     </div>

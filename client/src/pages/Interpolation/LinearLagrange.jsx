@@ -85,7 +85,7 @@ const LinearLagrangeInterpolation = () => {
     };
     
     const fetchExampleInput = () => {
-        axios.get('http://localhost:8080/numerical-method/interpolation/linear-newton/1')
+        axios.get('/numerical-method/interpolation/linear-newton/1')
             .then((response) => {
                 const data = response.data;
                 console.log("Raw data from server:", data);

@@ -14,7 +14,7 @@ const CubicSpline = () => {
     const [solutions, setSolutions] = useState({}); // Add state for solutions
 
     const fetchExampleInput = () => {
-        axios.get('http://localhost:8080/numerical-method/interpolation/polynomial-newton/1')
+        axios.get('/numerical-method/interpolation/polynomial-newton/1')
             .then((response) => {
                 const data = response.data;
                 console.log("Raw data from server:", data);

@@ -1,28 +1,19 @@
 # Stage 1: Build
-FROM node:18-alpine AS build
+FROM node:18-alpine
 
 WORKDIR /app
-COPY package*.json ./
 
 # Install dependencies
-RUN npm ci --only=production && \
-    npm cache clean --force
+COPY package*.json ./
+RUN npm install
 
+# Copy source code
 COPY . .
-RUN npm run build
 
-# Stage 2: Production
-FROM nginx:alpine
+# Install rollup explicitly
+RUN npm install @rollup/rollup-linux-x64-musl
 
-# Copy custom nginx config
-COPY nginx.conf /etc/nginx/conf.d/default.conf
+EXPOSE 3000
 
-# Copy built files
-COPY --from=build /app/dist /usr/share/nginx/html
-
-# Add healthcheck
-HEALTHCHECK --interval=30s --timeout=3s \
-  CMD wget --quiet --tries=1 --spider http://localhost:80 || exit 1
-
-EXPOSE 80
-CMD ["nginx", "-g", "daemon off;"] 
+# Start Vite server
+CMD ["npm", "run", "dev", "--", "--host", "0.0.0.0"]

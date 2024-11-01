@@ -61,7 +61,7 @@ const SimpsonRule = () => {
     };
 
     const fetchExampleInput = () => {
-        axios.get('http://localhost:8080/numerical-method/integration/simpson/1')
+        axios.get('/numerical-method/integration/simpson/1')
             .then((response) => {
                 const data = response.data;
                 

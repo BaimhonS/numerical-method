@@ -13,7 +13,7 @@ const Secant = () => {
     const [showResults, setShowResults] = useState(false);
 
     const fetchExampleInput = () => {
-        axios.get('http://localhost:8080/numerical-method/root-of-equations/secant/1')
+        axios.get('/numerical-method/root-of-equations/secant/1')
             .then((response) => {
                 const data = response.data;
                 setEquation(data.Equation);

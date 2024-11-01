@@ -16,7 +16,7 @@ const QuadraticSpline = () => {
     const [solutions, setSolutions] = useState({});
 
     const fetchExampleInput = () => {
-        axios.get('http://localhost:8080/numerical-method/interpolation/quadratic-spline/1')
+        axios.get('/numerical-method/interpolation/quadratic-spline/1')
             .then((response) => {
                 const data = response.data;
                 

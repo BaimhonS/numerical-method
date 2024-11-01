@@ -1,41 +1,45 @@
 version: '3.9'
 
 services:
+
   db-numer:
     image: mysql:8
     container_name: numer-db
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
-      MYSQL_DATABASE: ${DB_NAME}
-      MYSQL_USER: ${DB_USER}
-      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: numerical-method
+      MYSQL_USER: guess
+      MYSQL_PASSWORD: guess
     ports:
       - "3306:3306"
     volumes:
       - mysql_data:/var/lib/mysql
 
   backend:
-    image: ${DOCKERHUB_USERNAME}/backend:latest
+    build:
+      context: ../server
+      dockerfile: Dockerfile
     container_name: numer-backend
     restart: always
     environment:
-      - DB_HOST=db-numer
-      - DB_PORT=3306
-      - DB_USER=${DB_USER}
-      - DB_PASSWORD=${DB_PASSWORD}
-      - DB_NAME=${DB_NAME}
+      - SERVER_PORT=8080
+      - DSN=root:root@tcp(db-numer:3306)/numerical-method?charset=utf8mb4&parseTime=True
     ports:
       - "8080:8080"
     depends_on:
       - db-numer
 
   frontend:
-    image: ${DOCKERHUB_USERNAME}/frontend:latest
+    build:
+      context: ../client
+      dockerfile: Dockerfile
     container_name: numer-frontend
     restart: always
+    environment:
+      - VITE_API_URL=http://backend:8080
     ports:
-      - "80:80"
+      - "3000:3000"
     depends_on:
       - backend
 

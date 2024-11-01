@@ -131,7 +131,7 @@ const PolynomialRegression = () => {
     };
 
     const fetchExampleInput = () => {
-        axios.get('http://localhost:8080/numerical-method/least-squares-regression/polynomial-regression/1')
+        axios.get('/numerical-method/least-squares-regression/polynomial-regression/1')
             .then((response) => {
                 const data = response.data;
                 

@@ -9,6 +9,7 @@ import (
 )
 
 func ConnectDB() *gorm.DB {
+	log.Println(os.Getenv("DSN"))
 	db, err := gorm.Open(mysql.Open(os.Getenv("DSN")), &gorm.Config{})
 
 	if err != nil {

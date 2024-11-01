@@ -99,7 +99,7 @@ const BackwardDividedDifference = () => {
   };
 
   const fetchExampleInput = () => {
-    axios.get('http://localhost:8080/numerical-method/numerical-diff/1')
+    axios.get('/numerical-method/numerical-diff/1')
         .then((response) => {
             const data = response.data;
             

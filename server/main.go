@@ -16,9 +16,15 @@ import (
 )
 
 func init() {
-	if err := godotenv.Load(".env"); err != nil {
-		log.Fatalf("error loading .env file: %v", err)
+	if os.Getenv("SERVER_PORT") != "8080" {
+		if err := godotenv.Load(".env"); err != nil {
+			log.Fatalf("error loading .env file: %v", err)
+		}
 	}
+	if os.Getenv("SERVER_PORT") == "" {
+		log.Fatalf("SERVER_PORT is not set in .env file")
+	}
+
 }
 
 // @Title API Documentation
@@ -31,7 +37,13 @@ func main() {
 
 	app := fiber.New()
 
-	app.Use(cors.New())
+	app.Use(cors.New(
+		cors.Config{
+			AllowOrigins: "*",
+			AllowHeaders: "Origin, Content-Type, Accept, Authorization",
+			AllowMethods: "GET, POST, PUT, DELETE, OPTIONS",
+		},
+	))
 
 	controllers.SetUpController(app, configsClients)
 

@@ -13,7 +13,7 @@ const GaussEliminate = () => {
     const [showResults, setShowResults] = useState(false);
 
     const fetchExampleInput = () => {
-        axios.get('http://localhost:8080/numerical-method/linear-algrebra/matrix/1')
+        axios.get('/numerical-method/linear-algrebra/matrix/1')
             .then((response) => {
                 const data = response.data;
     

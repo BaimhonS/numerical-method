@@ -10,7 +10,7 @@ const TrapezoidalRule = () => {
     const [expression, setExpression] = useState(''); // Function to integrate
     const [result, setResult] = useState(null); // Result of integration
     const fetchExampleInput = () => {
-        axios.get('http://localhost:8080/numerical-method/integration/trapezoid/1')
+        axios.get('/numerical-method/integration/trapezoid/1')
             .then((response) => {
                 const data = response.data;
                 
