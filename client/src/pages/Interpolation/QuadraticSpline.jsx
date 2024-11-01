@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import Sidebar from '../../components/Sidebar';
 import { toast } from "sonner";
 import { det } from 'mathjs';
+import axios from 'axios';
 
 const QuadraticSpline = () => {
     const [points, setPoints] = useState([{ x: '', fx: '' }]);
@@ -13,6 +14,42 @@ const QuadraticSpline = () => {
     const [matrix, setMatrix] = useState([]);
     const [rhs, setRHS] = useState([]);
     const [solutions, setSolutions] = useState({});
+
+    const fetchExampleInput = () => {
+        axios.get('http://localhost:8080/numerical-method/interpolation/quadratic-spline/1')
+            .then((response) => {
+                const data = response.data;
+                
+                // Parse points string into array of objects
+                const pointsArray = data.points.split(',').map(point => {
+                    const [x, fx] = point.trim().split(' ');
+                    return {
+                        x: x.replace('x:', '').trim(),
+                        fx: fx.replace('fx:', '').trim()
+                    };
+                });
+                
+                setPoints(pointsArray);
+
+                // Parse x values with x: prefix
+                const xValuesArray = data.xvalue.split(',').map(x => 
+                    x.trim().replace('x:', '').trim()
+                );
+                setXValues(xValuesArray);
+
+                // Set point selections
+                const selectedPoints = data.point.split(',').map(p => 
+                    parseInt(p.trim().replace('x:', '')) - 1
+                );
+                setPoint1(selectedPoints[0]);
+                setPoint2(selectedPoints[1]);
+                setPoint3(selectedPoints[2]);
+            })
+            .catch((error) => {
+                console.error("Error fetching example input:", error);
+                toast.error("Failed to fetch example data");
+            });
+    };
 
     const handlePointChange = (index, field, value) => {
         const newPoints = [...points];
@@ -179,13 +216,18 @@ const QuadraticSpline = () => {
         });
         setResult(calculatedResults); // Set calculated results
     };
-    
     return (
         <div className="flex">
             <Sidebar />
             <div className="flex-1 p-10">
                 <h2 className="text-3xl mb-5">Quadratic Spline Interpolation</h2>
-
+                <div className="flex justify-end">
+                    <button
+                        onClick={fetchExampleInput}
+                        className="my-5 px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 transition duration-200">
+                        Get Example
+                    </button>
+                </div>
                 {/* Dynamic points input */}
                 <div>
                     <h3 className="text-xl mb-3">Enter Points Data</h3>

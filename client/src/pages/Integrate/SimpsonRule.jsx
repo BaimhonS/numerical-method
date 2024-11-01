@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Sidebar from '../../components/Sidebar';
 import * as math from 'mathjs';
+import axios from 'axios';
 
 const SimpsonRule = () => {
     const [a, setA] = useState(''); // Start of interval
@@ -59,11 +60,34 @@ const SimpsonRule = () => {
         }
     };
 
+    const fetchExampleInput = () => {
+        axios.get('http://localhost:8080/numerical-method/integration/simpson/1')
+            .then((response) => {
+                const data = response.data;
+                
+                setExpression(data.function);
+                setA(data.upper.toString());
+                setB(data.lower.toString());
+                setN(data.interval.toString());
+            })
+            .catch((error) => {
+                console.error("Error fetching example input:", error);
+            });
+    };
+
     return (
         <div className="flex">
             <Sidebar />
             <div className="flex-1 p-10">
                 <h2 className="text-2xl mb-5">Simpson's Rule</h2>
+                
+                <div className="flex justify-end">
+                    <button
+                        onClick={fetchExampleInput}
+                        className="my-5 px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 transition duration-200">
+                        Get Example
+                    </button>
+                </div>
                 
                 <label>Function:</label>
                 <input

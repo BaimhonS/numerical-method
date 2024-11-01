@@ -20,4 +20,6 @@ func InterpolationController(router fiber.Router, configClients configs.ConfigCl
 	interpolationController.Post("/polynomial-newton", interpolationValidate.ValidatePolynomialNewton, interpolationService.CreatePolynomialNewton)
 	interpolationController.Get("/quadratic-lagrange/:id", interpolationService.GetQuadraticLagrange)
 	interpolationController.Post("/quadratic-lagrange", interpolationValidate.ValidateQuadraticLagrange, interpolationService.CreateQuadraticLagrange)
+	interpolationController.Get("/quadratic-spline/:id", interpolationService.GetQuadraticSpline)
+	interpolationController.Post("/quadratic-spline", interpolationValidate.ValidateQuadraticSpline, interpolationService.CreateQuadraticSpline)
 }

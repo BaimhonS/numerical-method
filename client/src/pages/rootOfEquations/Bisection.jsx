@@ -37,7 +37,7 @@ const Bisection = () => {
         const data = [];
 
         do {
-            xm = (Xl + Xr) / 2.0;
+            xm = (Xl + Xr) / 2.0; // Calculate the midpoint
 
             const scopeXr = { x: Xr };
             fXr = evaluate(equation, scopeXr);

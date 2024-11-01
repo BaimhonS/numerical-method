@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import Sidebar from '../../components/Sidebar';
 import { det } from 'mathjs';
 import { toast } from 'react-toastify';
+import axios from 'axios';
 
 const CubicSpline = () => {
     const [points, setPoints] = useState([{ x: '', fx: '' }]); // Dynamic points input
@@ -11,6 +12,45 @@ const CubicSpline = () => {
     const [matrix, setMatrix] = useState([]); // Add state for matrix
     const [rhs, setRHS] = useState([]); // Add state for right-hand side
     const [solutions, setSolutions] = useState({}); // Add state for solutions
+
+    const fetchExampleInput = () => {
+        axios.get('http://localhost:8080/numerical-method/interpolation/polynomial-newton/1')
+            .then((response) => {
+                const data = response.data;
+                console.log("Raw data from server:", data);
+                
+                // Parse points string into array of objects
+                const pointsArray = data.points.split(',').map(point => {
+                    const [x, fx] = point.trim().split(' ');
+                    return {
+                        x: x.replace('x:', '').trim(),
+                        fx: fx.replace('fx:', '').trim()
+                    };
+                });
+                console.log("Parsed points:", pointsArray);
+                
+                // Parse xvalue (it's a single number, not an array)
+                console.log("Parsed xvalue:", data.xvalue);
+                
+                setPoints(pointsArray.map(point => ({
+                    x: point.x,
+                    fx: point.fx
+                })));
+                setXValue(parseFloat(data.xvalue)); // Just parse the single number
+                
+                // Update selected points based on data length
+                const selectedIndices = Array.from(
+                    { length: Math.min(4, pointsArray.length) }, 
+                    (_, i) => i
+                );
+                setSelectedPoints(selectedIndices);
+                
+            })
+            .catch((error) => {
+                console.error("Error fetching example input:", error);
+                console.error("Error details:", error.response?.data);
+            });
+    };
 
     // Function to handle input changes
     const handlePointChange = (index, field, value) => {
@@ -316,7 +356,13 @@ const CubicSpline = () => {
             <Sidebar />
             <div className="flex-1 p-10">
                 <h2 className="text-3xl mb-5">Cubic Spline Interpolation</h2>
-
+                <div className="flex justify-end px-10">
+                <button
+                    onClick={fetchExampleInput}
+                    className="my-5 px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 transition duration-200">
+                    Get Example Input
+                </button>
+                </div>
                 {/* Dynamic points input */}
                 <div>
                     <h3 className="text-xl mb-3">Enter Points Data </h3>

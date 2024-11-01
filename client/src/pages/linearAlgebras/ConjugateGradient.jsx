@@ -252,6 +252,18 @@ const ConjugateGradient = () => {
                     </select>
                 </label>
 
+                <label className="block mb-3">
+                    Error
+                    <input
+                        type="number"
+                        className="block mt-2 p-2 border rounded-md"
+                        placeholder="Error"
+                        step="0.0001"
+                        value={tolerance}
+                        onChange={handleToleranceChange}
+                    />
+                </label>
+
                 <div className="flex justify-center mb-6">
                     <div>
                         {Array.from({ length: matrixSize }, (_, i) => (
@@ -280,18 +292,6 @@ const ConjugateGradient = () => {
                         ))}
                     </div>
                 </div>
-
-                <label className="block mb-3">
-                    Error
-                    <input
-                        type="number"
-                        className="block mt-2 p-2 border rounded-md"
-                        placeholder="Error"
-                        step="0.0001"
-                        value={tolerance}
-                        onChange={handleToleranceChange}
-                    />
-                </label>
 
                 <button
                     onClick={calConjugateGradient}

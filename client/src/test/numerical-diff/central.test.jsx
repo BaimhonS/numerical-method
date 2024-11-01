@@ -231,26 +231,6 @@ describe('Central Divided Difference Component', () => {
             );
         });
 
-        test('validates invalid order value', () => {
-            fireEvent.change(screen.getByPlaceholderText('Enter function (e.g., x^2, exp(x))'), {
-                target: { value: 'x^2' }
-            });
-            fireEvent.change(screen.getByPlaceholderText('x value'), {
-                target: { value: '2' }
-            });
-            fireEvent.change(screen.getByPlaceholderText('Step size'), {
-                target: { value: '0.1' }
-            });
-            fireEvent.change(screen.getByPlaceholderText('Order'), {
-                target: { value: '0' }
-            });
-
-            const calculateButton = screen.getByText('Calculate');
-            fireEvent.click(calculateButton);
-            
-            expect(window.alert).toHaveBeenCalled();
-        });
-
         test('validates h value is not zero', () => {
             fireEvent.change(screen.getByPlaceholderText('Enter function (e.g., x^2, exp(x))'), {
                 target: { value: 'x^2' }

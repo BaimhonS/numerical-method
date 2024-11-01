@@ -7,7 +7,7 @@ const JacobiIteration = () => {
     const [matrix, setMatrix] = useState({});
     const [matrixSize, setMatrixSize] = useState(3);
     const [constants, setConstants] = useState({});
-    const [tolerance, setTolerance] = useState();
+    const [tolerance, setTolerance] = useState('');
     const [xVector, setXVector] = useState([]);
     const [results, setResults] = useState([]); 
     const [showResults, setShowResults] = useState(false);
@@ -37,8 +37,10 @@ const JacobiIteration = () => {
                 for (let i = 1; i <= matrixSize; i++) {
                     newConstants[`x${i}`] = constantValues[i - 1];
                 }
-    
+                
+                const error = parseFloat(data.error).toString();
                 // Update the state
+                setTolerance(error);
                 setMatrixSize(matrixSize); // Update matrix size
                 setMatrix(newMatrix); // Set matrix values
                 setConstants(newConstants); // Set constant values
@@ -261,13 +263,13 @@ const JacobiIteration = () => {
                     <>
                     <div className="flex justify-center">
                         <p className="mb-5 mx-4">
-                            X1 : {results.length > 0 ? results[results.length - 1].X1.toFixed(6) : 'N/A'}
-                            </p>
-                            <p className="mb-5 mx-4">
-                            X2 : {results.length > 0 ? results[results.length - 1].X2.toFixed(6) : 'N/A'}
-                            </p>
-                            <p className="mb-5 mx-4">
-                            X3 : {results.length > 0 ? results[results.length - 1].X3.toFixed(6) : 'N/A'}
+                            X1 : {results.length > 0 ? Number(results[results.length - 1].X1).toFixed(6) : 'N/A'}
+                        </p>
+                        <p className="mb-5 mx-4">
+                            X2 : {results.length > 0 ? Number(results[results.length - 1].X2).toFixed(6) : 'N/A'}
+                        </p>
+                        <p className="mb-5 mx-4">
+                            X3 : {results.length > 0 ? Number(results[results.length - 1].X3).toFixed(6) : 'N/A'}
                         </p>
                     </div>
                     <div>

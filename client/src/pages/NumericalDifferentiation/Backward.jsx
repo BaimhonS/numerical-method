@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Sidebar from "../../components/Sidebar";
 import { evaluate } from "mathjs";
+import axios from 'axios';
 
 const BackwardDividedDifference = () => {
   const [fx, setFx] = useState("");
@@ -97,6 +98,24 @@ const BackwardDividedDifference = () => {
     }
   };
 
+  const fetchExampleInput = () => {
+    axios.get('http://localhost:8080/numerical-method/numerical-diff/1')
+        .then((response) => {
+            const data = response.data;
+            
+            // Convert e(x) to exp(x) for mathjs compatibility
+            const functionExpression = data.function.replace('e(x)', 'exp(x)');
+            
+            setFx(functionExpression);
+            setX(data.x.toString());
+            setH(data.h.toString());
+            setOrder(data.order.toString());
+        })
+        .catch((error) => {
+            console.error("Error fetching example input:", error);
+        });
+  };
+
   return (
     <div className="flex">
       <Sidebar />
@@ -147,6 +166,14 @@ const BackwardDividedDifference = () => {
               placeholder="Order"
             />
           </div>
+        </div>
+
+        <div className="flex justify-end">
+          <button
+            onClick={fetchExampleInput}
+            className="my-5 px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 transition duration-200">
+            Get Example
+          </button>
         </div>
 
         <button

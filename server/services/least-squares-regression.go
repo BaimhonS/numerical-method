@@ -62,6 +62,7 @@ func (l LeastSquaresRegressionServiceImpl) GetLinearRegression(c *fiber.Ctx) err
 // @Description Create the linear regression result
 // @Accept json
 // @Produce json
+// @Param req body validations.ReqLinearRegression true "Request Body"
 // @Success 201 {object} models.LinearRegression
 // @Failure 400 {object} utils.ErrorResponse "Bad Request"
 // @Router /numerical-method/least-squares-regression/linear-regression [post]
@@ -122,6 +123,7 @@ func (l LeastSquaresRegressionServiceImpl) GetPolynomialRegression(c *fiber.Ctx)
 // @Description Create the polynomial regression result
 // @Accept json
 // @Produce json
+// @Param req body validations.ReqPolynomialRegression true "Request Body"
 // @Success 201 {object} models.PolynomialRegression
 // @Failure 400 {object} utils.ErrorResponse "Bad Request"
 // @Router /numerical-method/least-squares-regression/polynomial-regression [post]
@@ -183,6 +185,7 @@ func (l LeastSquaresRegressionServiceImpl) GetMultipleRegression(c *fiber.Ctx) e
 // @Description Create the multiple regression result
 // @Accept json
 // @Produce json
+// @Param req body validations.ReqMultipleRegression true "Request Body"
 // @Success 201 {object} models.MultipleRegression
 // @Failure 400 {object} utils.ErrorResponse "Bad Request"
 // @Router /numerical-method/least-squares-regression/multiple-regression [post]

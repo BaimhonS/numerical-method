@@ -28,6 +28,7 @@ func NewIntegrationService(db *gorm.DB) IntegrationService {
 // @Description Get the trapezoid data
 // @Accept json
 // @Produce json
+// @Param id path string true "Trapezoid ID"
 // @Success 200 {object} models.Trapezoid
 // @Failure 400 {object} utils.ErrorResponse "Bad Request"
 // @Router /numerical-method/integration/trapezoid/{id} [get]
@@ -56,6 +57,7 @@ func (s *IntegrationServiceImpl) GetTrapezoid(c *fiber.Ctx) error {
 // @Description Create the trapezoid data
 // @Accept json
 // @Produce json
+// @Param req body validations.ReqTrapezoid true "Request Body"
 // @Success 200 {object} models.Trapezoid
 // @Failure 400 {object} utils.ErrorResponse "Bad Request"
 // @Router /numerical-method/integration/trapezoid [post]
@@ -88,6 +90,7 @@ func (s *IntegrationServiceImpl) CreateTrapezoid(c *fiber.Ctx) error {
 // @Description Get the simpson data
 // @Accept json
 // @Produce json
+// @Param id path string true "Simpson ID"
 // @Success 200 {object} models.Simpson
 // @Failure 400 {object} utils.ErrorResponse "Bad Request"
 // @Router /numerical-method/integration/simpson/{id} [get]
@@ -116,6 +119,7 @@ func (s *IntegrationServiceImpl) GetSimpson(c *fiber.Ctx) error {
 // @Description Create the simpson data
 // @Accept json
 // @Produce json
+// @Param req body validations.ReqSimpson true "Request Body"
 // @Success 200 {object} models.Simpson
 // @Failure 400 {object} utils.ErrorResponse "Bad Request"
 // @Router /numerical-method/integration/simpson [post]

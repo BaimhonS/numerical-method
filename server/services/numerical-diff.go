@@ -1,6 +1,8 @@
 package services
 
 import (
+	"log"
+
 	"github.com/BaimhonS/numerical-method/models"
 	"github.com/BaimhonS/numerical-method/utils"
 	"github.com/BaimhonS/numerical-method/validations"
@@ -56,11 +58,13 @@ func (s *NumericalDiffServiceImpl) GetNumericalDiff(c *fiber.Ctx) error {
 // @Description Create numerical diff
 // @Accept json
 // @Produce json
+// @Param req body validations.ReqNumericalDiff true "Request Body"
 // @Success 201 {object} models.NumericalDiff
 // @Failure 400 {object} utils.ErrorResponse
 // @Failure 500 {object} utils.ErrorResponse
 // @Router /numerical-method/numerical-diff [post]
 func (s *NumericalDiffServiceImpl) CreateNumericalDiff(c *fiber.Ctx) error {
+	log.Println("CreateNumericalDiff")
 	req, ok := c.Locals("req").(validations.ReqNumericalDiff)
 	if !ok {
 		return c.Status(fiber.StatusBadRequest).JSON(utils.ErrorResponse{
@@ -71,7 +75,7 @@ func (s *NumericalDiffServiceImpl) CreateNumericalDiff(c *fiber.Ctx) error {
 	numericalDiff := models.NumericalDiff{
 		Function: req.Function,
 		X:        req.X,
-		Size:     req.Size,
+		H:        req.H,
 		Order:    req.Order,
 	}
 

@@ -22,6 +22,11 @@ type (
 		Xvalue float64 `json:"xvalue"`
 	}
 	ReqQuadraticLagrange struct {
+		Points string  `json:"points"`
+		Point  string  `json:"point"`
+		Xvalue float64 `json:"xvalue"`
+	}
+	ReqQuadraticSpline struct {
 		Points string `json:"points"`
 		Point  string `json:"point"`
 		Xvalue string `json:"xvalue"`
@@ -35,6 +40,7 @@ type InterpolationValidate interface {
 	ValidateQuadraticNewton(c *fiber.Ctx) error
 	ValidatePolynomialNewton(c *fiber.Ctx) error
 	ValidateQuadraticLagrange(c *fiber.Ctx) error
+	ValidateQuadraticSpline(c *fiber.Ctx) error
 }
 
 func NewInterpolationValidate() InterpolationValidate {
@@ -79,6 +85,18 @@ func (v *InterpolationValidateImpl) ValidatePolynomialNewton(c *fiber.Ctx) error
 
 func (v *InterpolationValidateImpl) ValidateQuadraticLagrange(c *fiber.Ctx) error {
 	var req ReqQuadraticLagrange
+	if err := c.BodyParser(&req); err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(utils.ErrorResponse{
+			Message: "body parser error",
+			Error:   err,
+		})
+	}
+	c.Locals("req", req)
+	return c.Next()
+}
+
+func (v *InterpolationValidateImpl) ValidateQuadraticSpline(c *fiber.Ctx) error {
+	var req ReqQuadraticSpline
 	if err := c.BodyParser(&req); err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(utils.ErrorResponse{
 			Message: "body parser error",

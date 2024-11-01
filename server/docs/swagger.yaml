@@ -34,6 +34,59 @@ definitions:
       scan:
         type: number
     type: object
+  models.LinearNewton:
+    properties:
+      id:
+        type: integer
+      point:
+        type: string
+      points:
+        type: string
+      xvalue:
+        type: number
+    type: object
+  models.LinearRegression:
+    properties:
+      id:
+        type: integer
+      points:
+        type: string
+      xvalue:
+        type: number
+    type: object
+  models.Matrix:
+    properties:
+      constant_data:
+        type: string
+      id:
+        type: integer
+      matrix_data:
+        type: string
+      matrix_size:
+        type: integer
+    type: object
+  models.MatrixIteration:
+    properties:
+      constant_data:
+        type: string
+      e:
+        type: number
+      id:
+        type: integer
+      matrix_data:
+        type: string
+      matrix_size:
+        type: integer
+    type: object
+  models.MultipleRegression:
+    properties:
+      id:
+        type: integer
+      points:
+        type: string
+      xvalue:
+        type: string
+    type: object
   models.NewtonRaphson:
     properties:
       e:
@@ -45,6 +98,19 @@ definitions:
       x0:
         type: number
     type: object
+  models.NumericalDiff:
+    properties:
+      function:
+        type: string
+      h:
+        type: number
+      id:
+        type: integer
+      order:
+        type: integer
+      x:
+        type: integer
+    type: object
   models.OnePoint:
     properties:
       e:
@@ -53,6 +119,61 @@ definitions:
         type: string
       id:
         type: integer
+    type: object
+  models.PolynomialNewton:
+    properties:
+      id:
+        type: integer
+      point:
+        type: string
+      points:
+        type: string
+      xvalue:
+        type: number
+    type: object
+  models.PolynomialRegression:
+    properties:
+      id:
+        type: integer
+      order:
+        type: integer
+      points:
+        type: string
+      xvalue:
+        type: number
+    type: object
+  models.QuadraticLagrange:
+    properties:
+      id:
+        type: integer
+      point:
+        type: string
+      points:
+        type: string
+      xvalue:
+        type: number
+    type: object
+  models.QuadraticNewton:
+    properties:
+      id:
+        type: integer
+      point:
+        type: string
+      points:
+        type: string
+      xvalue:
+        type: number
+    type: object
+  models.QuadraticSpline:
+    properties:
+      id:
+        type: integer
+      point:
+        type: string
+      points:
+        type: string
+      xvalue:
+        type: string
     type: object
   models.Secant:
     properties:
@@ -66,6 +187,32 @@ definitions:
         type: string
       id:
         type: integer
+    type: object
+  models.Simpson:
+    properties:
+      function:
+        type: string
+      id:
+        type: integer
+      interval:
+        type: integer
+      lower:
+        type: number
+      upper:
+        type: number
+    type: object
+  models.Trapezoid:
+    properties:
+      function:
+        type: string
+      id:
+        type: integer
+      interval:
+        type: integer
+      lower:
+        type: number
+      upper:
+        type: number
     type: object
   utils.ErrorResponse:
     properties:
@@ -102,6 +249,49 @@ definitions:
       scan:
         type: number
     type: object
+  validations.ReqLinearNewton:
+    properties:
+      point:
+        type: string
+      points:
+        type: string
+      xvalue:
+        type: number
+    type: object
+  validations.ReqLinearRegression:
+    properties:
+      points:
+        type: string
+      xvalue:
+        type: number
+    type: object
+  validations.ReqMatrix:
+    properties:
+      constant_data:
+        type: string
+      matrix_data:
+        type: string
+      matrix_size:
+        type: integer
+    type: object
+  validations.ReqMatrixIteration:
+    properties:
+      constant_data:
+        type: string
+      error:
+        type: number
+      matrix_data:
+        type: string
+      matrix_size:
+        type: integer
+    type: object
+  validations.ReqMultipleRegression:
+    properties:
+      points:
+        type: string
+      xvalue:
+        type: string
+    type: object
   validations.ReqNewtonRaphson:
     properties:
       e:
@@ -111,11 +301,67 @@ definitions:
       x0:
         type: number
     type: object
+  validations.ReqNumericalDiff:
+    properties:
+      function:
+        type: string
+      h:
+        type: number
+      order:
+        type: integer
+      x:
+        type: integer
+    type: object
   validations.ReqOnePoint:
     properties:
       e:
         type: number
       equation:
+        type: string
+    type: object
+  validations.ReqPolynomialNewton:
+    properties:
+      point:
+        type: string
+      points:
+        type: string
+      xvalue:
+        type: number
+    type: object
+  validations.ReqPolynomialRegression:
+    properties:
+      order:
+        type: integer
+      points:
+        type: string
+      xvalue:
+        type: number
+    type: object
+  validations.ReqQuadraticLagrange:
+    properties:
+      point:
+        type: string
+      points:
+        type: string
+      xvalue:
+        type: number
+    type: object
+  validations.ReqQuadraticNewton:
+    properties:
+      point:
+        type: string
+      points:
+        type: string
+      xvalue:
+        type: number
+    type: object
+  validations.ReqQuadraticSpline:
+    properties:
+      point:
+        type: string
+      points:
+        type: string
+      xvalue:
         type: string
     type: object
   validations.ReqSecant:
@@ -129,12 +375,729 @@ definitions:
       x1:
         type: number
     type: object
+  validations.ReqSimpson:
+    properties:
+      function:
+        type: string
+      interval:
+        type: integer
+      lower:
+        type: number
+      upper:
+        type: number
+    type: object
+  validations.ReqTrapezoid:
+    properties:
+      function:
+        type: string
+      interval:
+        type: integer
+      lower:
+        type: number
+      upper:
+        type: number
+    type: object
 info:
   contact: {}
   description: API Documentation for User Service
   title: API Documentation
   version: "0.2"
 paths:
+  /numerical-method/integration/simpson:
+    post:
+      consumes:
+      - application/json
+      description: Create the simpson data
+      parameters:
+      - description: Request Body
+        in: body
+        name: req
+        required: true
+        schema:
+          $ref: '#/definitions/validations.ReqSimpson'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Simpson'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.ErrorResponse'
+      summary: Create Simpson
+      tags:
+      - Simpson
+  /numerical-method/integration/simpson/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Get the simpson data
+      parameters:
+      - description: Simpson ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Simpson'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.ErrorResponse'
+      summary: Get Simpson
+      tags:
+      - Simpson
+  /numerical-method/integration/trapezoid:
+    post:
+      consumes:
+      - application/json
+      description: Create the trapezoid data
+      parameters:
+      - description: Request Body
+        in: body
+        name: req
+        required: true
+        schema:
+          $ref: '#/definitions/validations.ReqTrapezoid'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Trapezoid'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.ErrorResponse'
+      summary: Create Trapezoid
+      tags:
+      - Trapezoid
+  /numerical-method/integration/trapezoid/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Get the trapezoid data
+      parameters:
+      - description: Trapezoid ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Trapezoid'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.ErrorResponse'
+      summary: Get Trapezoid
+      tags:
+      - Trapezoid
+  /numerical-method/interpolation/linear-newton:
+    post:
+      consumes:
+      - application/json
+      description: Create the linear newton data
+      parameters:
+      - description: Request Body
+        in: body
+        name: req
+        required: true
+        schema:
+          $ref: '#/definitions/validations.ReqLinearNewton'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.LinearNewton'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.ErrorResponse'
+      summary: Create Linear Newton
+      tags:
+      - Linear Newton
+  /numerical-method/interpolation/linear-newton/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Get the linear newton data
+      parameters:
+      - description: ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.LinearNewton'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.ErrorResponse'
+      summary: Get Linear Newton
+      tags:
+      - Linear Newton
+  /numerical-method/interpolation/polynomial-newton:
+    post:
+      consumes:
+      - application/json
+      description: Create the polynomial newton data
+      parameters:
+      - description: Request Body
+        in: body
+        name: req
+        required: true
+        schema:
+          $ref: '#/definitions/validations.ReqPolynomialNewton'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.PolynomialNewton'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.ErrorResponse'
+      summary: Create Polynomial Newton
+      tags:
+      - Polynomial Newton
+  /numerical-method/interpolation/polynomial-newton/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Get the polynomial newton data
+      parameters:
+      - description: ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.PolynomialNewton'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.ErrorResponse'
+      summary: Get Polynomial Newton
+      tags:
+      - Polynomial Newton
+  /numerical-method/interpolation/quadratic-lagrange:
+    post:
+      consumes:
+      - application/json
+      description: Create the quadratic lagrange data
+      parameters:
+      - description: Request Body
+        in: body
+        name: req
+        required: true
+        schema:
+          $ref: '#/definitions/validations.ReqQuadraticLagrange'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.QuadraticLagrange'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.ErrorResponse'
+      summary: Create Quadratic Lagrange
+      tags:
+      - Quadratic Lagrange
+  /numerical-method/interpolation/quadratic-lagrange/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Get the quadratic lagrange data
+      parameters:
+      - description: ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.QuadraticLagrange'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.ErrorResponse'
+      summary: Get Quadratic Lagrange
+      tags:
+      - Quadratic Lagrange
+  /numerical-method/interpolation/quadratic-newton:
+    post:
+      consumes:
+      - application/json
+      description: Create the quadratic newton data
+      parameters:
+      - description: Request Body
+        in: body
+        name: req
+        required: true
+        schema:
+          $ref: '#/definitions/validations.ReqQuadraticNewton'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.QuadraticNewton'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.ErrorResponse'
+      summary: Create Quadratic Newton
+      tags:
+      - Quadratic Newton
+  /numerical-method/interpolation/quadratic-newton/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Get the quadratic newton data
+      parameters:
+      - description: ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.QuadraticNewton'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.ErrorResponse'
+      summary: Get Quadratic Newton
+      tags:
+      - Quadratic Newton
+  /numerical-method/interpolation/quadratic-spline:
+    post:
+      consumes:
+      - application/json
+      description: Create the quadratic spline data
+      parameters:
+      - description: Request Body
+        in: body
+        name: req
+        required: true
+        schema:
+          $ref: '#/definitions/validations.ReqQuadraticSpline'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.QuadraticSpline'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.ErrorResponse'
+      summary: Create Quadratic Spline
+      tags:
+      - Quadratic Spline
+  /numerical-method/interpolation/quadratic-spline/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Get the quadratic spline data
+      parameters:
+      - description: ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.QuadraticSpline'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.ErrorResponse'
+      summary: Get Quadratic Spline
+      tags:
+      - Quadratic Spline
+  /numerical-method/least-squares-regression/linear-regression:
+    post:
+      consumes:
+      - application/json
+      description: Create the linear regression result
+      parameters:
+      - description: Request Body
+        in: body
+        name: req
+        required: true
+        schema:
+          $ref: '#/definitions/validations.ReqLinearRegression'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.LinearRegression'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.ErrorResponse'
+      summary: Create Linear Regression Result
+      tags:
+      - Linear Regression
+  /numerical-method/least-squares-regression/linear-regression/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Get the linear regression result by ID
+      parameters:
+      - description: Linear Regression ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.LinearRegression'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/utils.ErrorResponse'
+      summary: Get Linear Regression Result
+      tags:
+      - Linear Regression
+  /numerical-method/least-squares-regression/multiple-regression:
+    post:
+      consumes:
+      - application/json
+      description: Create the multiple regression result
+      parameters:
+      - description: Request Body
+        in: body
+        name: req
+        required: true
+        schema:
+          $ref: '#/definitions/validations.ReqMultipleRegression'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.MultipleRegression'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.ErrorResponse'
+      summary: Create Multiple Regression Result
+      tags:
+      - Multiple Regression
+  /numerical-method/least-squares-regression/multiple-regression/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Get the multiple regression result by ID
+      parameters:
+      - description: Multiple Regression ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.MultipleRegression'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/utils.ErrorResponse'
+      summary: Get Multiple Regression Result
+      tags:
+      - Multiple Regression
+  /numerical-method/least-squares-regression/polynomial-regression:
+    post:
+      consumes:
+      - application/json
+      description: Create the polynomial regression result
+      parameters:
+      - description: Request Body
+        in: body
+        name: req
+        required: true
+        schema:
+          $ref: '#/definitions/validations.ReqPolynomialRegression'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.PolynomialRegression'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.ErrorResponse'
+      summary: Create Polynomial Regression Result
+      tags:
+      - Polynomial Regression
+  /numerical-method/least-squares-regression/polynomial-regression/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Get the polynomial regression result by ID
+      parameters:
+      - description: Polynomial Regression ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.PolynomialRegression'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/utils.ErrorResponse'
+      summary: Get Polynomial Regression Result
+      tags:
+      - Polynomial Regression
+  /numerical-method/linear-algrebra/matrix:
+    post:
+      consumes:
+      - application/json
+      description: Create the matrix result
+      parameters:
+      - description: Request Body
+        in: body
+        name: req
+        required: true
+        schema:
+          $ref: '#/definitions/validations.ReqMatrix'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.Matrix'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.ErrorResponse'
+      summary: Create Matrix Result
+      tags:
+      - Matrix
+  /numerical-method/linear-algrebra/matrix-iteration:
+    post:
+      consumes:
+      - application/json
+      description: Create the matrix iteration result
+      parameters:
+      - description: Request Body
+        in: body
+        name: req
+        required: true
+        schema:
+          $ref: '#/definitions/validations.ReqMatrixIteration'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.MatrixIteration'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.ErrorResponse'
+      summary: Create Matrix Iteration Result
+      tags:
+      - Matrix Iteration
+  /numerical-method/linear-algrebra/matrix-iteration/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Get the matrix iteration result by ID
+      parameters:
+      - description: Matrix Iteration ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Graphical'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/utils.ErrorResponse'
+      summary: Get Matrix Iteration Result
+      tags:
+      - Matrix Iteration
+  /numerical-method/linear-algrebra/matrix/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Get the matrix result by ID
+      parameters:
+      - description: Matrix ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Graphical'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/utils.ErrorResponse'
+      summary: Get Matrix Result
+      tags:
+      - Matrix
+  /numerical-method/numerical-diff:
+    post:
+      consumes:
+      - application/json
+      description: Create numerical diff
+      parameters:
+      - description: Request Body
+        in: body
+        name: req
+        required: true
+        schema:
+          $ref: '#/definitions/validations.ReqNumericalDiff'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.NumericalDiff'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.ErrorResponse'
+      summary: Create numerical diff
+      tags:
+      - numerical-diff
+  /numerical-method/numerical-diff/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Get numerical diff by id
+      parameters:
+      - description: Numerical diff id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.NumericalDiff'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/utils.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.ErrorResponse'
+      summary: Get numerical diff
+      tags:
+      - numerical-diff
   /numerical-method/root-of-equations/bisection:
     post:
       consumes:

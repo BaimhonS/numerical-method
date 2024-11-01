@@ -42,7 +42,7 @@ const FalsePosition = () => {
             fXl = evaluate(equation, scopeXl);
             fXr = evaluate(equation, scopeXr);
     
-            xm = Xr - (fXr * (Xl - Xr)) / (fXl - fXr);
+            xm = Xr - (fXr * (Xl - Xr)) / (fXl - fXr); // Calculate the new approximation
     
             const scopeXm = { x: xm };
             fXm = evaluate(equation, scopeXm);

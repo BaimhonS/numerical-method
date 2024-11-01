@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Sidebar from "../../components/Sidebar";
 import { evaluate } from "mathjs";
+import axios from 'axios';
 
 const ForwardDividedDifference = () => {
   const factorial = (n) => {
@@ -47,6 +48,24 @@ const ForwardDividedDifference = () => {
     setFx(e.target.value);
   };
 
+  const fetchExampleInput = () => {
+    axios.get('http://localhost:8080/numerical-method/numerical-diff/1')
+        .then((response) => {
+            const data = response.data;
+            
+            // Convert e(x) to exp(x) for mathjs compatibility
+            const functionExpression = data.function.replace('e(x)', 'exp(x)');
+            
+            setFx(functionExpression);
+            setX(data.x.toString());
+            setH(data.h.toString());
+            setOrder(data.order.toString());
+        })
+        .catch((error) => {
+            console.error("Error fetching example input:", error);
+        });
+  };
+
   const calculateForwardDividedDifference = () => {
     try {
       const expression = fx
@@ -56,20 +75,20 @@ const ForwardDividedDifference = () => {
       
       if (order === 1) {
         // Simple forward difference for first order
-        const fx_value = evaluate(expression, { x: x });
-        const fxh_value = evaluate(expression, { x: x + h });
+        const fx_value = evaluate(expression, { x: parseFloat(x) });
+        const fxh_value = evaluate(expression, { x: parseFloat(x) + parseFloat(h) });
         
         // Forward difference formula: [f(x + h) - f(x)] / h
-        const approx = (fxh_value - fx_value) / h;
+        const approx = (fxh_value - fx_value) / parseFloat(h);
         
         const currentSteps = [
           {
-            xValue: x,
+            xValue: parseFloat(x),
             fxValue: fx_value,
             description: "f(x)"
           },
           {
-            xValue: x + h,
+            xValue: parseFloat(x) + parseFloat(h),
             fxValue: fxh_value,
             description: "f(x + h)"
           }
@@ -90,10 +109,10 @@ const ForwardDividedDifference = () => {
         let currentSteps = [];
         
         for (let i = 0; i <= order; i++) {
-          const xValue = x + i * h;
+          const xValue = parseFloat(x) + i * parseFloat(h);
           const fxValue = evaluate(expression, { x: xValue });
           const coefficient = coefficients[i];
-          const term = coefficient * fxValue / Math.pow(h, order);
+          const term = coefficient * fxValue / Math.pow(parseFloat(h), order);
           terms.push(term);
 
           currentSteps.push({
@@ -165,6 +184,14 @@ const ForwardDividedDifference = () => {
               placeholder="Order"
             />
           </div>
+        </div>
+
+        <div className="flex justify-end">
+          <button
+            onClick={fetchExampleInput}
+            className="my-5 px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 transition duration-200">
+            Get Example
+          </button>
         </div>
 
         <button

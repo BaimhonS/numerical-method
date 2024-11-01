@@ -1,12 +1,44 @@
 import React, { useState } from 'react';
 import Sidebar from '../../components/Sidebar';
-
+import axios from 'axios';
 const PolynomialNewton = () => {
     const [points, setPoints] = useState([{ x: '', fx: '' }]); // Dynamic points input
     const [pointIndices, setPointIndices] = useState([]); // Array for selected point indices
     const [xValue, setXValue] = useState(''); // Input x value
     const [result, setResult] = useState(null); // Result of interpolation
 
+    const fetchExampleInput = () => {
+        axios.get('http://localhost:8080/numerical-method/interpolation/polynomial-newton/2')
+            .then((response) => {
+                const data = response.data;
+                console.log("Raw data from server:", data);
+                
+                // Parse points string into array of objects
+                const pointsArray = data.points.split(',').map(point => {
+                    const [x, fx] = point.trim().split(' ');
+                    return {
+                        x: x.replace('x:', '').trim(),
+                        fx: fx.replace('fx:', '').trim()
+                    };
+                });
+                
+                // Parse point string to get indices
+                const selectedPoints = data.point.split(',').map(p => {
+                    const index = parseInt(p.trim().replace('x:', '')) - 1; // Convert to 0-based index
+                    return index;
+                });
+                
+                setPoints(pointsArray);
+                setXValue(parseFloat(data.xvalue));
+                setPointIndices(selectedPoints);
+                
+                console.log("Points array:", pointsArray);
+                console.log("Selected indices:", selectedPoints);
+            })
+            .catch((error) => {
+                console.error("Error fetching example input:", error);
+            });
+    };
     // Function to handle input changes
     const handlePointChange = (index, field, value) => {
         const newPoints = [...points];
@@ -59,26 +91,6 @@ const PolynomialNewton = () => {
         // Remove duplicates and sort
         newPointIndices = [...new Set(newPointIndices)].sort((a, b) => a - b);
         setPointIndices(newPointIndices);
-    };
-
-    // Calculate the divided differences
-    const calculateDividedDifferences = (points) => {
-        const n = points.length;
-        const dividedDifferences = Array(n).fill(null).map(() => Array(n).fill(0));
-
-        // Set the function values
-        for (let i = 0; i < n; i++) {
-            dividedDifferences[i][0] = parseFloat(points[i].fx);
-        }
-
-        // Calculate divided differences
-        for (let j = 1; j < n; j++) {
-            for (let i = 0; i < n - j; i++) {
-                dividedDifferences[i][j] = (dividedDifferences[i + 1][j - 1] - dividedDifferences[i][j - 1]) / 
-                                           (parseFloat(points[i + j].x) - parseFloat(points[i].x));
-            }
-        }
-        return dividedDifferences;
     };
 
     // Calculate Newton's polynomial interpolation
@@ -161,7 +173,13 @@ const PolynomialNewton = () => {
             <Sidebar />
             <div className="flex-1 p-10">
                 <h2 className="text-3xl mb-5">Polynomial Newton Interpolation</h2>
-                
+                <div className="flex justify-end">
+                    <button
+                        onClick={fetchExampleInput}
+                        className="my-5 px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 transition duration-200">
+                        Get Example
+                    </button>
+                </div>
                 {/* Dynamic points input */}
                 <div>
                     <h3 className="text-xl mb-3">Enter Points Data</h3>

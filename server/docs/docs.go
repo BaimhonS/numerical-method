@@ -15,6 +15,1068 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/numerical-method/integration/simpson": {
+            "post": {
+                "description": "Create the simpson data",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Simpson"
+                ],
+                "summary": "Create Simpson",
+                "parameters": [
+                    {
+                        "description": "Request Body",
+                        "name": "req",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/validations.ReqSimpson"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Simpson"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/utils.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/numerical-method/integration/simpson/{id}": {
+            "get": {
+                "description": "Get the simpson data",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Simpson"
+                ],
+                "summary": "Get Simpson",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Simpson ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Simpson"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/utils.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/numerical-method/integration/trapezoid": {
+            "post": {
+                "description": "Create the trapezoid data",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Trapezoid"
+                ],
+                "summary": "Create Trapezoid",
+                "parameters": [
+                    {
+                        "description": "Request Body",
+                        "name": "req",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/validations.ReqTrapezoid"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Trapezoid"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/utils.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/numerical-method/integration/trapezoid/{id}": {
+            "get": {
+                "description": "Get the trapezoid data",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Trapezoid"
+                ],
+                "summary": "Get Trapezoid",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Trapezoid ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Trapezoid"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/utils.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/numerical-method/interpolation/linear-newton": {
+            "post": {
+                "description": "Create the linear newton data",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Linear Newton"
+                ],
+                "summary": "Create Linear Newton",
+                "parameters": [
+                    {
+                        "description": "Request Body",
+                        "name": "req",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/validations.ReqLinearNewton"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/models.LinearNewton"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/utils.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/numerical-method/interpolation/linear-newton/{id}": {
+            "get": {
+                "description": "Get the linear newton data",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Linear Newton"
+                ],
+                "summary": "Get Linear Newton",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.LinearNewton"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/utils.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/numerical-method/interpolation/polynomial-newton": {
+            "post": {
+                "description": "Create the polynomial newton data",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Polynomial Newton"
+                ],
+                "summary": "Create Polynomial Newton",
+                "parameters": [
+                    {
+                        "description": "Request Body",
+                        "name": "req",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/validations.ReqPolynomialNewton"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/models.PolynomialNewton"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/utils.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/numerical-method/interpolation/polynomial-newton/{id}": {
+            "get": {
+                "description": "Get the polynomial newton data",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Polynomial Newton"
+                ],
+                "summary": "Get Polynomial Newton",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.PolynomialNewton"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/utils.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/numerical-method/interpolation/quadratic-lagrange": {
+            "post": {
+                "description": "Create the quadratic lagrange data",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Quadratic Lagrange"
+                ],
+                "summary": "Create Quadratic Lagrange",
+                "parameters": [
+                    {
+                        "description": "Request Body",
+                        "name": "req",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/validations.ReqQuadraticLagrange"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/models.QuadraticLagrange"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/utils.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/numerical-method/interpolation/quadratic-lagrange/{id}": {
+            "get": {
+                "description": "Get the quadratic lagrange data",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Quadratic Lagrange"
+                ],
+                "summary": "Get Quadratic Lagrange",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.QuadraticLagrange"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/utils.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/numerical-method/interpolation/quadratic-newton": {
+            "post": {
+                "description": "Create the quadratic newton data",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Quadratic Newton"
+                ],
+                "summary": "Create Quadratic Newton",
+                "parameters": [
+                    {
+                        "description": "Request Body",
+                        "name": "req",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/validations.ReqQuadraticNewton"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/models.QuadraticNewton"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/utils.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/numerical-method/interpolation/quadratic-newton/{id}": {
+            "get": {
+                "description": "Get the quadratic newton data",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Quadratic Newton"
+                ],
+                "summary": "Get Quadratic Newton",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.QuadraticNewton"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/utils.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/numerical-method/interpolation/quadratic-spline": {
+            "post": {
+                "description": "Create the quadratic spline data",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Quadratic Spline"
+                ],
+                "summary": "Create Quadratic Spline",
+                "parameters": [
+                    {
+                        "description": "Request Body",
+                        "name": "req",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/validations.ReqQuadraticSpline"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/models.QuadraticSpline"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/utils.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/numerical-method/interpolation/quadratic-spline/{id}": {
+            "get": {
+                "description": "Get the quadratic spline data",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Quadratic Spline"
+                ],
+                "summary": "Get Quadratic Spline",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.QuadraticSpline"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/utils.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/numerical-method/least-squares-regression/linear-regression": {
+            "post": {
+                "description": "Create the linear regression result",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Linear Regression"
+                ],
+                "summary": "Create Linear Regression Result",
+                "parameters": [
+                    {
+                        "description": "Request Body",
+                        "name": "req",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/validations.ReqLinearRegression"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/models.LinearRegression"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/utils.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/numerical-method/least-squares-regression/linear-regression/{id}": {
+            "get": {
+                "description": "Get the linear regression result by ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Linear Regression"
+                ],
+                "summary": "Get Linear Regression Result",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Linear Regression ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.LinearRegression"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/utils.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/utils.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/numerical-method/least-squares-regression/multiple-regression": {
+            "post": {
+                "description": "Create the multiple regression result",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Multiple Regression"
+                ],
+                "summary": "Create Multiple Regression Result",
+                "parameters": [
+                    {
+                        "description": "Request Body",
+                        "name": "req",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/validations.ReqMultipleRegression"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/models.MultipleRegression"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/utils.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/numerical-method/least-squares-regression/multiple-regression/{id}": {
+            "get": {
+                "description": "Get the multiple regression result by ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Multiple Regression"
+                ],
+                "summary": "Get Multiple Regression Result",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Multiple Regression ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.MultipleRegression"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/utils.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/utils.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/numerical-method/least-squares-regression/polynomial-regression": {
+            "post": {
+                "description": "Create the polynomial regression result",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Polynomial Regression"
+                ],
+                "summary": "Create Polynomial Regression Result",
+                "parameters": [
+                    {
+                        "description": "Request Body",
+                        "name": "req",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/validations.ReqPolynomialRegression"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/models.PolynomialRegression"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/utils.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/numerical-method/least-squares-regression/polynomial-regression/{id}": {
+            "get": {
+                "description": "Get the polynomial regression result by ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Polynomial Regression"
+                ],
+                "summary": "Get Polynomial Regression Result",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Polynomial Regression ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.PolynomialRegression"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/utils.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/utils.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/numerical-method/linear-algrebra/matrix": {
+            "post": {
+                "description": "Create the matrix result",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Matrix"
+                ],
+                "summary": "Create Matrix Result",
+                "parameters": [
+                    {
+                        "description": "Request Body",
+                        "name": "req",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/validations.ReqMatrix"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/models.Matrix"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/utils.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/numerical-method/linear-algrebra/matrix-iteration": {
+            "post": {
+                "description": "Create the matrix iteration result",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Matrix Iteration"
+                ],
+                "summary": "Create Matrix Iteration Result",
+                "parameters": [
+                    {
+                        "description": "Request Body",
+                        "name": "req",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/validations.ReqMatrixIteration"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/models.MatrixIteration"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/utils.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/numerical-method/linear-algrebra/matrix-iteration/{id}": {
+            "get": {
+                "description": "Get the matrix iteration result by ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Matrix Iteration"
+                ],
+                "summary": "Get Matrix Iteration Result",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Matrix Iteration ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Graphical"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/utils.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/utils.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/numerical-method/linear-algrebra/matrix/{id}": {
+            "get": {
+                "description": "Get the matrix result by ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Matrix"
+                ],
+                "summary": "Get Matrix Result",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Matrix ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Graphical"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/utils.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/utils.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/numerical-method/numerical-diff": {
+            "post": {
+                "description": "Create numerical diff",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "numerical-diff"
+                ],
+                "summary": "Create numerical diff",
+                "parameters": [
+                    {
+                        "description": "Request Body",
+                        "name": "req",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/validations.ReqNumericalDiff"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/models.NumericalDiff"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/utils.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/utils.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/numerical-method/numerical-diff/{id}": {
+            "get": {
+                "description": "Get numerical diff by id",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "numerical-diff"
+                ],
+                "summary": "Get numerical diff",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Numerical diff id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.NumericalDiff"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/utils.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/utils.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/utils.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/numerical-method/root-of-equations/bisection": {
             "post": {
                 "description": "Create the Bisection method",
@@ -611,6 +1673,88 @@ const docTemplate = `{
                 }
             }
         },
+        "models.LinearNewton": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "point": {
+                    "type": "string"
+                },
+                "points": {
+                    "type": "string"
+                },
+                "xvalue": {
+                    "type": "number"
+                }
+            }
+        },
+        "models.LinearRegression": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "points": {
+                    "type": "string"
+                },
+                "xvalue": {
+                    "type": "number"
+                }
+            }
+        },
+        "models.Matrix": {
+            "type": "object",
+            "properties": {
+                "constant_data": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "matrix_data": {
+                    "type": "string"
+                },
+                "matrix_size": {
+                    "type": "integer"
+                }
+            }
+        },
+        "models.MatrixIteration": {
+            "type": "object",
+            "properties": {
+                "constant_data": {
+                    "type": "string"
+                },
+                "e": {
+                    "type": "number"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "matrix_data": {
+                    "type": "string"
+                },
+                "matrix_size": {
+                    "type": "integer"
+                }
+            }
+        },
+        "models.MultipleRegression": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "points": {
+                    "type": "string"
+                },
+                "xvalue": {
+                    "type": "string"
+                }
+            }
+        },
         "models.NewtonRaphson": {
             "type": "object",
             "properties": {
@@ -628,6 +1772,26 @@ const docTemplate = `{
                 }
             }
         },
+        "models.NumericalDiff": {
+            "type": "object",
+            "properties": {
+                "function": {
+                    "type": "string"
+                },
+                "h": {
+                    "type": "number"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "order": {
+                    "type": "integer"
+                },
+                "x": {
+                    "type": "integer"
+                }
+            }
+        },
         "models.OnePoint": {
             "type": "object",
             "properties": {
@@ -639,6 +1803,91 @@ const docTemplate = `{
                 },
                 "id": {
                     "type": "integer"
+                }
+            }
+        },
+        "models.PolynomialNewton": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "point": {
+                    "type": "string"
+                },
+                "points": {
+                    "type": "string"
+                },
+                "xvalue": {
+                    "type": "number"
+                }
+            }
+        },
+        "models.PolynomialRegression": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "order": {
+                    "type": "integer"
+                },
+                "points": {
+                    "type": "string"
+                },
+                "xvalue": {
+                    "type": "number"
+                }
+            }
+        },
+        "models.QuadraticLagrange": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "point": {
+                    "type": "string"
+                },
+                "points": {
+                    "type": "string"
+                },
+                "xvalue": {
+                    "type": "number"
+                }
+            }
+        },
+        "models.QuadraticNewton": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "point": {
+                    "type": "string"
+                },
+                "points": {
+                    "type": "string"
+                },
+                "xvalue": {
+                    "type": "number"
+                }
+            }
+        },
+        "models.QuadraticSpline": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "point": {
+                    "type": "string"
+                },
+                "points": {
+                    "type": "string"
+                },
+                "xvalue": {
+                    "type": "string"
                 }
             }
         },
@@ -659,6 +1908,46 @@ const docTemplate = `{
                 },
                 "id": {
                     "type": "integer"
+                }
+            }
+        },
+        "models.Simpson": {
+            "type": "object",
+            "properties": {
+                "function": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "interval": {
+                    "type": "integer"
+                },
+                "lower": {
+                    "type": "number"
+                },
+                "upper": {
+                    "type": "number"
+                }
+            }
+        },
+        "models.Trapezoid": {
+            "type": "object",
+            "properties": {
+                "function": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "interval": {
+                    "type": "integer"
+                },
+                "lower": {
+                    "type": "number"
+                },
+                "upper": {
+                    "type": "number"
                 }
             }
         },
@@ -716,6 +2005,73 @@ const docTemplate = `{
                 }
             }
         },
+        "validations.ReqLinearNewton": {
+            "type": "object",
+            "properties": {
+                "point": {
+                    "type": "string"
+                },
+                "points": {
+                    "type": "string"
+                },
+                "xvalue": {
+                    "type": "number"
+                }
+            }
+        },
+        "validations.ReqLinearRegression": {
+            "type": "object",
+            "properties": {
+                "points": {
+                    "type": "string"
+                },
+                "xvalue": {
+                    "type": "number"
+                }
+            }
+        },
+        "validations.ReqMatrix": {
+            "type": "object",
+            "properties": {
+                "constant_data": {
+                    "type": "string"
+                },
+                "matrix_data": {
+                    "type": "string"
+                },
+                "matrix_size": {
+                    "type": "integer"
+                }
+            }
+        },
+        "validations.ReqMatrixIteration": {
+            "type": "object",
+            "properties": {
+                "constant_data": {
+                    "type": "string"
+                },
+                "error": {
+                    "type": "number"
+                },
+                "matrix_data": {
+                    "type": "string"
+                },
+                "matrix_size": {
+                    "type": "integer"
+                }
+            }
+        },
+        "validations.ReqMultipleRegression": {
+            "type": "object",
+            "properties": {
+                "points": {
+                    "type": "string"
+                },
+                "xvalue": {
+                    "type": "string"
+                }
+            }
+        },
         "validations.ReqNewtonRaphson": {
             "type": "object",
             "properties": {
@@ -730,6 +2086,23 @@ const docTemplate = `{
                 }
             }
         },
+        "validations.ReqNumericalDiff": {
+            "type": "object",
+            "properties": {
+                "function": {
+                    "type": "string"
+                },
+                "h": {
+                    "type": "number"
+                },
+                "order": {
+                    "type": "integer"
+                },
+                "x": {
+                    "type": "integer"
+                }
+            }
+        },
         "validations.ReqOnePoint": {
             "type": "object",
             "properties": {
@@ -737,6 +2110,76 @@ const docTemplate = `{
                     "type": "number"
                 },
                 "equation": {
+                    "type": "string"
+                }
+            }
+        },
+        "validations.ReqPolynomialNewton": {
+            "type": "object",
+            "properties": {
+                "point": {
+                    "type": "string"
+                },
+                "points": {
+                    "type": "string"
+                },
+                "xvalue": {
+                    "type": "number"
+                }
+            }
+        },
+        "validations.ReqPolynomialRegression": {
+            "type": "object",
+            "properties": {
+                "order": {
+                    "type": "integer"
+                },
+                "points": {
+                    "type": "string"
+                },
+                "xvalue": {
+                    "type": "number"
+                }
+            }
+        },
+        "validations.ReqQuadraticLagrange": {
+            "type": "object",
+            "properties": {
+                "point": {
+                    "type": "string"
+                },
+                "points": {
+                    "type": "string"
+                },
+                "xvalue": {
+                    "type": "number"
+                }
+            }
+        },
+        "validations.ReqQuadraticNewton": {
+            "type": "object",
+            "properties": {
+                "point": {
+                    "type": "string"
+                },
+                "points": {
+                    "type": "string"
+                },
+                "xvalue": {
+                    "type": "number"
+                }
+            }
+        },
+        "validations.ReqQuadraticSpline": {
+            "type": "object",
+            "properties": {
+                "point": {
+                    "type": "string"
+                },
+                "points": {
+                    "type": "string"
+                },
+                "xvalue": {
                     "type": "string"
                 }
             }
@@ -754,6 +2197,40 @@ const docTemplate = `{
                     "type": "number"
                 },
                 "x1": {
+                    "type": "number"
+                }
+            }
+        },
+        "validations.ReqSimpson": {
+            "type": "object",
+            "properties": {
+                "function": {
+                    "type": "string"
+                },
+                "interval": {
+                    "type": "integer"
+                },
+                "lower": {
+                    "type": "number"
+                },
+                "upper": {
+                    "type": "number"
+                }
+            }
+        },
+        "validations.ReqTrapezoid": {
+            "type": "object",
+            "properties": {
+                "function": {
+                    "type": "string"
+                },
+                "interval": {
+                    "type": "integer"
+                },
+                "lower": {
+                    "type": "number"
+                },
+                "upper": {
                     "type": "number"
                 }
             }

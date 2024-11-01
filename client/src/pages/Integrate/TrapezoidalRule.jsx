@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Sidebar from '../../components/Sidebar';
 import * as math from 'mathjs';
+import axios from 'axios';
 
 const TrapezoidalRule = () => {
     const [a, setA] = useState(''); // Start of interval
@@ -8,6 +9,20 @@ const TrapezoidalRule = () => {
     const [n, setN] = useState(''); // Number of subintervals
     const [expression, setExpression] = useState(''); // Function to integrate
     const [result, setResult] = useState(null); // Result of integration
+    const fetchExampleInput = () => {
+        axios.get('http://localhost:8080/numerical-method/integration/trapezoid/1')
+            .then((response) => {
+                const data = response.data;
+                
+                setExpression(data.function);
+                setA(data.lower.toString());
+                setB(data.upper.toString());
+                setN(data.interval.toString());
+            })
+            .catch((error) => {
+                console.error("Error fetching example input:", error);
+            });
+    };
 
     // Function to calculate integration using Trapezoidal Rule
     const calculateTrapezoidal = () => {
@@ -69,7 +84,13 @@ const TrapezoidalRule = () => {
             <Sidebar />
             <div className="flex-1 p-10">
                 <h2 className="text-2xl mb-5">Trapezoidal Rule</h2>
-                
+                <div className="flex justify-end">
+                    <button
+                        onClick={fetchExampleInput}
+                        className="my-5 px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 transition duration-200">
+                        Get Example
+                    </button>
+                </div>
                 <label>Function:</label>
                 <input
                     type="text"

@@ -7,10 +7,10 @@ import (
 
 type (
 	ReqNumericalDiff struct {
-		Function string `json:"function"`
-		X        string `json:"x"`
-		Size     int    `json:"size"`
-		Order    int    `json:"order"`
+		Function string  `json:"function"`
+		X        int     `json:"x"`
+		H        float32 `json:"h"`
+		Order    int     `json:"order"`
 	}
 
 	NumericalDiffValidateImpl struct{}

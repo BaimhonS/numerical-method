@@ -29,6 +29,7 @@ func ScriptMigrate() {
 		&models.NumericalDiff{},
 		&models.Trapezoid{},
 		&models.Simpson{},
+		&models.QuadraticSpline{},
 	); err != nil {
 		log.Fatalf("failed to migrate database: %v", err)
 	}

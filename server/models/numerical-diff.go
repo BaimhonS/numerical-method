@@ -2,10 +2,10 @@ package models
 
 type (
 	NumericalDiff struct {
-		ID       uint   `json:"id"`
-		Function string `json:"function"`
-		X        string `json:"x"`
-		Size     int    `json:"size"`
-		Order    int    `json:"order"`
+		ID       uint    `json:"id" gorm:"autoIncrement"`
+		Function string  `json:"function"`
+		X        int     `json:"x"`
+		H        float32 `json:"h"`
+		Order    int     `json:"order"`
 	}
 )

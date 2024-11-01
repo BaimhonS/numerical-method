@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Sidebar from '../../components/Sidebar';
 import * as math from 'mathjs';
+import axios from 'axios';
 
 const MultipleLinearRegression = () => {
     const [points, setPoints] = useState([{ x: [], fx: '' }]);
@@ -144,12 +145,44 @@ const MultipleLinearRegression = () => {
         setPredictedFx(prediction);
     };
 
+    const fetchExampleInput = () => {
+        axios.get('http://localhost:8080/numerical-method/least-squares-regression/multiple-regression/1')
+            .then((response) => {
+                const data = response.data;
+                
+                // Parse points string into array of objects
+                const pointsArray = data.points.split(',').map(point => {
+                    const values = point.trim().split(' ');
+                    const x = values.slice(0, -1).map(v => v.replace(/x\d+:/, '').trim());
+                    const fx = values[values.length - 1].replace('fx:', '').trim();
+                    return { x, fx };
+                });
+                
+                setPoints(pointsArray);
+
+                // Parse xvalue string into array
+                const xInputValues = data.xvalue.split(' ').map(x => 
+                    x.replace(/x\d+:/, '').trim()
+                );
+                setXInputs(xInputValues);
+            })
+            .catch((error) => {
+                console.error("Error fetching example input:", error);
+            });
+    };
+
     return (
         <div className="flex">
             <Sidebar/>
             <div className="flex-1 p-10">
                 <h2 className="text-3xl mb-5">Multiple Linear Regression</h2>
-
+                <div className="flex justify-end">
+                    <button
+                        onClick={fetchExampleInput}
+                        className="my-5 px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 transition duration-200">
+                        Get Example
+                    </button>
+                </div>
                 <div>
                     {points.map((point, index) => (
                         <div key={index} className="mb-3">

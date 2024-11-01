@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import Sidebar from '../../components/Sidebar';
+import axios from 'axios';
 
 const LinearSpline = () => {
     const [points, setPoints] = useState([{ x: '', fx: '' }]); // Dynamic points input
@@ -7,6 +8,35 @@ const LinearSpline = () => {
     const [result, setResult] = useState(null); // Result of interpolation
     const [point1, setPoint1] = useState(0); // Index for Point 1
     const [point2, setPoint2] = useState(1); // Index for Point 2
+
+    const fetchExampleInput = () => {
+        axios.get('http://localhost:8080/numerical-method/interpolation/linear-newton/1')
+            .then((response) => {
+                const data = response.data;
+                console.log("Raw data from server:", data);
+                
+                // Parse points string into array of objects
+                const pointsArray = data.points.split(',').map(point => {
+                    const [x, fx] = point.trim().split(' ');
+                    return {
+                        x: x.replace('x:', '').trim(),
+                        fx: fx.replace('fx:', '').trim()
+                    };
+                });
+                
+                setPoints(pointsArray);
+                setXValue(parseFloat(data.xvalue));
+                
+                const selectedPoints = data.point.split(',').map(p => 
+                    parseInt(p.trim().replace('x:', '')) - 1
+                );
+                setPoint1(selectedPoints[0]);
+                setPoint2(selectedPoints[1]);
+            })
+            .catch((error) => {
+                console.error("Error fetching example input:", error);
+            });
+    };
 
     // Function to handle input changes
     const handlePointChange = (index, field, value) => {
@@ -70,7 +100,13 @@ const LinearSpline = () => {
             <Sidebar />
             <div className="flex-1 p-10">
                 <h2 className="text-3xl mb-5">Linear Spline Interpolation</h2>
-
+                <div className="flex justify-end">
+                    <button
+                        onClick={fetchExampleInput}
+                        className="my-5 px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 transition duration-200">
+                        Get Example
+                    </button>
+                </div>
                 {/* Dynamic points input */}
                 <div>
                     <h3 className="text-xl mb-3">Enter Points Data </h3>

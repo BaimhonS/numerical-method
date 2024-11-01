@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Sidebar from "../../components/Sidebar";
 import { evaluate } from "mathjs";
+import axios from 'axios';
 
 const CentralDividedDifference = () => {
   const [fx, setFx] = useState("");
@@ -16,29 +17,66 @@ const CentralDividedDifference = () => {
   };
 
   const handleXChange = (e) => {
-    setX(parseFloat(e.target.value));
-  };
+    const value = e.target.value;
+    if (value === '' || isNaN(value)) {
+        setX('');
+    } else {
+        setX(parseFloat(value));
+    }
+};
 
   const handleHChange = (e) => {
-    setH(parseFloat(e.target.value));
-  };
+    const value = e.target.value;
+    if (value === '' || isNaN(value)) {
+        setH('');
+    } else {
+        setH(parseFloat(value));
+    }
+};
 
   const handleOrderChange = (e) => {
-    setOrder(parseInt(e.target.value));
-  };
+    const value = e.target.value;
+    if (value === '' || isNaN(value)) {
+        setOrder('');
+    } else {
+        setOrder(parseInt(value));
+    }
+};
 
   const factorial = (n) => {
     if (n === 0 || n === 1) return 1;
     return n * factorial(n - 1);
   };
 
+  const fetchExampleInput = () => {
+    axios.get('http://localhost:8080/numerical-method/numerical-diff/1')
+        .then((response) => {
+            const data = response.data;
+            
+            // Convert e(x) to exp(x) for mathjs compatibility
+            const functionExpression = data.function.replace('e(x)', 'exp(x)');
+            
+            setFx(functionExpression);
+            setX(parseFloat(data.x));
+            setH(parseFloat(data.h));
+            setOrder(parseInt(data.order));
+        })
+        .catch((error) => {
+            console.error("Error fetching example input:", error);
+        });
+  };
+
   const calculateCentralDividedDifference = () => {
     try {
-      if (!fx || !x || !h || !order) {
+      if (!fx || x === '' || h === '' || order === '') {
         throw new Error('Please enter all values');
       }
 
-      if (h === 0) {
+      const parsedX = parseFloat(x);
+      const parsedH = parseFloat(h);
+      const parsedOrder = parseInt(order);
+
+      if (parsedH === 0) {
         throw new Error('Step size (h) cannot be zero');
       }
 
@@ -47,20 +85,20 @@ const CentralDividedDifference = () => {
         .replace(/\(e\^x\)/gi, '(exp(x))')
         .replace(/e\^/gi, 'exp');
 
-      if (order === 1) {
+      if (parsedOrder === 1) {
         // First order central difference: [f(x + h) - f(x - h)] / (2h)
-        const fxPlusH = evaluate(expression, { x: x + h });
-        const fxMinusH = evaluate(expression, { x: x - h });
-        const approx = (fxPlusH - fxMinusH) / (2 * h);
+        const fxPlusH = evaluate(expression, { x: parsedX + parsedH });
+        const fxMinusH = evaluate(expression, { x: parsedX - parsedH });
+        const approx = (fxPlusH - fxMinusH) / (2 * parsedH);
 
         const currentSteps = [
           {
-            xValue: x + h,
+            xValue: parsedX + parsedH,
             fxValue: fxPlusH,
             description: "f(x + h)"
           },
           {
-            xValue: x - h,
+            xValue: parsedX - parsedH,
             fxValue: fxMinusH,
             description: "f(x - h)"
           }
@@ -72,12 +110,12 @@ const CentralDividedDifference = () => {
       } else {
         // Higher order central differences
         let coefficients = [];
-        const n = Math.floor((order + 1) / 2);
+        const n = Math.floor((parsedOrder + 1) / 2);
         
         // Generate coefficients for central difference
         for (let i = -n; i <= n; i++) {
-          if (order % 2 === 0 && i === 0) continue;
-          const coef = Math.pow(-1, i) * factorial(order) /
+          if (parsedOrder % 2 === 0 && i === 0) continue;
+          const coef = Math.pow(-1, i) * factorial(parsedOrder) /
             (factorial(n + i) * factorial(n - i));
           coefficients.push({ i, coef });
         }
@@ -86,9 +124,9 @@ const CentralDividedDifference = () => {
         let currentSteps = [];
 
         coefficients.forEach(({ i, coef }) => {
-          const xValue = x + i * h;
+          const xValue = parsedX + i * parsedH;
           const fxValue = evaluate(expression, { x: xValue });
-          const term = coef * fxValue / Math.pow(2 * h, order);
+          const term = coef * fxValue / Math.pow(2 * parsedH, parsedOrder);
           terms.push(term);
 
           currentSteps.push({
@@ -160,6 +198,14 @@ const CentralDividedDifference = () => {
               placeholder="Order"
             />
           </div>
+        </div>
+
+        <div className="flex justify-end">
+          <button
+            onClick={fetchExampleInput}
+            className="my-5 px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 transition duration-200">
+            Get Example
+          </button>
         </div>
 
         <button

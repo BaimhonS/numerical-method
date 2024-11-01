@@ -64,6 +64,7 @@ func (l LinearServiceImpl) GetMatrix(c *fiber.Ctx) error {
 // @Description Create the matrix result
 // @Accept json
 // @Produce json
+// @Param req body validations.ReqMatrix true "Request Body"
 // @Success 201 {object} models.Matrix
 // @Failure 400 {object} utils.ErrorResponse "Bad Request"
 // @Router /numerical-method/linear-algrebra/matrix [post]
@@ -128,6 +129,7 @@ func (l LinearServiceImpl) GetMatrixIteration(c *fiber.Ctx) error {
 // @Description Create the matrix iteration result
 // @Accept json
 // @Produce json
+// @Param req body validations.ReqMatrixIteration true "Request Body"
 // @Success 201 {object} models.MatrixIteration
 // @Failure 400 {object} utils.ErrorResponse "Bad Request"
 // @Router /numerical-method/linear-algrebra/matrix-iteration [post]
